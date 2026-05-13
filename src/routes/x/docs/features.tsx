@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { XDocLayout } from '@/components/docs/x-doc-layout'
-import { Server, Network, Shield, Users, Package, Layers, LayoutTemplate, Zap, Globe, FileCode } from 'lucide-react'
+import { Server, Network, Shield, Users, Package, Layers, LayoutTemplate, Zap, Globe, FileCode, MonitorCog, ArrowUpFromLine, Activity, Wifi } from 'lucide-react'
 
 export const Route = createFileRoute('/x/docs/features')({
   component: FeaturesPage,
@@ -18,6 +18,10 @@ function FeaturesPage() {
     { icon: Zap, title: '订阅生成', desc: '支持 Clash/Stash/Shadowrocket/Surge/Loon/QX/SingBox 等 12 种客户端格式。' },
     { icon: LayoutTemplate, title: '模板系统', desc: 'V3 模板引擎，灵活的订阅配置模板，支持自定义规则和代理组。' },
     { icon: FileCode, title: '自定义规则', desc: '自定义 DNS、分流规则、规则集，精细化流量控制。' },
+    { icon: MonitorCog, title: 'Nginx 管理', desc: '远程安装/卸载 Nginx，配置文件管理，SSL 证书部署，Stream 端口管理。' },
+    { icon: ArrowUpFromLine, title: 'Agent 升级管理', desc: 'Agent 远程在线升级和卸载，SSE 流式进度展示，无需手动登录服务器。' },
+    { icon: Activity, title: '系统监控', desc: '远程服务器系统信息（CPU、内存、磁盘），实时网速监控，流量统计与上报。' },
+    { icon: Wifi, title: '域名延迟探测', desc: '批量 TCP 延迟探测（最多 200 域名），16 并发检测，用于节点质量评估。' },
   ]
 
   return (

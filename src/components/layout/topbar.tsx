@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
+import { SearchTrigger } from '@/components/search/search-trigger'
 import { useState, useRef, useEffect, useCallback } from 'react'
 
 const baseNavLinks = [
@@ -238,6 +239,7 @@ export function Topbar() {
         </div>
 
         <div className='flex items-center gap-2 sm:gap-3 pl-2 sm:pl-0'>
+          <SearchTrigger />
           <a
             href='https://t.me/miaomiaowux'
             target='_blank'

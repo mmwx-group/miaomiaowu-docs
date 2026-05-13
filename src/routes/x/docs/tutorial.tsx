@@ -40,14 +40,20 @@ function TutorialPage() {
                 <tbody>
                   <tr className='border-b'>
                     <td className='py-2 pr-8'>域名</td>
-                    <td className='py-2'>1 个</td>
+                    <td className='py-2'>1 个（主控域名）（如需使用 REALITY 偷自己）</td>
                   </tr>
-                  <tr>
+                  <tr className='border-b'>
                     <td className='py-2 pr-8'>服务器</td>
                     <td className='py-2'>1 台</td>
                   </tr>
                 </tbody>
               </table>
+            </div>
+            <div className='flex items-start gap-2 p-3 rounded-lg bg-amber-500/10 border border-amber-500/20 mt-4'>
+              <AlertTriangle className='size-4 text-amber-500 mt-0.5 shrink-0' />
+              <p className='text-sm text-amber-700 dark:text-amber-400'>
+                如果需要使用 REALITY 偷自己功能，必须准备一个域名用于偷自己的目标网站，这个网站可以是妙妙屋X。
+              </p>
             </div>
           </CardContent>
         </Card>
@@ -202,7 +208,7 @@ function TutorialPage() {
                   <tr className='border-b'><td className='py-2 pr-4'>流量限制</td><td className='py-2 pr-4'>服务器月流量</td><td className='py-2'></td></tr>
                   <tr className='border-b'><td className='py-2 pr-4'>已用流量</td><td className='py-2 pr-4'>服务器已用流量</td><td className='py-2'></td></tr>
                   <tr className='border-b'><td className='py-2 pr-4'>重置日期</td><td className='py-2 pr-4'>流量重置日期</td><td className='py-2'></td></tr>
-                  <tr className='border-b'><td className='py-2 pr-4'>我要偷自己</td><td className='py-2 pr-4'>是否开启 REALITY 偷自己</td><td className='py-2'>默认关闭</td></tr>
+                  <tr className='border-b'><td className='py-2 pr-4'>我要偷自己</td><td className='py-2 pr-4'>是否开启 REALITY 偷自己</td><td className='py-2'>默认关闭，开启前需准备一个域名</td></tr>
                   <tr className='border-b'><td className='py-2 pr-4'>前置选择</td><td className='py-2 pr-4'>Xray</td><td className='py-2'>目前仅支持 Xray</td></tr>
                   <tr className='border-b'><td className='py-2 pr-4'>部署模式</td><td className='py-2 pr-4'>Tunnel / Fallback</td><td className='py-2'>默认 Tunnel 模式</td></tr>
                   <tr className='border-b'><td className='py-2 pr-4'>使用 443 端口部署</td><td className='py-2 pr-4'>443</td><td className='py-2'>默认无法修改</td></tr>
@@ -221,6 +227,10 @@ function TutorialPage() {
               <div className='flex items-start gap-2 p-3 rounded-lg bg-blue-500/10 border border-blue-500/20'>
                 <Info className='size-4 text-blue-500 mt-0.5 shrink-0' />
                 <p className='text-sm text-blue-700 dark:text-blue-400'>无需担心无法部署其他服务，点击「Agent 管理」→「添加网站」即可复用 443 端口部署其他服务。</p>
+              </div>
+              <div className='flex items-start gap-2 p-3 rounded-lg bg-amber-500/10 border border-amber-500/20'>
+                <AlertTriangle className='size-4 text-amber-500 mt-0.5 shrink-0' />
+                <p className='text-sm text-amber-700 dark:text-amber-400'>开启「我要偷自己」时，必须提前准备好一个域名并解析到该服务器，用于填写下方的「域名」字段。该域名将作为 REALITY 偷自己的目标网站。</p>
               </div>
             </div>
           </CardContent>

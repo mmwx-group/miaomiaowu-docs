@@ -6,6 +6,7 @@ import { ThemeSwitch } from '@/components/theme-switch'
 import { AnimatedX } from '@/components/animated-x'
 import { ChevronUp, Menu, X, Github, List } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { SearchTrigger } from '@/components/search/search-trigger'
 
 interface TocItem {
   id: string
@@ -153,6 +154,7 @@ export function DocLayout({
 
           {/* Right side actions */}
           <div className='flex items-center gap-2'>
+            <SearchTrigger />
             <Link
               to='/x'
               className='inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors'

@@ -10,6 +10,13 @@ import {
   RefreshCw,
   Link as LinkIcon,
   Activity,
+  EyeOff,
+  ScrollText,
+  Bell,
+  Bug,
+  DatabaseBackup,
+  ShieldCheck,
+  Wifi,
 } from 'lucide-react'
 
 // 导入客户端图标
@@ -301,6 +308,173 @@ function FeaturesPage() {
             </ul>
           </CardContent>
         </Card>
+      </section>
+      {/* 安全功能 */}
+      <section id='security' className='mb-10'>
+        <h2 className='text-2xl font-bold mb-4 flex items-center gap-2'>
+          <ShieldCheck className='size-6 text-primary' />
+          安全功能
+        </h2>
+        <div className='space-y-4'>
+          <Card>
+            <CardContent className='pt-6'>
+              <h3 className='font-semibold mb-3 flex items-center gap-2'>
+                <EyeOff className='size-4' />
+                静默模式
+              </h3>
+              <ul className='space-y-2 text-sm text-muted-foreground'>
+                <li className='flex items-start gap-2'>
+                  <span className='text-primary mt-1'>•</span>
+                  <span><strong>面板隐藏：</strong>开启后所有非订阅请求返回 404，有效防止扫描探测</span>
+                </li>
+                <li className='flex items-start gap-2'>
+                  <span className='text-primary mt-1'>•</span>
+                  <span><strong>临时窗口：</strong>用户获取订阅后自动开放管理面板访问，超时后恢复静默</span>
+                </li>
+                <li className='flex items-start gap-2'>
+                  <span className='text-primary mt-1'>•</span>
+                  <span><strong>可配置超时：</strong>自定义访问窗口时长（默认 15 分钟）</span>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className='pt-6'>
+              <h3 className='font-semibold mb-3'>双因素认证 (2FA)</h3>
+              <ul className='space-y-2 text-sm text-muted-foreground'>
+                <li className='flex items-start gap-2'>
+                  <span className='text-primary mt-1'>•</span>
+                  <span><strong>TOTP 验证：</strong>支持 Google Authenticator 等认证器 App</span>
+                </li>
+                <li className='flex items-start gap-2'>
+                  <span className='text-primary mt-1'>•</span>
+                  <span><strong>恢复代码：</strong>提供一次性恢复代码，防止认证器丢失后无法登录</span>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* 覆写脚本 */}
+      <section id='override-scripts' className='mb-10'>
+        <h2 className='text-2xl font-bold mb-4 flex items-center gap-2'>
+          <ScrollText className='size-6 text-primary' />
+          覆写脚本
+        </h2>
+        <Card>
+          <CardContent className='pt-6'>
+            <ul className='space-y-3 text-sm text-muted-foreground'>
+              <li className='flex items-start gap-2'>
+                <span className='text-primary mt-1'>•</span>
+                <span><strong>JavaScript 脚本：</strong>通过 JS 脚本在订阅获取时动态修改节点配置</span>
+              </li>
+              <li className='flex items-start gap-2'>
+                <span className='text-primary mt-1'>•</span>
+                <span><strong>多个钩子：</strong>支持 post_fetch（获取后处理）和 pre_save_nodes（保存前处理）</span>
+              </li>
+              <li className='flex items-start gap-2'>
+                <span className='text-primary mt-1'>•</span>
+                <span><strong>排序控制：</strong>多个脚本按设定的顺序依次执行</span>
+              </li>
+              <li className='flex items-start gap-2'>
+                <span className='text-primary mt-1'>•</span>
+                <span><strong>独立开关：</strong>每个脚本可单独启用或禁用</span>
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* Telegram 通知 */}
+      <section id='notifications' className='mb-10'>
+        <h2 className='text-2xl font-bold mb-4 flex items-center gap-2'>
+          <Bell className='size-6 text-primary' />
+          Telegram 通知
+        </h2>
+        <Card>
+          <CardContent className='pt-6'>
+            <ul className='space-y-3 text-sm text-muted-foreground'>
+              <li className='flex items-start gap-2'>
+                <span className='text-primary mt-1'>•</span>
+                <span><strong>多事件通知：</strong>订阅获取、用户登录、IP 封禁、静默模式变化等</span>
+              </li>
+              <li className='flex items-start gap-2'>
+                <span className='text-primary mt-1'>•</span>
+                <span><strong>每日报告：</strong>定时发送流量统计摘要</span>
+              </li>
+              <li className='flex items-start gap-2'>
+                <span className='text-primary mt-1'>•</span>
+                <span><strong>到期提醒：</strong>用户订阅即将到期时自动通知</span>
+              </li>
+              <li className='flex items-start gap-2'>
+                <span className='text-primary mt-1'>•</span>
+                <span><strong>独立开关：</strong>每种事件通知可单独开启或关闭</span>
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* 运维工具 */}
+      <section id='ops-tools' className='mb-10'>
+        <h2 className='text-2xl font-bold mb-4 flex items-center gap-2'>
+          <Wifi className='size-6 text-primary' />
+          运维工具
+        </h2>
+        <div className='space-y-4'>
+          <Card>
+            <CardContent className='pt-6'>
+              <h3 className='font-semibold mb-3 flex items-center gap-2'>
+                <Bug className='size-4' />
+                调试日志
+              </h3>
+              <ul className='space-y-2 text-sm text-muted-foreground'>
+                <li className='flex items-start gap-2'>
+                  <span className='text-primary mt-1'>•</span>
+                  <span><strong>临时开启：</strong>5 分钟自动关闭，避免日志过大</span>
+                </li>
+                <li className='flex items-start gap-2'>
+                  <span className='text-primary mt-1'>•</span>
+                  <span><strong>日志下载：</strong>支持下载完整日志文件或实时查看最新日志</span>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className='pt-6'>
+              <h3 className='font-semibold mb-3'>TCP Ping</h3>
+              <ul className='space-y-2 text-sm text-muted-foreground'>
+                <li className='flex items-start gap-2'>
+                  <span className='text-primary mt-1'>•</span>
+                  <span><strong>节点测速：</strong>单个或批量 TCP Ping 测试节点延迟</span>
+                </li>
+                <li className='flex items-start gap-2'>
+                  <span className='text-primary mt-1'>•</span>
+                  <span><strong>可配超时：</strong>支持 5-30 秒超时设置</span>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className='pt-6'>
+              <h3 className='font-semibold mb-3 flex items-center gap-2'>
+                <DatabaseBackup className='size-4' />
+                备份与恢复
+              </h3>
+              <ul className='space-y-2 text-sm text-muted-foreground'>
+                <li className='flex items-start gap-2'>
+                  <span className='text-primary mt-1'>•</span>
+                  <span><strong>全量备份：</strong>导出包含所有配置、用户、节点数据的备份文件</span>
+                </li>
+                <li className='flex items-start gap-2'>
+                  <span className='text-primary mt-1'>•</span>
+                  <span><strong>一键恢复：</strong>从备份文件恢复全部系统数据</span>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+        </div>
       </section>
     </DocLayout>
   )

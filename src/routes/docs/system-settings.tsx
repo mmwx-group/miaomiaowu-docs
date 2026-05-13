@@ -12,6 +12,11 @@ import {
   FileCode,
   Layers,
   Info,
+  EyeOff,
+  Monitor,
+  ScrollText,
+  Bell,
+  ArrowDownToLine,
 } from 'lucide-react'
 
 export const Route = createFileRoute('/docs/system-settings')({
@@ -237,6 +242,93 @@ function SystemSettingsPage() {
                 </div>
               </div>
 
+              {/* 静默模式 */}
+              <div className='bg-muted/30 rounded-lg p-4 border-l-4 border-red-500'>
+                <div className='flex items-center gap-2 mb-2'>
+                  <EyeOff className='size-4 text-red-500' />
+                  <h4 className='font-semibold text-sm'>静默模式</h4>
+                </div>
+                <div className='space-y-2 text-xs text-muted-foreground'>
+                  <p><strong>开启后：</strong></p>
+                  <ul className='ml-4 space-y-1'>
+                    <li>• 所有非订阅接口的请求将返回 404 页面</li>
+                    <li>• 用户获取订阅后会有一个临时访问窗口（可配置超时时间）</li>
+                    <li>• 超时后再次返回 404，直到用户重新获取订阅</li>
+                  </ul>
+                  <p className='mt-2'><strong>关闭后：</strong></p>
+                  <ul className='ml-4 space-y-1'>
+                    <li>• 正常显示管理面板和所有页面</li>
+                  </ul>
+                  <p className='mt-2'><strong>超时时间（分钟）：</strong></p>
+                  <ul className='ml-4 space-y-1'>
+                    <li>• 默认 15 分钟，用户获取订阅后在此时间内可正常访问管理面板</li>
+                    <li>• 超时后自动恢复静默状态</li>
+                  </ul>
+                  <p className='mt-2 text-destructive'>
+                    <strong>⚠ 安全功能：</strong>静默模式可有效防止面板被扫描和探测，适合高安全要求的场景
+                  </p>
+                </div>
+              </div>
+
+              {/* 客户端兼容模式 */}
+              <div className='bg-muted/30 rounded-lg p-4 border-l-4 border-amber-500'>
+                <div className='flex items-center gap-2 mb-2'>
+                  <Monitor className='size-4 text-amber-500' />
+                  <h4 className='font-semibold text-sm'>客户端兼容模式</h4>
+                </div>
+                <div className='space-y-2 text-xs text-muted-foreground'>
+                  <p><strong>开启后：</strong></p>
+                  <ul className='ml-4 space-y-1'>
+                    <li>• 根据用户请求的客户端类型，自动过滤不兼容的节点</li>
+                    <li>• 确保客户端只收到其支持的协议和传输方式的节点</li>
+                  </ul>
+                  <p className='mt-2'><strong>关闭后：</strong></p>
+                  <ul className='ml-4 space-y-1'>
+                    <li>• 返回所有节点，不进行兼容性过滤</li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* 订阅响应头流量信息 */}
+              <div className='bg-muted/30 rounded-lg p-4 border-l-4 border-teal-500'>
+                <div className='flex items-center gap-2 mb-2'>
+                  <ArrowDownToLine className='size-4 text-teal-500' />
+                  <h4 className='font-semibold text-sm'>订阅响应头流量信息</h4>
+                </div>
+                <div className='space-y-2 text-xs text-muted-foreground'>
+                  <p><strong>开启后：</strong></p>
+                  <ul className='ml-4 space-y-1'>
+                    <li>• 订阅接口的 HTTP 响应头中携带流量使用信息</li>
+                    <li>• 支持的客户端（如 Clash、Stash 等）可在 UI 中显示剩余流量和到期时间</li>
+                  </ul>
+                  <p className='mt-2'><strong>关闭后：</strong></p>
+                  <ul className='ml-4 space-y-1'>
+                    <li>• 响应头中不携带流量信息</li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* 启用覆写脚本 */}
+              <div className='bg-muted/30 rounded-lg p-4 border-l-4 border-violet-500'>
+                <div className='flex items-center gap-2 mb-2'>
+                  <ScrollText className='size-4 text-violet-500' />
+                  <h4 className='font-semibold text-sm'>启用覆写脚本</h4>
+                </div>
+                <div className='space-y-2 text-xs text-muted-foreground'>
+                  <p><strong>开启后：</strong></p>
+                  <ul className='ml-4 space-y-1'>
+                    <li>• 启用 JavaScript 覆写脚本功能</li>
+                    <li>• 脚本在订阅获取时执行，可修改节点配置</li>
+                    <li>• 支持两个钩子：<code className='bg-muted px-1 rounded'>post_fetch</code>（获取后）和 <code className='bg-muted px-1 rounded'>pre_save_nodes</code>（保存前）</li>
+                    <li>• 可设置脚本执行顺序和启用/禁用状态</li>
+                  </ul>
+                  <p className='mt-2'><strong>关闭后：</strong></p>
+                  <ul className='ml-4 space-y-1'>
+                    <li>• 不执行任何覆写脚本</li>
+                  </ul>
+                </div>
+              </div>
+
               {/* 自定义订阅连接 */}
               <div className='bg-muted/30 rounded-lg p-4 border-l-4 border-pink-500'>
                 <div className='flex items-center gap-2 mb-2'>
@@ -252,6 +344,53 @@ function SystemSettingsPage() {
                     <li>• 短链接格式：<code className='bg-muted px-1 rounded'>https://域名/订阅短码+用户短码</code></li>
                   </ul>
                 </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* 通知系统 */}
+      <section className='mb-8'>
+        <h2 className='text-xl font-bold mb-4 flex items-center gap-2'>
+          <Bell className='size-5 text-primary' />
+          通知系统
+        </h2>
+        <Card>
+          <CardContent className='pt-6'>
+            <p className='text-muted-foreground mb-4'>
+              通过 Telegram Bot 接收系统事件通知，需要先配置 Bot Token 和 Chat ID。
+            </p>
+            <div className='space-y-4'>
+              <div className='bg-muted/30 rounded-lg p-4'>
+                <h4 className='font-semibold text-sm mb-2'>基础配置</h4>
+                <ul className='text-xs text-muted-foreground space-y-1'>
+                  <li>• <strong>启用通知</strong>：总开关，关闭后不发送任何通知</li>
+                  <li>• <strong>Telegram Bot Token</strong>：从 @BotFather 获取的 Bot Token</li>
+                  <li>• <strong>Telegram Chat ID</strong>：接收通知的聊天 ID（个人或群组）</li>
+                  <li>• 配置完成后可点击「发送测试通知」验证是否正常</li>
+                </ul>
+              </div>
+              <div className='bg-muted/30 rounded-lg p-4'>
+                <h4 className='font-semibold text-sm mb-2'>事件通知开关</h4>
+                <p className='text-xs text-muted-foreground mb-2'>
+                  可独立开启或关闭每种事件的通知：
+                </p>
+                <ul className='text-xs text-muted-foreground space-y-1'>
+                  <li>• <strong>订阅获取通知</strong>：用户获取订阅链接时通知</li>
+                  <li>• <strong>用户登录通知</strong>：用户登录系统时通知</li>
+                  <li>• <strong>IP 封禁通知</strong>：检测到暴力破解尝试并封禁 IP 时通知</li>
+                  <li>• <strong>静默模式通知</strong>：静默模式状态变化时通知</li>
+                  <li>• <strong>每日流量报告</strong>：每天定时发送流量统计摘要</li>
+                  <li>• <strong>订阅到期通知</strong>：用户订阅即将到期时通知</li>
+                </ul>
+              </div>
+              <div className='bg-muted/30 rounded-lg p-4'>
+                <h4 className='font-semibold text-sm mb-2'>每日流量报告时间</h4>
+                <p className='text-xs text-muted-foreground'>
+                  • 格式为 <code className='bg-muted px-1 rounded'>HH:MM</code>，如 <code className='bg-muted px-1 rounded'>08:00</code><br/>
+                  • 系统会在指定时间自动发送前一天的流量统计
+                </p>
               </div>
             </div>
           </CardContent>
@@ -291,6 +430,18 @@ function SystemSettingsPage() {
                   开启「启用节点集合」 → 创建代理集合按地域分裂节点 → 在代理组中使用节点集合 → 方便切换不同机场的节点。
                 </p>
               </div>
+              <div className='bg-muted/30 rounded-lg p-4'>
+                <h4 className='font-semibold text-sm mb-2'>场景五：高安全面板部署</h4>
+                <p className='text-xs text-muted-foreground'>
+                  开启「静默模式」 → 设置超时时间为 15 分钟 → 开启「IP 封禁通知」 → 面板对外仅响应订阅请求，有效防止扫描探测。
+                </p>
+              </div>
+              <div className='bg-muted/30 rounded-lg p-4'>
+                <h4 className='font-semibold text-sm mb-2'>场景六：运维监控通知</h4>
+                <p className='text-xs text-muted-foreground'>
+                  配置 Telegram Bot → 开启「每日流量报告」和「订阅到期通知」 → 及时了解系统运行状况和用户状态。
+                </p>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -325,6 +476,14 @@ function SystemSettingsPage() {
                 <li className='flex items-start gap-2'>
                   <span className='text-orange-500 mt-1'>⚠</span>
                   <span><strong>模板系统切换</strong>：切换模板系统后，需要确认使用的模板是否正确</span>
+                </li>
+                <li className='flex items-start gap-2'>
+                  <span className='text-orange-500 mt-1'>⚠</span>
+                  <span><strong>静默模式</strong>：开启后所有非订阅请求返回 404，确保已知道如何通过获取订阅恢复访问</span>
+                </li>
+                <li className='flex items-start gap-2'>
+                  <span className='text-orange-500 mt-1'>⚠</span>
+                  <span><strong>覆写脚本</strong>：脚本在订阅获取时执行，编写错误可能导致订阅输出异常</span>
                 </li>
                 <li className='flex items-start gap-2'>
                   <span className='text-orange-500 mt-1'>⚠</span>

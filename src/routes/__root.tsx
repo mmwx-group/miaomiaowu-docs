@@ -4,6 +4,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { Toaster } from '@/components/ui/sonner'
 import { NavigationProgress } from '@/components/navigation-progress'
+import { SearchCommandDialog } from '@/components/search/search-command-dialog'
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
@@ -12,6 +13,7 @@ export const Route = createRootRouteWithContext<{
     return (
       <>
         <NavigationProgress />
+        <SearchCommandDialog />
         <Outlet />
         <Toaster duration={5000} visibleToasts={5} />
         {import.meta.env.MODE === 'development' && (

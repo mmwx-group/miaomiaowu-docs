@@ -12,6 +12,8 @@ import {
   Save,
   Shield,
   Sparkles,
+  ShieldCheck,
+  Bug,
 } from 'lucide-react'
 
 export const Route = createFileRoute('/docs/settings')({
@@ -76,6 +78,32 @@ function SettingsDocPage() {
                   <h4 className='font-semibold'>修改密码</h4>
                   <p className='text-sm text-muted-foreground'>
                     更改账户登录密码
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className='pt-4'>
+              <div className='flex items-start gap-3'>
+                <ShieldCheck className='size-5 text-primary mt-0.5' />
+                <div>
+                  <h4 className='font-semibold'>双因素认证 (2FA)</h4>
+                  <p className='text-sm text-muted-foreground'>
+                    启用 TOTP 验证码增强账户安全
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className='pt-4'>
+              <div className='flex items-start gap-3'>
+                <Bug className='size-5 text-primary mt-0.5' />
+                <div>
+                  <h4 className='font-semibold'>调试日志</h4>
+                  <p className='text-sm text-muted-foreground'>
+                    临时开启调试日志排查问题
                   </p>
                 </div>
               </div>
@@ -240,6 +268,67 @@ function SettingsDocPage() {
         </Card>
       </section>
 
+      {/* 双因素认证 */}
+      <section className='mb-8'>
+        <h2 className='text-xl font-bold mb-4 flex items-center gap-2'>
+          <ShieldCheck className='size-5 text-primary' />
+          双因素认证 (2FA)
+        </h2>
+        <Card>
+          <CardContent className='pt-6'>
+            <p className='text-muted-foreground mb-4'>
+              双因素认证为账户添加额外的安全层。启用后，登录时除了密码还需要输入动态验证码。
+            </p>
+            <div className='space-y-4'>
+              <div className='bg-muted/30 rounded-lg p-4'>
+                <h4 className='font-semibold text-sm mb-2'>设置步骤</h4>
+                <ol className='text-xs text-muted-foreground space-y-2'>
+                  <li>1. 在设置页面找到「双因素认证」区域，点击「设置 2FA」</li>
+                  <li>2. 使用认证器 App（Google Authenticator、Microsoft Authenticator 等）扫描二维码</li>
+                  <li>3. 输入 App 显示的 6 位验证码完成绑定</li>
+                  <li>4. 妥善保存恢复代码，用于认证器丢失时恢复账户访问</li>
+                </ol>
+              </div>
+              <div className='bg-muted/30 rounded-lg p-4 border-l-4 border-orange-500'>
+                <h4 className='font-semibold text-sm mb-2'>恢复代码</h4>
+                <p className='text-xs text-muted-foreground'>
+                  • 启用 2FA 时会生成一次性恢复代码<br/>
+                  • 当手机丢失或无法使用认证器时，可使用恢复代码登录<br/>
+                  • <strong>务必将恢复代码保存在安全的地方</strong>，恢复代码仅显示一次
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* 调试日志 */}
+      <section className='mb-8'>
+        <h2 className='text-xl font-bold mb-4 flex items-center gap-2'>
+          <Bug className='size-5 text-primary' />
+          调试日志
+        </h2>
+        <Card>
+          <CardContent className='pt-6'>
+            <p className='text-muted-foreground mb-4'>
+              调试日志功能用于临时采集详细运行日志，帮助排查订阅获取、节点同步等问题。
+            </p>
+            <div className='space-y-4'>
+              <div className='bg-muted/30 rounded-lg p-4'>
+                <h4 className='font-semibold text-sm mb-2'>使用方式</h4>
+                <ul className='text-xs text-muted-foreground space-y-1'>
+                  <li>• 点击「开启调试」后，系统开始记录详细日志</li>
+                  <li>• 调试模式会在 <strong>5 分钟后自动关闭</strong>，避免日志文件过大</li>
+                  <li>• 可随时手动关闭调试模式</li>
+                  <li>• 支持下载日志文件或实时查看最新日志</li>
+                  <li>• 日志文件保留 7 天后自动清理</li>
+                </ul>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
       {/* 注意事项 */}
       <section className='mb-8'>
         <h2 className='text-xl font-bold mb-4 flex items-center gap-2'>
@@ -264,6 +353,10 @@ function SettingsDocPage() {
               <li className='flex items-start gap-2'>
                 <span className='text-orange-500 mt-1'>⚠</span>
                 <span><strong>忘记密码：</strong>如果忘记当前密码，请联系管理员重置</span>
+              </li>
+              <li className='flex items-start gap-2'>
+                <span className='text-orange-500 mt-1'>⚠</span>
+                <span><strong>2FA 恢复代码：</strong>启用双因素认证后务必保存恢复代码，丢失后需管理员协助</span>
               </li>
             </ul>
           </CardContent>

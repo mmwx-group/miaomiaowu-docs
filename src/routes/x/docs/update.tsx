@@ -15,7 +15,7 @@ function UpdatePage() {
           <CardContent className='pt-6'>
             <div className='bg-muted rounded-lg p-4 font-mono text-sm overflow-x-auto'>
               <pre>{`# 拉取最新镜像
-docker pull iluobei/miaomiaowux:latest
+docker pull ghcr.io/iluobei/miaomiaowux:latest
 
 # 停止并删除旧容器
 docker stop miaomiaowux && docker rm miaomiaowux
@@ -25,7 +25,7 @@ docker run -d \\
   --name miaomiaowux \\
   -p 12889:12889 \\
   -v ./data:/app/data \\
-  iluobei/miaomiaowux:latest`}</pre>
+  ghcr.io/iluobei/miaomiaowux:latest`}</pre>
             </div>
           </CardContent>
         </Card>

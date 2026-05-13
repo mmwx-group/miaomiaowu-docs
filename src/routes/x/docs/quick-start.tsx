@@ -25,13 +25,13 @@ function QuickStartPage() {
           <CardContent className='pt-6'>
             <p className='text-muted-foreground mb-4'>推荐使用 Docker 方式部署主控端：</p>
             <div className='bg-muted rounded-lg p-4 font-mono text-sm mb-4 overflow-x-auto'>
-              <pre>{`docker pull iluobei/miaomiaowux:latest
+              <pre>{`docker pull ghcr.io/iluobei/miaomiaowux:latest
 
 docker run -d \\
   --name miaomiaowux \\
   -p 12889:12889 \\
   -v ./data:/app/data \\
-  iluobei/miaomiaowux:latest`}</pre>
+  ghcr.io/iluobei/miaomiaowux:latest`}</pre>
             </div>
             <p className='text-sm text-muted-foreground'>
               更多安装方式请参考 <Link to='/x/docs/install-docker' className='text-primary hover:underline'>Docker 安装</Link> 或 <Link to='/x/docs/install-direct' className='text-primary hover:underline'>直接安装</Link>

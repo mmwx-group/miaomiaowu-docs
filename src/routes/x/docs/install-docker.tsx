@@ -15,14 +15,14 @@ function InstallDockerPage() {
           <CardContent className='pt-6'>
             <div className='bg-muted rounded-lg p-4 font-mono text-sm overflow-x-auto'>
               <pre>{`# 拉取镜像
-docker pull iluobei/miaomiaowux:latest
+docker pull ghcr.io/iluobei/miaomiaowux:latest
 
 # 运行容器
 docker run -d \\
   --name miaomiaowux \\
   -p 12889:12889 \\
   -v ./data:/app/data \\
-  iluobei/miaomiaowux:latest`}</pre>
+  ghcr.io/iluobei/miaomiaowux:latest`}</pre>
             </div>
           </CardContent>
         </Card>
@@ -36,7 +36,7 @@ docker run -d \\
               <pre>{`version: '3'
 services:
   miaomiaowux:
-    image: iluobei/miaomiaowux:latest
+    image: ghcr.io/iluobei/miaomiaowux:latest
     container_name: miaomiaowux
     restart: always
     ports:

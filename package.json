@@ -8,7 +8,7 @@
     "predev": "node scripts/generate-search-index.mjs",
     "dev": "vite",
     "build": "node scripts/generate-search-index.mjs && npm run build:only && node scripts/inject-site-config.js",
-    "build:only": "tsc -b && vite build",
+    "build:only": "node scripts/generate-search-index.mjs && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "npm run build:only && wrangler dev",
     "format:check": "prettier --check .",

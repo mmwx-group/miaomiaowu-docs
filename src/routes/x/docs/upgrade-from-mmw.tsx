@@ -48,6 +48,7 @@ function UpgradeFromMmwPage() {
             <CardContent className='pt-6'>
               <h3 className='font-semibold mb-2 text-red-700 dark:text-red-400'>! 前置要求</h3>
               <ul className='text-sm text-muted-foreground list-disc pl-5 space-y-1'>
+                <li>已经保存了妙妙屋的完整数据备份</li>
                 <li>已经把 mmwx 二进制装好(<a href='/x/docs/install-direct' className='text-primary underline'>直接安装</a> 或 <a href='/x/docs/install-docker' className='text-primary underline'>Docker</a>),并通过 systemd 跑在 mmw 同一端口</li>
                 <li>当前 mmwx 数据库<strong>是空的</strong>(刚装好的初始状态,无套餐 / 节点 / 用户),否则会被 mmw 数据覆盖</li>
                 <li>具备 root SSH 访问到部署 mmw 的机器</li>

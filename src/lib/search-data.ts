@@ -20,6 +20,7 @@ export type SearchItem = {
   title: string
   description: string
   content: string
+  ngramContent: string
   href: string
   section: string
   icon: React.ComponentType<{ className?: string }>
@@ -56,24 +57,25 @@ export function getSearchItems(): SearchItem[] {
     title: entry.pageTitle,
     description: entry.description,
     content: entry.content,
+    ngramContent: entry.ngramContent ?? '',
     href: entry.href,
     section: getSectionLabel(entry.section),
     icon: iconMap.get(entry.href) ?? FileCode,
   }))
 
   const managementItems: SearchItem[] = [
-    { title: t('layout:nav.trafficInfo'), description: '', content: '', href: '/', icon: Activity, section: t('search:sections.management') },
-    { title: t('layout:nav.subscriptionLink'), description: '', content: '', href: '/subscription', icon: LinkIcon, section: t('search:sections.management') },
-    { title: t('layout:nav.generateSubscription'), description: '', content: '', href: '/generator', icon: Zap, section: t('search:sections.management') },
-    { title: t('layout:nav.nodeManagement'), description: '', content: '', href: '/nodes', icon: Network, section: t('search:sections.management') },
-    { title: t('sidebar:mmw.subscribe-files'), description: '', content: '', href: '/subscribe-files', icon: Database, section: t('search:sections.management') },
-    { title: t('sidebar:mmw.custom-rules'), description: '', content: '', href: '/custom-rules', icon: FileCode, section: t('search:sections.management') },
-    { title: t('sidebar:mmw.probe'), description: '', content: '', href: '/probe', icon: Radar, section: t('search:sections.management') },
-    { title: t('layout:nav.userManagement'), description: '', content: '', href: '/users', icon: Users, section: t('search:sections.management') },
-    { title: t('sidebar:mmw.templates'), description: '', content: '', href: '/templates', icon: LayoutTemplate, section: t('search:sections.management') },
-    { title: t('layout:nav.systemSettings'), description: '', content: '', href: '/system-settings', icon: Settings, section: t('search:sections.management') },
-    { title: t('sidebar:mmw.settings'), description: '', content: '', href: '/settings', icon: Settings, section: t('search:sections.management') },
-    { title: t('sidebar:mmw.edit-nodes'), description: '', content: '', href: '/generator', icon: GripVertical, section: t('search:sections.management') },
+    { title: t('layout:nav.trafficInfo'), description: '', content: '', ngramContent: '', href: '/', icon: Activity, section: t('search:sections.management') },
+    { title: t('layout:nav.subscriptionLink'), description: '', content: '', ngramContent: '', href: '/subscription', icon: LinkIcon, section: t('search:sections.management') },
+    { title: t('layout:nav.generateSubscription'), description: '', content: '', ngramContent: '', href: '/generator', icon: Zap, section: t('search:sections.management') },
+    { title: t('layout:nav.nodeManagement'), description: '', content: '', ngramContent: '', href: '/nodes', icon: Network, section: t('search:sections.management') },
+    { title: t('sidebar:mmw.subscribe-files'), description: '', content: '', ngramContent: '', href: '/subscribe-files', icon: Database, section: t('search:sections.management') },
+    { title: t('sidebar:mmw.custom-rules'), description: '', content: '', ngramContent: '', href: '/custom-rules', icon: FileCode, section: t('search:sections.management') },
+    { title: t('sidebar:mmw.probe'), description: '', content: '', ngramContent: '', href: '/probe', icon: Radar, section: t('search:sections.management') },
+    { title: t('layout:nav.userManagement'), description: '', content: '', ngramContent: '', href: '/users', icon: Users, section: t('search:sections.management') },
+    { title: t('sidebar:mmw.templates'), description: '', content: '', ngramContent: '', href: '/templates', icon: LayoutTemplate, section: t('search:sections.management') },
+    { title: t('layout:nav.systemSettings'), description: '', content: '', ngramContent: '', href: '/system-settings', icon: Settings, section: t('search:sections.management') },
+    { title: t('sidebar:mmw.settings'), description: '', content: '', ngramContent: '', href: '/settings', icon: Settings, section: t('search:sections.management') },
+    { title: t('sidebar:mmw.edit-nodes'), description: '', content: '', ngramContent: '', href: '/generator', icon: GripVertical, section: t('search:sections.management') },
   ]
 
   return [...docItems, ...managementItems]

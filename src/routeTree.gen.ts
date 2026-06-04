@@ -74,6 +74,7 @@ import { Route as XDocsUsersRouteImport } from './routes/x/docs/users'
 import { Route as XDocsUpgradeFromMmwRouteImport } from './routes/x/docs/upgrade-from-mmw'
 import { Route as XDocsUpdateRouteImport } from './routes/x/docs/update'
 import { Route as XDocsTutorialRouteImport } from './routes/x/docs/tutorial'
+import { Route as XDocsToolMmwxTgbotRouteImport } from './routes/x/docs/tool-mmwx-tgbot'
 import { Route as XDocsTemplatesRouteImport } from './routes/x/docs/templates'
 import { Route as XDocsSystemSettingsRouteImport } from './routes/x/docs/system-settings'
 import { Route as XDocsSystemRequirementsRouteImport } from './routes/x/docs/system-requirements'
@@ -434,6 +435,11 @@ const XDocsTutorialRoute = XDocsTutorialRouteImport.update({
   path: '/tutorial',
   getParentRoute: () => XDocsRoute,
 } as any)
+const XDocsToolMmwxTgbotRoute = XDocsToolMmwxTgbotRouteImport.update({
+  id: '/tool-mmwx-tgbot',
+  path: '/tool-mmwx-tgbot',
+  getParentRoute: () => XDocsRoute,
+} as any)
 const XDocsTemplatesRoute = XDocsTemplatesRouteImport.update({
   id: '/templates',
   path: '/templates',
@@ -684,6 +690,7 @@ export interface FileRoutesByFullPath {
   '/x/docs/system-requirements': typeof XDocsSystemRequirementsRoute
   '/x/docs/system-settings': typeof XDocsSystemSettingsRoute
   '/x/docs/templates': typeof XDocsTemplatesRoute
+  '/x/docs/tool-mmwx-tgbot': typeof XDocsToolMmwxTgbotRoute
   '/x/docs/tutorial': typeof XDocsTutorialRoute
   '/x/docs/update': typeof XDocsUpdateRoute
   '/x/docs/upgrade-from-mmw': typeof XDocsUpgradeFromMmwRoute
@@ -775,6 +782,7 @@ export interface FileRoutesByTo {
   '/x/docs/system-requirements': typeof XDocsSystemRequirementsRoute
   '/x/docs/system-settings': typeof XDocsSystemSettingsRoute
   '/x/docs/templates': typeof XDocsTemplatesRoute
+  '/x/docs/tool-mmwx-tgbot': typeof XDocsToolMmwxTgbotRoute
   '/x/docs/tutorial': typeof XDocsTutorialRoute
   '/x/docs/update': typeof XDocsUpdateRoute
   '/x/docs/upgrade-from-mmw': typeof XDocsUpgradeFromMmwRoute
@@ -875,6 +883,7 @@ export interface FileRoutesById {
   '/x/docs/system-requirements': typeof XDocsSystemRequirementsRoute
   '/x/docs/system-settings': typeof XDocsSystemSettingsRoute
   '/x/docs/templates': typeof XDocsTemplatesRoute
+  '/x/docs/tool-mmwx-tgbot': typeof XDocsToolMmwxTgbotRoute
   '/x/docs/tutorial': typeof XDocsTutorialRoute
   '/x/docs/update': typeof XDocsUpdateRoute
   '/x/docs/upgrade-from-mmw': typeof XDocsUpgradeFromMmwRoute
@@ -976,6 +985,7 @@ export interface FileRouteTypes {
     | '/x/docs/system-requirements'
     | '/x/docs/system-settings'
     | '/x/docs/templates'
+    | '/x/docs/tool-mmwx-tgbot'
     | '/x/docs/tutorial'
     | '/x/docs/update'
     | '/x/docs/upgrade-from-mmw'
@@ -1067,6 +1077,7 @@ export interface FileRouteTypes {
     | '/x/docs/system-requirements'
     | '/x/docs/system-settings'
     | '/x/docs/templates'
+    | '/x/docs/tool-mmwx-tgbot'
     | '/x/docs/tutorial'
     | '/x/docs/update'
     | '/x/docs/upgrade-from-mmw'
@@ -1166,6 +1177,7 @@ export interface FileRouteTypes {
     | '/x/docs/system-requirements'
     | '/x/docs/system-settings'
     | '/x/docs/templates'
+    | '/x/docs/tool-mmwx-tgbot'
     | '/x/docs/tutorial'
     | '/x/docs/update'
     | '/x/docs/upgrade-from-mmw'
@@ -1655,6 +1667,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof XDocsTutorialRouteImport
       parentRoute: typeof XDocsRoute
     }
+    '/x/docs/tool-mmwx-tgbot': {
+      id: '/x/docs/tool-mmwx-tgbot'
+      path: '/tool-mmwx-tgbot'
+      fullPath: '/x/docs/tool-mmwx-tgbot'
+      preLoaderRoute: typeof XDocsToolMmwxTgbotRouteImport
+      parentRoute: typeof XDocsRoute
+    }
     '/x/docs/templates': {
       id: '/x/docs/templates'
       path: '/templates'
@@ -2043,6 +2062,7 @@ interface XDocsRouteChildren {
   XDocsSystemRequirementsRoute: typeof XDocsSystemRequirementsRoute
   XDocsSystemSettingsRoute: typeof XDocsSystemSettingsRoute
   XDocsTemplatesRoute: typeof XDocsTemplatesRoute
+  XDocsToolMmwxTgbotRoute: typeof XDocsToolMmwxTgbotRoute
   XDocsTutorialRoute: typeof XDocsTutorialRoute
   XDocsUpdateRoute: typeof XDocsUpdateRoute
   XDocsUpgradeFromMmwRoute: typeof XDocsUpgradeFromMmwRoute
@@ -2088,6 +2108,7 @@ const XDocsRouteChildren: XDocsRouteChildren = {
   XDocsSystemRequirementsRoute: XDocsSystemRequirementsRoute,
   XDocsSystemSettingsRoute: XDocsSystemSettingsRoute,
   XDocsTemplatesRoute: XDocsTemplatesRoute,
+  XDocsToolMmwxTgbotRoute: XDocsToolMmwxTgbotRoute,
   XDocsTutorialRoute: XDocsTutorialRoute,
   XDocsUpdateRoute: XDocsUpdateRoute,
   XDocsUpgradeFromMmwRoute: XDocsUpgradeFromMmwRoute,

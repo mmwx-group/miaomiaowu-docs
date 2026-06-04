@@ -34,6 +34,33 @@ function getSnippet(content: string, query: string, maxLen = 60): string {
   return snippet
 }
 
+// 把 query 按 2-gram 切词,匹配索引侧的 ngramContent。
+// 中文相邻字符 → 2-gram(链式 / 式代 / 代理);单字 → 单字。
+// latin / 数字 → 原样保留。Fuse 见空白即分 token。
+function tokenizeQuery(q: string): string {
+  const tokens: string[] = []
+  let i = 0
+  while (i < q.length) {
+    const ch = q[i]
+    if (/[一-鿿]/.test(ch)) {
+      if (i + 1 < q.length && /[一-鿿]/.test(q[i + 1])) {
+        tokens.push(q.slice(i, i + 2))
+      } else {
+        tokens.push(ch)
+      }
+      i++
+    } else if (/[A-Za-z0-9_]/.test(ch)) {
+      let j = i
+      while (j < q.length && /[A-Za-z0-9_]/.test(q[j])) j++
+      tokens.push(q.slice(i, j))
+      i = j
+    } else {
+      i++
+    }
+  }
+  return tokens.join(' ')
+}
+
 export function SearchCommandDialog() {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
@@ -53,19 +80,21 @@ export function SearchCommandDialog() {
         keys: [
           { name: 'title', weight: 3 },
           { name: 'description', weight: 1.5 },
+          { name: 'ngramContent', weight: 1.2 },
           { name: 'content', weight: 1 },
         ],
         threshold: 0.3,
         includeScore: true,
         ignoreLocation: true,
-        minMatchCharLength: 2,
+        minMatchCharLength: 1,
       }),
     [items]
   )
 
   const results = useMemo(() => {
     if (!query.trim()) return items
-    return fuse.search(query).map((r) => r.item)
+    const tokenized = tokenizeQuery(query)
+    return fuse.search(tokenized).map((r) => r.item)
   }, [query, fuse, items])
 
   const groupedResults = useMemo(() => {

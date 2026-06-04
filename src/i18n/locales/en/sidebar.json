@@ -92,6 +92,8 @@
     "custom-rules": "Custom Rules",
     "ai": "AI Integration",
     "mcp": "AI Agent (MCP)",
+    "tools": "Tools",
+    "tool-mmwx-tgbot": "Telegram Bot",
     "help": "Help",
     "faq": "FAQ",
     "changelog": "Changelog"

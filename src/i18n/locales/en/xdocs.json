@@ -2266,5 +2266,121 @@
       "quickStart": "→ Quick Start",
       "upgrade": "→ Upgrade from MMW"
     }
+  },
+  "toolMmwxTgbot": {
+    "title": "Telegram Bot (mmwX-tgbot)",
+    "description": "Companion Telegram bot for MiaoMiaoWu X — commands, daily notifications, and a login-free Mini App in a single binary.",
+    "overview": {
+      "heading": "What is it",
+      "text1": "mmwX-tgbot is a standalone Telegram bot with no database of its own. All data (accounts, packages, traffic, subscriptions, redeem codes) lives in your MiaoMiaoWu X master. The bot talks to /api/admin/tgbot/* on the master via a Bearer admin token; it is just the Telegram front-end.",
+      "text2": "So you only need a server that can reach your master's HTTP API and connect out to Telegram — no extra database, no migrations."
+    },
+    "features": {
+      "heading": "Features",
+      "userHeading": "👤 User commands",
+      "userStart": "Register / bind via redeem code",
+      "userMe": "My account info",
+      "userSub": "Subscription link",
+      "userTraffic": "Traffic stats",
+      "userNodes": "My nodes + online status",
+      "userNotify": "Notification toggle (on/off/status)",
+      "userUnbind": "Unbind TG (with confirmation)",
+      "userHelp": "Help",
+      "adminHeading": "🛡️ Admin commands",
+      "adminList": "List redeem codes",
+      "adminCreate": "Generate redeem code interactively",
+      "adminRevoke": "Revoke redeem code",
+      "adminUser": "Inspect a specific user",
+      "adminNote": "Only TG IDs in admin_tg_ids may use these. Rate-limited to 5/min.",
+      "notifyHeading": "🔔 Daily notifications",
+      "notifyText": "After opt-in (/notify on) the bot pushes at 20:00 daily:",
+      "notifyTraffic": "Today's traffic summary",
+      "notifyExpire": "Expiry reminders (7/3/1 days left)",
+      "notifyOptin": "Opt-in only; off by default; toggle stored on master."
+    },
+    "miniapp": {
+      "heading": "Mini App (login-free dashboard)",
+      "text": "Open via the bot's menu button '📊 My Dashboard'. No username/password — Telegram signs initData with the bot token, the bot validates it, then trusts telegram_id and resolves the account.",
+      "page1": "Home",
+      "page1Desc": "Account · traffic · subscription · daily chart · redeem",
+      "page2": "Traffic",
+      "page2Desc": "Per-node usage ranking",
+      "page3": "Status",
+      "page3Desc": "Nodes online / offline / external '?'",
+      "page4": "Redeem",
+      "page4Desc": "(Admin only) generate / view / revoke",
+      "warn": "Mini App is a local HTTP service (127.0.0.1:23088 by default) and Telegram requires it on a public HTTPS URL. Reverse-proxy via nginx — see 'Mini App reverse proxy' below."
+    },
+    "prereq": {
+      "heading": "Prerequisites",
+      "s1Heading": "MiaoMiaoWu X admin API token",
+      "s1Text": "Log into your master → System Settings → API Token. Note this must be an admin-level token, not a regular user token.",
+      "s2Heading": "MiaoMiaoWu X public URL",
+      "s2Text": "Your master's public HTTPS address, e.g. https://mmw.domain.com. The bot must be able to reach it from where it runs.",
+      "s3Heading": "Telegram bot token",
+      "s3Text": "On Telegram, message @BotFather, send /newbot, follow the prompts. You'll get a token like 12345:AAA...",
+      "s4Heading": "Your TG user ID (for admin_tg_ids)",
+      "s4Text": "Message @userinfobot and it'll reply with your numeric user id. Put those ids into admin_tg_ids — only listed ids can use /admin_* commands and the Mini App redeem page."
+    },
+    "oneClick": {
+      "heading": "One-click install (recommended)",
+      "text": "On the target server, run the command below. The script interactively collects config (mmwx_url, mmwx_api_token, tg_bot_token, admin_tg_ids; webapp_url can be left blank for now), downloads the matching binary, installs a systemd unit, and starts the service:",
+      "note": "Config goes to /etc/mmwx-tgbot/config.yaml; service name is mmwx-tgbot. Use systemctl status mmwx-tgbot to confirm it's running, then send /start to your bot on Telegram to verify."
+    },
+    "configFile": {
+      "heading": "Configuration reference",
+      "text": "If you'd rather maintain config by hand, here are all the fields. Copy config.example.yaml → config.yaml and edit:",
+      "colField": "Field",
+      "colRequired": "Required",
+      "colDefault": "Default",
+      "colDesc": "Description",
+      "descMmwxUrl": "Master URL (no trailing slash; subscription base is fixed at mmwx_url + /x)",
+      "descMmwxToken": "Master admin token (System Settings → API Token)",
+      "descTgBotToken": "Bot token from @BotFather",
+      "descAdminIds": "Who can use /admin_* and the Mini App redeem page (array of TG user ids)",
+      "descTimeout": "HTTP timeout when calling master, in seconds",
+      "descWebappListen": "Mini App local listen address (default loopback only — sit behind nginx, don't expose directly)",
+      "descWebappUrl": "Mini App public HTTPS URL. If set, used as the TG menu button; leave blank to hide the entry",
+      "descWebappDev": "Debug only. Keep false in production (disables ?initData= URL preview to prevent token replay via URL leaks)"
+    },
+    "envVars": {
+      "heading": "Environment variable overrides",
+      "text": "Every yaml field can be overridden by an environment variable using the rule MMWX_TGBOT_<UPPER_SNAKE>:",
+      "colEnv": "Environment variable",
+      "colField": "Maps to",
+      "commaSep": "comma separated"
+    },
+    "systemd": {
+      "heading": "systemd unit",
+      "text": "The one-click installer writes this unit for you. If you're deploying manually, here's a reference:",
+      "cmdNote": "Enable and tail logs:"
+    },
+    "docker": {
+      "heading": "Docker deployment (optional)",
+      "text": "Prefer Docker over systemd? Bind the container port to 127.0.0.1 to match the loopback-only convention:"
+    },
+    "nginx": {
+      "heading": "Mini App reverse proxy (required to use the Mini App)",
+      "text1": "The Mini App listens only on 127.0.0.1:23088 by default, and Telegram requires Mini Apps to be served over public HTTPS. Add these two location blocks to your master domain's nginx server, before location /:",
+      "snippetTitle": "nginx snippet",
+      "reloadNote": "Test and reload:",
+      "webappUrlNote": "After that, set webapp_url to https://your-domain/app, restart the bot, and the TG menu button will appear. If the bot runs on a different host, do the same reverse-proxy on that host's domain."
+    },
+    "faq": {
+      "heading": "FAQ",
+      "q1": "The bot doesn't reply — what now?",
+      "a1": "First check journalctl -u mmwx-tgbot -f. Common causes: wrong tg_bot_token; the host can't reach Telegram (you may need a route out); wrong mmwx_url or invalid admin token.",
+      "q2": "/admin_* says no permission?",
+      "a2": "Your TG user id isn't in admin_tg_ids. Grab your id from @userinfobot, add it to the config, then systemctl restart mmwx-tgbot.",
+      "q3": "Mini App opens to a blank page?",
+      "a3": "Make sure webapp_url is HTTPS (Telegram requires it); verify nginx reverse-proxies both /app and /api/tg-webapp/ to 127.0.0.1:23088; open DevTools in a browser to see if initData is accepted (failure returns 401).",
+      "q4": "How do I upgrade the bot?",
+      "a4": "The one-click script is idempotent — re-run it to swap the binary; config.yaml is preserved. Or stop the service, download the new binary from GitHub Releases, overwrite /usr/local/bin/mmwx-tgbot, then start it again."
+    },
+    "links": {
+      "heading": "Further reading",
+      "releases": "GitHub Releases (per-platform binaries)",
+      "tgWebapps": "Telegram Mini Apps official docs"
+    }
   }
 }

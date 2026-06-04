@@ -2266,5 +2266,121 @@
       "quickStart": "→ 快速开始",
       "upgrade": "→ 从妙妙屋迁移"
     }
+  },
+  "toolMmwxTgbot": {
+    "title": "Telegram 机器人(mmwX-tgbot)",
+    "description": "妙妙屋X 配套 Telegram 机器人 — 命令交互 + 每日通知 + 免登录 Mini App,一个二进制全搞定。",
+    "overview": {
+      "heading": "这是什么",
+      "text1": "mmwX-tgbot 是独立部署的 Telegram bot,自身无数据库。所有数据(账号、套餐、流量、订阅、兑换码)都在妙妙屋X 主控,bot 通过 Bearer admin token 调主控的 /api/admin/tgbot/* 接口域,只做 Telegram 这一层交互前端。",
+      "text2": "因此你只需要在任意一台能访问主控 HTTP API、能连出 Telegram 的服务器上把它跑起来,无须额外数据库、无须额外迁移。"
+    },
+    "features": {
+      "heading": "功能一览",
+      "userHeading": "👤 用户命令",
+      "userStart": "兑换码注册/绑定",
+      "userMe": "我的账号信息",
+      "userSub": "订阅链接",
+      "userTraffic": "流量统计",
+      "userNodes": "我的节点 + 在线状态",
+      "userNotify": "通知开关(on/off/status)",
+      "userUnbind": "解绑 TG(二次确认)",
+      "userHelp": "帮助",
+      "adminHeading": "🛡️ 管理员命令",
+      "adminList": "列兑换码",
+      "adminCreate": "按钮交互生成兑换码",
+      "adminRevoke": "撤销兑换码",
+      "adminUser": "查指定用户",
+      "adminNote": "仅 admin_tg_ids 名单可用,限流 5 次/分。",
+      "notifyHeading": "🔔 每日通知",
+      "notifyText": "开通后(/notify on)bot 每天 20:00 推送:",
+      "notifyTraffic": "当日流量概况",
+      "notifyExpire": "套餐剩 7/3/1 天到期提醒",
+      "notifyOptin": "opt-in,默认关闭,开关存主控。"
+    },
+    "miniapp": {
+      "heading": "Mini App(免登录面板)",
+      "text": "点机器人菜单按钮「📊 我的面板」打开,无需账号密码 —— Telegram 用 bot token 给 initData 签名,bot 校验后即可信任其中的 telegram_id,反查账号。",
+      "page1": "主页",
+      "page1Desc": "账号 · 流量 · 订阅 · 每日曲线 · 兑换续期",
+      "page2": "流量",
+      "page2Desc": "各节点已用流量排行",
+      "page3": "状态",
+      "page3Desc": "节点在线/离线/外部「?」",
+      "page4": "兑换码",
+      "page4Desc": "(仅管理员)生成/查看/撤销",
+      "warn": "Mini App 是一个本地 HTTP 服务(默认 127.0.0.1:23088),需前置 nginx 反代到公网 HTTPS 才能被 Telegram 加载,见下方「Mini App 反代」一节。"
+    },
+    "prereq": {
+      "heading": "前置准备",
+      "s1Heading": "妙妙屋X admin API token",
+      "s1Text": "登录主控 → 「系统设置 → API Token」复制。注意是 admin 级 token,不是普通用户 token。",
+      "s2Heading": "妙妙屋X 公网 URL",
+      "s2Text": "主控对外的 HTTPS 地址,如 https://mmw.domain.com。bot 需能从所在机器直连。",
+      "s3Heading": "Telegram bot token",
+      "s3Text": "在 Telegram 找 @BotFather,发 /newbot,按提示给 bot 起名,完成后会拿到形如 12345:AAA... 的 token。",
+      "s4Heading": "自己的 TG ID(admin_tg_ids 用)",
+      "s4Text": "找 @userinfobot 发任意消息,它会回复你的纯数字 user id。把这些 id 写进 admin_tg_ids,只有名单里的 id 才能用 /admin_* 命令和 Mini App 邀请码页。"
+    },
+    "oneClick": {
+      "heading": "一键安装(推荐)",
+      "text": "在目标服务器上执行下面这条命令,脚本会交互式收集配置(mmwx_url、mmwx_api_token、tg_bot_token、admin_tg_ids,webapp_url 可留空)→ 下载对应架构的二进制 → 装 systemd → 启动:",
+      "note": "配置写到 /etc/mmwx-tgbot/config.yaml,服务名 mmwx-tgbot。装完用 systemctl status mmwx-tgbot 确认运行,然后到 Telegram 跟 bot 发 /start 验证。"
+    },
+    "configFile": {
+      "heading": "配置文件详解",
+      "text": "如果你想手动维护配置,完整字段如下。复制 config.example.yaml → config.yaml,按需修改:",
+      "colField": "字段",
+      "colRequired": "必填",
+      "colDefault": "默认值",
+      "colDesc": "说明",
+      "descMmwxUrl": "主控地址(末尾不带斜杠,订阅链接基址固定为 mmwx_url + /x)",
+      "descMmwxToken": "主控 admin token(系统设置页 → API Token)",
+      "descTgBotToken": "@BotFather 给的 bot token",
+      "descAdminIds": "谁能用 /admin_* 命令与 Mini App 邀请码页(TG user id 数组)",
+      "descTimeout": "调主控 HTTP 超时秒数",
+      "descWebappListen": "Mini App 本地监听(默认只听回环,靠 nginx 反代不裸奔)",
+      "descWebappUrl": "Mini App 公网 HTTPS 地址。非空时设为 TG 菜单按钮;留空则不显示入口",
+      "descWebappDev": "调试用,生产务必保持 false(关闭 ?initData= URL 预览,防 URL 泄漏重放)"
+    },
+    "envVars": {
+      "heading": "环境变量覆盖",
+      "text": "所有 yaml 字段都可以用环境变量覆盖,命名规则 MMWX_TGBOT_<UPPER_SNAKE>:",
+      "colEnv": "环境变量",
+      "colField": "对应字段",
+      "commaSep": "逗号分隔"
+    },
+    "systemd": {
+      "heading": "systemd 持久化",
+      "text": "一键安装脚本已经自动写好 systemd unit。如果你是手动部署、想自己控制,unit 文件示例:",
+      "cmdNote": "启用并查看日志:"
+    },
+    "docker": {
+      "heading": "Docker 部署(可选)",
+      "text": "不想跑 systemd,直接 docker 也行。注意 -p 把容器端口绑到 127.0.0.1,跟回环监听语义一致:"
+    },
+    "nginx": {
+      "heading": "Mini App nginx 反代(可选,启用 Mini App 必备)",
+      "text1": "Mini App 默认只监听 127.0.0.1:23088,Telegram 要求 Mini App 必须是公网 HTTPS。在主控域名的 nginx server 块里、location / 之前加这两个 location:",
+      "snippetTitle": "nginx 配置片段",
+      "reloadNote": "测试并热重载:",
+      "webappUrlNote": "成功后把 webapp_url 设为 https://你的域名/app 重启 bot,TG 菜单按钮即出现。如果 bot 跑在另一台机器,在那台机器的域名上做同样的反代即可。"
+    },
+    "faq": {
+      "heading": "常见问题",
+      "q1": "bot 不回话怎么办?",
+      "a1": "先 journalctl -u mmwx-tgbot -f 看日志。常见原因:tg_bot_token 错;bot 所在机器连不出 Telegram(需要科学上网);mmwx_url 写错或 admin token 失效。",
+      "q2": "/admin_* 命令提示无权限?",
+      "a2": "你的 TG user id 没在 admin_tg_ids 名单。找 @userinfobot 拿自己的 id,加进配置文件,systemctl restart mmwx-tgbot 即可。",
+      "q3": "Mini App 打开白屏?",
+      "a3": "检查 webapp_url 必须是 HTTPS(Telegram 强制);确认 nginx 已反代 /app 和 /api/tg-webapp/ 到 127.0.0.1:23088;打开浏览器 F12 看 initData 是否被服务端接受(校验失败会返回 401)。",
+      "q4": "升级 bot 怎么操作?",
+      "a4": "一键脚本可重复执行,会自动覆盖二进制并保留 config.yaml。或者 systemctl stop mmwx-tgbot,从 GitHub Release 下载新二进制覆盖 /usr/local/bin/mmwx-tgbot,再 systemctl start mmwx-tgbot。"
+    },
+    "links": {
+      "heading": "延伸阅读",
+      "releases": "GitHub Releases(各平台二进制下载)",
+      "tgWebapps": "Telegram Mini Apps 官方文档"
+    }
   }
 }

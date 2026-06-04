@@ -35,6 +35,7 @@ import {
   Ban,
   Box,
   Share2,
+  Hammer,
 } from 'lucide-react'
 
 export type XNavItem = {
@@ -160,6 +161,13 @@ const xNavStructure: XNavItemDef[] = [
     icon: Bot,
     children: [
       { id: 'mcp', href: '/x/docs/mcp', icon: Bot, badgeKey: 'new' },
+    ],
+  },
+  {
+    id: 'tools',
+    icon: Hammer,
+    children: [
+      { id: 'tool-mmwx-tgbot', href: '/x/docs/tool-mmwx-tgbot', icon: Bot, badgeKey: 'new' },
     ],
   },
   {

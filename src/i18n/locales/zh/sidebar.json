@@ -92,6 +92,8 @@
     "custom-rules": "自定义规则",
     "ai": "AI 集成",
     "mcp": "接入 AI Agent(MCP)",
+    "tools": "小工具",
+    "tool-mmwx-tgbot": "Telegram 机器人",
     "help": "帮助",
     "faq": "常见问题",
     "changelog": "更新日志"

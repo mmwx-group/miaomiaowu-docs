@@ -2382,5 +2382,69 @@
       "releases": "GitHub Releases (per-platform binaries)",
       "tgWebapps": "Telegram Mini Apps official docs"
     }
+  },
+  "toolCloudflareTurnstile": {
+    "title": "Cloudflare Turnstile",
+    "description": "Hook the MiaomiaowuX login page into Cloudflare Turnstile — a free, frictionless captcha that blocks brute-force attempts. Unconfigured installs gracefully skip verification — upgrades are not forced.",
+    "overview": {
+      "heading": "What is it",
+      "text1": "Cloudflare Turnstile is CF's free captcha service — no images to click, invisible to most users. It guards the login form: only after the token validates does the password check happen, dramatically reducing brute-force success rate.",
+      "text2": "MiaomiaowuX supports Turnstile but doesn't require it. Both keys must be filled in System Settings to enable; either empty → auto-skip. Existing installs upgrade safely."
+    },
+    "prereq": {
+      "heading": "Prerequisites",
+      "text": "A Cloudflare account (free tier is enough — you do NOT need to move your domain DNS to CF; Turnstile works standalone)."
+    },
+    "step1": {
+      "heading": "Step 1 — Create a Site in CF Dashboard",
+      "intro": "Log into Cloudflare Dashboard, click 'Turnstile' in the sidebar, then 'Add Site'. The table below covers the recommended fields:",
+      "s1Heading": "Log in to dash.cloudflare.com",
+      "s1Text": "Sign in with your CF account, or register a new one (free).",
+      "s2Heading": "Open the Turnstile page",
+      "s2Text": "Find 'Turnstile' in the left sidebar (or search 'Turnstile' from the top bar). Click 'Add Site'.",
+      "s3Heading": "Fill in the Site config",
+      "s3Text": "Use the table below; defaults are fine for most fields:",
+      "colField": "Field",
+      "colValue": "Recommended",
+      "fSiteName": "Anything memorable, e.g. mmwx — just for your own reference",
+      "fDomain": "Your MiaomiaowuX public domain (e.g. mmwx.example.com); add multiple rows if you have several",
+      "fWidgetMode": "Choose 'Managed' (recommended — invisible for normal users, only shows a challenge if something looks off)",
+      "fPreClearance": "Leave as No"
+    ,
+      "s4Heading": "Copy both keys",
+      "s4Text": "After creation, the page shows 'Site Key' (public, used by the frontend widget) and 'Secret Key' (private, used by the backend siteverify). Copy both. Secret Key is shown only once — save it now."
+    },
+    "step2": {
+      "heading": "Step 2 — Paste into MiaomiaowuX System Settings",
+      "intro": "With both keys in hand, paste them back into the MiaomiaowuX admin console.",
+      "s1Heading": "Open System Settings",
+      "s1Text": "Sign in to MiaomiaowuX as admin and open 'System Settings' from the sidebar.",
+      "s2Heading": "Find the Cloudflare Turnstile card",
+      "s2Text": "Scroll to the 'Cloudflare Turnstile' card (below the 'Security thresholds' card).",
+      "s3Heading": "Paste keys & save",
+      "s3Text": "Paste Site Key into the Site Key field and Secret Key into the Secret Key field. Blur the input to auto-save — no button needed, takes effect immediately without restart."
+    },
+    "step3": {
+      "heading": "Step 3 — Verify it's working",
+      "bullet1": "Open the login page in an incognito window (to fetch the latest captcha config) — you should see the Turnstile widget at the bottom of the form (auto-pass usually within 1–2 seconds)",
+      "bullet2": "Sign in with correct credentials — should land on the home page, confirming the front-back wiring is good",
+      "bullet3": "Intentionally type a wrong password — the backend returns 401 invalid credentials; the Turnstile widget auto-resets for the next attempt"
+    },
+    "faq": {
+      "heading": "FAQ",
+      "q1": "Widget doesn't show up on the login page?",
+      "a1": "1) Check Site Key is actually saved in System Settings; 2) Open DevTools → Network and verify /api/captcha/config responds with enabled:true and a non-empty site_key; 3) Domain mismatch with CF registration will block widget loading — check the browser console for errors.",
+      "q2": "Login is blocked by 'captcha verification failed'?",
+      "a2": "Secret Key is wrong, or Site Key and Secret Key don't pair. Go back to CF Dashboard, open the same Site, and re-copy both keys at once.",
+      "q3": "How do I replace Secret Key?",
+      "a3": "The Secret Key input shows a 'Configured' placeholder with an empty value for security. Just type the new Secret Key on top — blur to auto-save.",
+      "q4": "How do I disable Turnstile?",
+      "a4": "Empty either (or both) of the keys and save. The backend Turnstile.Enabled() returns false immediately, login no longer verifies, and the frontend stops rendering the widget."
+    },
+    "links": {
+      "heading": "Further reading",
+      "cfDocs": "Cloudflare Turnstile official docs",
+      "cfDashboard": "Cloudflare Dashboard · Turnstile"
+    }
   }
 }

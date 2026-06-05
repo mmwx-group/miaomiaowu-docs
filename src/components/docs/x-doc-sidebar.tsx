@@ -36,6 +36,7 @@ import {
   Box,
   Share2,
   Hammer,
+  ShieldCheck,
 } from 'lucide-react'
 
 export type XNavItem = {
@@ -168,6 +169,7 @@ const xNavStructure: XNavItemDef[] = [
     icon: Hammer,
     children: [
       { id: 'tool-mmwx-tgbot', href: '/x/docs/tool-mmwx-tgbot', icon: Bot, badgeKey: 'new' },
+      { id: 'tool-cloudflare-turnstile', href: '/x/docs/tool-cloudflare-turnstile', icon: ShieldCheck, badgeKey: 'new' },
     ],
   },
   {

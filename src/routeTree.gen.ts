@@ -75,6 +75,7 @@ import { Route as XDocsUpgradeFromMmwRouteImport } from './routes/x/docs/upgrade
 import { Route as XDocsUpdateRouteImport } from './routes/x/docs/update'
 import { Route as XDocsTutorialRouteImport } from './routes/x/docs/tutorial'
 import { Route as XDocsToolMmwxTgbotRouteImport } from './routes/x/docs/tool-mmwx-tgbot'
+import { Route as XDocsToolCloudflareTurnstileRouteImport } from './routes/x/docs/tool-cloudflare-turnstile'
 import { Route as XDocsTemplatesRouteImport } from './routes/x/docs/templates'
 import { Route as XDocsSystemSettingsRouteImport } from './routes/x/docs/system-settings'
 import { Route as XDocsSystemRequirementsRouteImport } from './routes/x/docs/system-requirements'
@@ -440,6 +441,12 @@ const XDocsToolMmwxTgbotRoute = XDocsToolMmwxTgbotRouteImport.update({
   path: '/tool-mmwx-tgbot',
   getParentRoute: () => XDocsRoute,
 } as any)
+const XDocsToolCloudflareTurnstileRoute =
+  XDocsToolCloudflareTurnstileRouteImport.update({
+    id: '/tool-cloudflare-turnstile',
+    path: '/tool-cloudflare-turnstile',
+    getParentRoute: () => XDocsRoute,
+  } as any)
 const XDocsTemplatesRoute = XDocsTemplatesRouteImport.update({
   id: '/templates',
   path: '/templates',
@@ -690,6 +697,7 @@ export interface FileRoutesByFullPath {
   '/x/docs/system-requirements': typeof XDocsSystemRequirementsRoute
   '/x/docs/system-settings': typeof XDocsSystemSettingsRoute
   '/x/docs/templates': typeof XDocsTemplatesRoute
+  '/x/docs/tool-cloudflare-turnstile': typeof XDocsToolCloudflareTurnstileRoute
   '/x/docs/tool-mmwx-tgbot': typeof XDocsToolMmwxTgbotRoute
   '/x/docs/tutorial': typeof XDocsTutorialRoute
   '/x/docs/update': typeof XDocsUpdateRoute
@@ -782,6 +790,7 @@ export interface FileRoutesByTo {
   '/x/docs/system-requirements': typeof XDocsSystemRequirementsRoute
   '/x/docs/system-settings': typeof XDocsSystemSettingsRoute
   '/x/docs/templates': typeof XDocsTemplatesRoute
+  '/x/docs/tool-cloudflare-turnstile': typeof XDocsToolCloudflareTurnstileRoute
   '/x/docs/tool-mmwx-tgbot': typeof XDocsToolMmwxTgbotRoute
   '/x/docs/tutorial': typeof XDocsTutorialRoute
   '/x/docs/update': typeof XDocsUpdateRoute
@@ -883,6 +892,7 @@ export interface FileRoutesById {
   '/x/docs/system-requirements': typeof XDocsSystemRequirementsRoute
   '/x/docs/system-settings': typeof XDocsSystemSettingsRoute
   '/x/docs/templates': typeof XDocsTemplatesRoute
+  '/x/docs/tool-cloudflare-turnstile': typeof XDocsToolCloudflareTurnstileRoute
   '/x/docs/tool-mmwx-tgbot': typeof XDocsToolMmwxTgbotRoute
   '/x/docs/tutorial': typeof XDocsTutorialRoute
   '/x/docs/update': typeof XDocsUpdateRoute
@@ -985,6 +995,7 @@ export interface FileRouteTypes {
     | '/x/docs/system-requirements'
     | '/x/docs/system-settings'
     | '/x/docs/templates'
+    | '/x/docs/tool-cloudflare-turnstile'
     | '/x/docs/tool-mmwx-tgbot'
     | '/x/docs/tutorial'
     | '/x/docs/update'
@@ -1077,6 +1088,7 @@ export interface FileRouteTypes {
     | '/x/docs/system-requirements'
     | '/x/docs/system-settings'
     | '/x/docs/templates'
+    | '/x/docs/tool-cloudflare-turnstile'
     | '/x/docs/tool-mmwx-tgbot'
     | '/x/docs/tutorial'
     | '/x/docs/update'
@@ -1177,6 +1189,7 @@ export interface FileRouteTypes {
     | '/x/docs/system-requirements'
     | '/x/docs/system-settings'
     | '/x/docs/templates'
+    | '/x/docs/tool-cloudflare-turnstile'
     | '/x/docs/tool-mmwx-tgbot'
     | '/x/docs/tutorial'
     | '/x/docs/update'
@@ -1674,6 +1687,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof XDocsToolMmwxTgbotRouteImport
       parentRoute: typeof XDocsRoute
     }
+    '/x/docs/tool-cloudflare-turnstile': {
+      id: '/x/docs/tool-cloudflare-turnstile'
+      path: '/tool-cloudflare-turnstile'
+      fullPath: '/x/docs/tool-cloudflare-turnstile'
+      preLoaderRoute: typeof XDocsToolCloudflareTurnstileRouteImport
+      parentRoute: typeof XDocsRoute
+    }
     '/x/docs/templates': {
       id: '/x/docs/templates'
       path: '/templates'
@@ -2062,6 +2082,7 @@ interface XDocsRouteChildren {
   XDocsSystemRequirementsRoute: typeof XDocsSystemRequirementsRoute
   XDocsSystemSettingsRoute: typeof XDocsSystemSettingsRoute
   XDocsTemplatesRoute: typeof XDocsTemplatesRoute
+  XDocsToolCloudflareTurnstileRoute: typeof XDocsToolCloudflareTurnstileRoute
   XDocsToolMmwxTgbotRoute: typeof XDocsToolMmwxTgbotRoute
   XDocsTutorialRoute: typeof XDocsTutorialRoute
   XDocsUpdateRoute: typeof XDocsUpdateRoute
@@ -2108,6 +2129,7 @@ const XDocsRouteChildren: XDocsRouteChildren = {
   XDocsSystemRequirementsRoute: XDocsSystemRequirementsRoute,
   XDocsSystemSettingsRoute: XDocsSystemSettingsRoute,
   XDocsTemplatesRoute: XDocsTemplatesRoute,
+  XDocsToolCloudflareTurnstileRoute: XDocsToolCloudflareTurnstileRoute,
   XDocsToolMmwxTgbotRoute: XDocsToolMmwxTgbotRoute,
   XDocsTutorialRoute: XDocsTutorialRoute,
   XDocsUpdateRoute: XDocsUpdateRoute,

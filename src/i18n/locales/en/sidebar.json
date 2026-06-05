@@ -94,6 +94,7 @@
     "mcp": "AI Agent (MCP)",
     "tools": "Tools",
     "tool-mmwx-tgbot": "Telegram Bot",
+    "tool-cloudflare-turnstile": "Cloudflare Turnstile",
     "help": "Help",
     "faq": "FAQ",
     "changelog": "Changelog"

@@ -94,6 +94,7 @@
     "mcp": "接入 AI Agent(MCP)",
     "tools": "小工具",
     "tool-mmwx-tgbot": "Telegram 机器人",
+    "tool-cloudflare-turnstile": "Cloudflare Turnstile",
     "help": "帮助",
     "faq": "常见问题",
     "changelog": "更新日志"

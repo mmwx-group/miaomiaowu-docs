@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { XDocLayout } from '@/components/docs/x-doc-layout'
 import { Card, CardContent } from '@/components/ui/card'
+import { MigrationDemo } from '@/components/docs/migration-demo'
 
 export const Route = createFileRoute('/x/docs/upgrade-from-mmw')({
   component: UpgradeFromMmwPage,
@@ -15,6 +16,13 @@ function UpgradeFromMmwPage() {
       title={t('upgradeFromMmw.title')}
       description={t('upgradeFromMmw.description')}
     >
+      {/* 完整迁移向导 mock 演示:5 步 / 全本地状态 / 跟主控 /migrate-from-mmw 一致 */}
+      <section className='mb-10'>
+        <h2 className='text-2xl font-bold mb-4'>{t('upgradeFromMmw.demo.heading')}</h2>
+        <p className='text-muted-foreground mb-4'>{t('upgradeFromMmw.demo.intro')}</p>
+        <MigrationDemo />
+      </section>
+
       <section className='mb-10'>
         <h2 className='text-2xl font-bold mb-4'>{t('upgradeFromMmw.whoNeeds.heading')}</h2>
         <Card>

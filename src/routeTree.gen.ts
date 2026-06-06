@@ -101,6 +101,12 @@ import { Route as XDocsInstallDirectRouteImport } from './routes/x/docs/install-
 import { Route as XDocsInstallAgentRouteImport } from './routes/x/docs/install-agent'
 import { Route as XDocsGeneratorRouteImport } from './routes/x/docs/generator'
 import { Route as XDocsFeaturesRouteImport } from './routes/x/docs/features'
+import { Route as XDocsFaqSubClientRouteImport } from './routes/x/docs/faq-sub-client'
+import { Route as XDocsFaqServerManagementRouteImport } from './routes/x/docs/faq-server-management'
+import { Route as XDocsFaqProtocolInboundRouteImport } from './routes/x/docs/faq-protocol-inbound'
+import { Route as XDocsFaqInstallDeployRouteImport } from './routes/x/docs/faq-install-deploy'
+import { Route as XDocsFaqCommonOpsRouteImport } from './routes/x/docs/faq-common-ops'
+import { Route as XDocsFaqCarpoolRouteImport } from './routes/x/docs/faq-carpool'
 import { Route as XDocsFaqRouteImport } from './routes/x/docs/faq'
 import { Route as XDocsEmbeddedXrayRouteImport } from './routes/x/docs/embedded-xray'
 import { Route as XDocsCustomRulesRouteImport } from './routes/x/docs/custom-rules'
@@ -573,6 +579,37 @@ const XDocsFeaturesRoute = XDocsFeaturesRouteImport.update({
   path: '/features',
   getParentRoute: () => XDocsRoute,
 } as any)
+const XDocsFaqSubClientRoute = XDocsFaqSubClientRouteImport.update({
+  id: '/faq-sub-client',
+  path: '/faq-sub-client',
+  getParentRoute: () => XDocsRoute,
+} as any)
+const XDocsFaqServerManagementRoute =
+  XDocsFaqServerManagementRouteImport.update({
+    id: '/faq-server-management',
+    path: '/faq-server-management',
+    getParentRoute: () => XDocsRoute,
+  } as any)
+const XDocsFaqProtocolInboundRoute = XDocsFaqProtocolInboundRouteImport.update({
+  id: '/faq-protocol-inbound',
+  path: '/faq-protocol-inbound',
+  getParentRoute: () => XDocsRoute,
+} as any)
+const XDocsFaqInstallDeployRoute = XDocsFaqInstallDeployRouteImport.update({
+  id: '/faq-install-deploy',
+  path: '/faq-install-deploy',
+  getParentRoute: () => XDocsRoute,
+} as any)
+const XDocsFaqCommonOpsRoute = XDocsFaqCommonOpsRouteImport.update({
+  id: '/faq-common-ops',
+  path: '/faq-common-ops',
+  getParentRoute: () => XDocsRoute,
+} as any)
+const XDocsFaqCarpoolRoute = XDocsFaqCarpoolRouteImport.update({
+  id: '/faq-carpool',
+  path: '/faq-carpool',
+  getParentRoute: () => XDocsRoute,
+} as any)
 const XDocsFaqRoute = XDocsFaqRouteImport.update({
   id: '/faq',
   path: '/faq',
@@ -672,6 +709,12 @@ export interface FileRoutesByFullPath {
   '/x/docs/custom-rules': typeof XDocsCustomRulesRoute
   '/x/docs/embedded-xray': typeof XDocsEmbeddedXrayRoute
   '/x/docs/faq': typeof XDocsFaqRoute
+  '/x/docs/faq-carpool': typeof XDocsFaqCarpoolRoute
+  '/x/docs/faq-common-ops': typeof XDocsFaqCommonOpsRoute
+  '/x/docs/faq-install-deploy': typeof XDocsFaqInstallDeployRoute
+  '/x/docs/faq-protocol-inbound': typeof XDocsFaqProtocolInboundRoute
+  '/x/docs/faq-server-management': typeof XDocsFaqServerManagementRoute
+  '/x/docs/faq-sub-client': typeof XDocsFaqSubClientRoute
   '/x/docs/features': typeof XDocsFeaturesRoute
   '/x/docs/generator': typeof XDocsGeneratorRoute
   '/x/docs/install-agent': typeof XDocsInstallAgentRoute
@@ -765,6 +808,12 @@ export interface FileRoutesByTo {
   '/x/docs/custom-rules': typeof XDocsCustomRulesRoute
   '/x/docs/embedded-xray': typeof XDocsEmbeddedXrayRoute
   '/x/docs/faq': typeof XDocsFaqRoute
+  '/x/docs/faq-carpool': typeof XDocsFaqCarpoolRoute
+  '/x/docs/faq-common-ops': typeof XDocsFaqCommonOpsRoute
+  '/x/docs/faq-install-deploy': typeof XDocsFaqInstallDeployRoute
+  '/x/docs/faq-protocol-inbound': typeof XDocsFaqProtocolInboundRoute
+  '/x/docs/faq-server-management': typeof XDocsFaqServerManagementRoute
+  '/x/docs/faq-sub-client': typeof XDocsFaqSubClientRoute
   '/x/docs/features': typeof XDocsFeaturesRoute
   '/x/docs/generator': typeof XDocsGeneratorRoute
   '/x/docs/install-agent': typeof XDocsInstallAgentRoute
@@ -867,6 +916,12 @@ export interface FileRoutesById {
   '/x/docs/custom-rules': typeof XDocsCustomRulesRoute
   '/x/docs/embedded-xray': typeof XDocsEmbeddedXrayRoute
   '/x/docs/faq': typeof XDocsFaqRoute
+  '/x/docs/faq-carpool': typeof XDocsFaqCarpoolRoute
+  '/x/docs/faq-common-ops': typeof XDocsFaqCommonOpsRoute
+  '/x/docs/faq-install-deploy': typeof XDocsFaqInstallDeployRoute
+  '/x/docs/faq-protocol-inbound': typeof XDocsFaqProtocolInboundRoute
+  '/x/docs/faq-server-management': typeof XDocsFaqServerManagementRoute
+  '/x/docs/faq-sub-client': typeof XDocsFaqSubClientRoute
   '/x/docs/features': typeof XDocsFeaturesRoute
   '/x/docs/generator': typeof XDocsGeneratorRoute
   '/x/docs/install-agent': typeof XDocsInstallAgentRoute
@@ -970,6 +1025,12 @@ export interface FileRouteTypes {
     | '/x/docs/custom-rules'
     | '/x/docs/embedded-xray'
     | '/x/docs/faq'
+    | '/x/docs/faq-carpool'
+    | '/x/docs/faq-common-ops'
+    | '/x/docs/faq-install-deploy'
+    | '/x/docs/faq-protocol-inbound'
+    | '/x/docs/faq-server-management'
+    | '/x/docs/faq-sub-client'
     | '/x/docs/features'
     | '/x/docs/generator'
     | '/x/docs/install-agent'
@@ -1063,6 +1124,12 @@ export interface FileRouteTypes {
     | '/x/docs/custom-rules'
     | '/x/docs/embedded-xray'
     | '/x/docs/faq'
+    | '/x/docs/faq-carpool'
+    | '/x/docs/faq-common-ops'
+    | '/x/docs/faq-install-deploy'
+    | '/x/docs/faq-protocol-inbound'
+    | '/x/docs/faq-server-management'
+    | '/x/docs/faq-sub-client'
     | '/x/docs/features'
     | '/x/docs/generator'
     | '/x/docs/install-agent'
@@ -1164,6 +1231,12 @@ export interface FileRouteTypes {
     | '/x/docs/custom-rules'
     | '/x/docs/embedded-xray'
     | '/x/docs/faq'
+    | '/x/docs/faq-carpool'
+    | '/x/docs/faq-common-ops'
+    | '/x/docs/faq-install-deploy'
+    | '/x/docs/faq-protocol-inbound'
+    | '/x/docs/faq-server-management'
+    | '/x/docs/faq-sub-client'
     | '/x/docs/features'
     | '/x/docs/generator'
     | '/x/docs/install-agent'
@@ -1869,6 +1942,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof XDocsFeaturesRouteImport
       parentRoute: typeof XDocsRoute
     }
+    '/x/docs/faq-sub-client': {
+      id: '/x/docs/faq-sub-client'
+      path: '/faq-sub-client'
+      fullPath: '/x/docs/faq-sub-client'
+      preLoaderRoute: typeof XDocsFaqSubClientRouteImport
+      parentRoute: typeof XDocsRoute
+    }
+    '/x/docs/faq-server-management': {
+      id: '/x/docs/faq-server-management'
+      path: '/faq-server-management'
+      fullPath: '/x/docs/faq-server-management'
+      preLoaderRoute: typeof XDocsFaqServerManagementRouteImport
+      parentRoute: typeof XDocsRoute
+    }
+    '/x/docs/faq-protocol-inbound': {
+      id: '/x/docs/faq-protocol-inbound'
+      path: '/faq-protocol-inbound'
+      fullPath: '/x/docs/faq-protocol-inbound'
+      preLoaderRoute: typeof XDocsFaqProtocolInboundRouteImport
+      parentRoute: typeof XDocsRoute
+    }
+    '/x/docs/faq-install-deploy': {
+      id: '/x/docs/faq-install-deploy'
+      path: '/faq-install-deploy'
+      fullPath: '/x/docs/faq-install-deploy'
+      preLoaderRoute: typeof XDocsFaqInstallDeployRouteImport
+      parentRoute: typeof XDocsRoute
+    }
+    '/x/docs/faq-common-ops': {
+      id: '/x/docs/faq-common-ops'
+      path: '/faq-common-ops'
+      fullPath: '/x/docs/faq-common-ops'
+      preLoaderRoute: typeof XDocsFaqCommonOpsRouteImport
+      parentRoute: typeof XDocsRoute
+    }
+    '/x/docs/faq-carpool': {
+      id: '/x/docs/faq-carpool'
+      path: '/faq-carpool'
+      fullPath: '/x/docs/faq-carpool'
+      preLoaderRoute: typeof XDocsFaqCarpoolRouteImport
+      parentRoute: typeof XDocsRoute
+    }
     '/x/docs/faq': {
       id: '/x/docs/faq'
       path: '/faq'
@@ -2057,6 +2172,12 @@ interface XDocsRouteChildren {
   XDocsCustomRulesRoute: typeof XDocsCustomRulesRoute
   XDocsEmbeddedXrayRoute: typeof XDocsEmbeddedXrayRoute
   XDocsFaqRoute: typeof XDocsFaqRoute
+  XDocsFaqCarpoolRoute: typeof XDocsFaqCarpoolRoute
+  XDocsFaqCommonOpsRoute: typeof XDocsFaqCommonOpsRoute
+  XDocsFaqInstallDeployRoute: typeof XDocsFaqInstallDeployRoute
+  XDocsFaqProtocolInboundRoute: typeof XDocsFaqProtocolInboundRoute
+  XDocsFaqServerManagementRoute: typeof XDocsFaqServerManagementRoute
+  XDocsFaqSubClientRoute: typeof XDocsFaqSubClientRoute
   XDocsFeaturesRoute: typeof XDocsFeaturesRoute
   XDocsGeneratorRoute: typeof XDocsGeneratorRoute
   XDocsInstallAgentRoute: typeof XDocsInstallAgentRoute
@@ -2104,6 +2225,12 @@ const XDocsRouteChildren: XDocsRouteChildren = {
   XDocsCustomRulesRoute: XDocsCustomRulesRoute,
   XDocsEmbeddedXrayRoute: XDocsEmbeddedXrayRoute,
   XDocsFaqRoute: XDocsFaqRoute,
+  XDocsFaqCarpoolRoute: XDocsFaqCarpoolRoute,
+  XDocsFaqCommonOpsRoute: XDocsFaqCommonOpsRoute,
+  XDocsFaqInstallDeployRoute: XDocsFaqInstallDeployRoute,
+  XDocsFaqProtocolInboundRoute: XDocsFaqProtocolInboundRoute,
+  XDocsFaqServerManagementRoute: XDocsFaqServerManagementRoute,
+  XDocsFaqSubClientRoute: XDocsFaqSubClientRoute,
   XDocsFeaturesRoute: XDocsFeaturesRoute,
   XDocsGeneratorRoute: XDocsGeneratorRoute,
   XDocsInstallAgentRoute: XDocsInstallAgentRoute,

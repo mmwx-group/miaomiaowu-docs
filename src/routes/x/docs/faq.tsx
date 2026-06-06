@@ -1,91 +1,46 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { XDocLayout } from '@/components/docs/x-doc-layout'
 import { Card, CardContent } from '@/components/ui/card'
+import { ArrowRight, Users, Download, Wrench, Server, Network, Globe } from 'lucide-react'
 
 export const Route = createFileRoute('/x/docs/faq')({
-  component: FaqPage,
+  component: FaqOverviewPage,
 })
 
-function FaqItem({ q, children }: { q: string; children: React.ReactNode }) {
-  return (
-    <Card className='mb-4'>
-      <CardContent className='pt-6'>
-        <h3 className='font-semibold mb-2'>{q}</h3>
-        <div className='text-sm text-muted-foreground'>{children}</div>
-      </CardContent>
-    </Card>
-  )
-}
+const SECTIONS = [
+  { href: '/x/docs/faq-carpool',            ns: 'carpool',          icon: Users },
+  { href: '/x/docs/faq-install-deploy',     ns: 'installDeploy',    icon: Download },
+  { href: '/x/docs/faq-common-ops',         ns: 'commonOps',        icon: Wrench },
+  { href: '/x/docs/faq-server-management',  ns: 'serverManagement', icon: Server },
+  { href: '/x/docs/faq-protocol-inbound',   ns: 'protocolInbound',  icon: Network },
+  { href: '/x/docs/faq-sub-client',         ns: 'subClient',        icon: Globe },
+] as const
 
-function FaqPage() {
+function FaqOverviewPage() {
   const { t } = useTranslation('xdocs')
 
   return (
     <XDocLayout title={t('faq.title')} description={t('faq.description')}>
       <section className='mb-10'>
-        <h2 className='text-2xl font-bold mb-4'>{t('faq.installDeploy.heading')}</h2>
-        <FaqItem q={t('faq.installDeploy.q1')}>
-          <p>{t('faq.installDeploy.a1')}</p>
-        </FaqItem>
-        <FaqItem q={t('faq.installDeploy.q2')}>
-          <p>{t('faq.installDeploy.a2')}</p>
-        </FaqItem>
-        <FaqItem q={t('faq.installDeploy.q3')}>
-          <p>{t('faq.installDeploy.a3')}</p>
-        </FaqItem>
-      </section>
-
-      <section className='mb-10'>
-        <h2 className='text-2xl font-bold mb-4'>{t('faq.commonOps.heading')}</h2>
-        <FaqItem q={t('faq.commonOps.q1')}>
-          <p>{t('faq.commonOps.a1')}</p>
-        </FaqItem>
-        <FaqItem q={t('faq.commonOps.q2')}>
-          <p>{t('faq.commonOps.a2')}</p>
-        </FaqItem>
-        <FaqItem q={t('faq.commonOps.q3')}>
-          <p>{t('faq.commonOps.a3p1')}</p>
-          <p>{t('faq.commonOps.a3p2')}</p>
-          <p>{t('faq.commonOps.a3p3')}</p>
-          <p>{t('faq.commonOps.a3p4')}</p>
-        </FaqItem>
-        <FaqItem q={t('faq.commonOps.q4')}>
-          <p>{t('faq.commonOps.a4')}</p>
-        </FaqItem>
-      </section>
-
-      <section className='mb-10'>
-        <h2 className='text-2xl font-bold mb-4'>{t('faq.serverManagement.heading')}</h2>
-        <FaqItem q={t('faq.serverManagement.q1')}>
-          <p>{t('faq.serverManagement.a1')}</p>
-        </FaqItem>
-        <FaqItem q={t('faq.serverManagement.q2')}>
-          <p>{t('faq.serverManagement.a2')}</p>
-        </FaqItem>
-      </section>
-
-      <section className='mb-10'>
-        <h2 className='text-2xl font-bold mb-4'>{t('faq.protocolInbound.heading')}</h2>
-        <FaqItem q={t('faq.protocolInbound.q1')}>
-          <p>{t('faq.protocolInbound.a1')}</p>
-        </FaqItem>
-        <FaqItem q={t('faq.protocolInbound.q2')}>
-          <p>{t('faq.protocolInbound.a2')}</p>
-        </FaqItem>
-        <FaqItem q={t('faq.protocolInbound.q3')}>
-          <p>{t('faq.protocolInbound.a3')}</p>
-        </FaqItem>
-      </section>
-
-      <section>
-        <h2 className='text-2xl font-bold mb-4'>{t('faq.subClient.heading')}</h2>
-        <FaqItem q={t('faq.subClient.q1')}>
-          <p>{t('faq.subClient.a1')}</p>
-        </FaqItem>
-        <FaqItem q={t('faq.subClient.q2')}>
-          <p>{t('faq.subClient.a2')}</p>
-        </FaqItem>
+        <div className='grid gap-4 sm:grid-cols-2'>
+          {SECTIONS.map((s) => (
+            <Link key={s.href} to={s.href}>
+              <Card className='h-full transition hover:border-primary/40 hover:shadow-md group cursor-pointer'>
+                <CardContent className='pt-6'>
+                  <div className='flex items-start justify-between mb-2'>
+                    <div className='size-10 rounded-md flex items-center justify-center bg-primary/10 text-primary shrink-0'>
+                      <s.icon className='size-5' />
+                    </div>
+                    <ArrowRight className='size-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all' />
+                  </div>
+                  <h3 className='font-semibold text-base mb-1'>{t(`faq.${s.ns}.heading`)}</h3>
+                  <p className='text-sm text-muted-foreground'>{t(`faq.${s.ns}.description`)}</p>
+                </CardContent>
+              </Card>
+            </Link>
+          ))}
+        </div>
       </section>
     </XDocLayout>
   )

@@ -95,8 +95,13 @@
     "tools": "Tools",
     "tool-mmwx-tgbot": "Telegram Bot",
     "tool-cloudflare-turnstile": "Cloudflare Turnstile",
-    "help": "Help",
     "faq": "FAQ",
-    "changelog": "Changelog"
+    "changelog": "Changelog",
+    "faq-carpool": "Carpool guide",
+    "faq-install-deploy": "Install & Deploy",
+    "faq-common-ops": "Common operations",
+    "faq-server-management": "Server management",
+    "faq-protocol-inbound": "Protocol & inbound",
+    "faq-sub-client": "Subscription & client"
   }
 }

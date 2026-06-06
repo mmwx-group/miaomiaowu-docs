@@ -236,7 +236,62 @@
   },
   "faq": {
     "title": "常见问题",
-    "description": "FAQ",
+    "description": "按主题分组的常见问题清单。",
+    "carpool": {
+      "heading": "拼车教程",
+      "metering": {
+        "heading": "流量计量方式",
+        "text": "妙妙屋X 没有使用类似流量狗（端口区分）的流量区分方式，而是使用 xray 原生的「按入站 / 出站 + 用户」三维计量方式。这意味着同一台服务器上同一端口可以被多个用户共用，每个用户的流量按身份（client.email）单独累计，不需要给每个用户单独开一个端口。"
+      },
+      "stepsHeading": "拼车 4 步走",
+      "step1": {
+        "heading": "1. 服务管理：添加一台服务器",
+        "text": "在服务管理页面添加服务器，填写名称、IP、域名等，主控生成配对 Token 后部署 Agent。详见安装 Agent 文档。",
+        "alt": "服务管理页面截图",
+        "caption": "服务管理页面 — 服务器以卡片形式展示，含状态 / 实时网速 / 流量 / Xray 一键操作"
+      },
+      "step2": {
+        "heading": "2. 节点管理：添加节点",
+        "text": "节点既可以由服务器入站自动同步（推荐），也可以手动添加。一个服务器可以同时有多种协议节点（VLESS / Trojan / Shadowsocks / Hysteria2 / AnyTLS 等），它们都可以拼车给同一批用户。",
+        "alt": "节点管理页面截图",
+        "caption": "节点管理 — 按服务器分组列出所有入站节点，支持批量编辑 / 启停 / 同步"
+      },
+      "step3": {
+        "heading": "3. 套餐管理：添加套餐 + 选节点",
+        "text": "在套餐管理添加套餐，填写流量额度、计量周期、计量方式（单向 / 双向），在右侧勾选这个套餐能用哪些节点（不勾默认全选）。套餐是「权限组」的角色 —— 拼车小组的人共用同一个套餐。",
+        "alt": "创建套餐对话框截图",
+        "caption": "创建套餐对话框 — 左侧参数 + 右侧关联节点选择"
+      },
+      "step4": {
+        "heading": "4. 用户管理：添加用户 + 绑定套餐",
+        "text": "在用户管理添加用户，然后点该用户行的「管理套餐」给他绑定第 3 步创建的套餐 + 设到期时间。每多一个拼车用户就重复这一步。",
+        "alt": "用户管理页面截图",
+        "caption": "用户管理 — 列出所有用户及其套餐状态",
+        "bindAlt": "管理套餐对话框截图",
+        "bindCaption": "管理套餐对话框 — 选套餐 + 到期时间 + 流量重置周期"
+      },
+      "tips": "提示：每个用户的凭据（如 uuid、password）都是唯一的，由妙妙屋X 在用户获取订阅时自动插入到节点配置中。所以「同一个节点拼给多个用户」不需要任何手工操作，按上述 4 步走完即可，每个用户拿到的订阅里都是自己的专属凭据，流量按用户名单独计。",
+      "toolsHeading": "小工具",
+      "tgbot": {
+        "heading": "TG Bot & Mini App",
+        "text": "把 mmwX-tgbot 接入 Telegram 后，拼车小组成员可以在 Telegram 里直接查账号 / 流量 / 订阅，管理员可以发兑换码续期、按号绑定。Mini App 提供免登录手机面板，比 Web 后台轻便。",
+        "linkPre": "完整部署 + 配置教程见",
+        "linkLabel": "Telegram 机器人",
+        "adminAlt": "TG Bot 管理员视图截图",
+        "adminCaption": "管理员视图：兑换码 / 用户绑定 / 流量摘要（手机）",
+        "userAlt": "TG Bot 用户视图截图",
+        "userCaption": "普通用户视图：账号 / 流量 / 订阅（手机）"
+      },
+      "mcp": {
+        "heading": "OpenClaw & Hermes（MCP）",
+        "text": "妙妙屋X 主控内置 MCP（Model Context Protocol）服务，任何兼容 MCP 的 AI Agent（OpenClaw、Hermes Agent、Claude Code、Cursor 等）都可以接入，用自然语言完成节点 / 订阅 / 流量 / 服务器 / 用户 / 套餐运维。例如直接对 Agent 说「给 alice 创建一个 100GB 套餐并绑定」就能自动完成第 3、4 步。",
+        "linkPre": "配置方法 + 工具清单 + 安全建议见",
+        "linkLabel": "接入 AI Agent（MCP）",
+        "alt": "API Token 区截图",
+        "caption": "系统设置 → API Token：把这里生成的 token 填入 OpenClaw / Hermes 的 mcp_servers 配置即可"
+      },
+      "description": "从零开始的拼车 4 步走 + 小工具(TG Bot / Mini App / MCP)。"
+    },
     "installDeploy": {
       "heading": "安装与部署",
       "q1": "妙妙屋X 和妙妙屋有什么区别？",
@@ -244,7 +299,8 @@
       "q2": "需要什么系统环境？",
       "a2": "主控端：Linux x86_64，1 核 512MB 内存即可。Agent 端：Linux x86_64，需要安装 Xray-core。支持 Docker 和二进制两种部署方式。",
       "q3": "可以在同一台机器上运行主控和 Agent 吗？",
-      "a3": "可以，但需要使用不同端口。主控默认使用 12889 端口，Agent 需要配置不同的端口。"
+      "a3": "可以，但需要使用不同端口。主控默认使用 12889 端口，Agent 需要配置不同的端口。",
+      "description": "安装、Agent 部署、与升级常见问答。"
     },
     "commonOps": {
       "heading": "常见操作",
@@ -258,14 +314,16 @@
       "a3p3": "2) 建用户并绑定:在「用户管理」新建用户,绑定刚才的套餐即可。系统会自动给该用户生成订阅链接,他用任意客户端拉这个链接就能看到套餐内的节点。",
       "a3p4": "超额时按套餐配置自动停止返回节点或自动限速(看你怎么配)。",
       "q4": "我从妙妙屋(mmw)迁移过来,怎么看不到妙妙屋的原有功能?",
-      "a4": "需要在「系统设置」里把「妙妙屋功能开关」打开。开启后顶部会出现妙妙屋相关菜单(订阅探针、订阅生成等),与妙妙屋X 的服务器管理 / 套餐 / 模板等功能并存。"
+      "a4": "需要在「系统设置」里把「妙妙屋功能开关」打开。开启后顶部会出现妙妙屋相关菜单(订阅探针、订阅生成等),与妙妙屋X 的服务器管理 / 套餐 / 模板等功能并存。",
+      "description": "日常操作中最常碰到的问题(订阅、节点、限额等)。"
     },
     "serverManagement": {
       "heading": "服务器管理",
       "q1": "远程服务器连接不上怎么办？",
       "a1": "检查以下几点：1) Agent 是否正在运行；2) 防火墙是否放行了 Agent 端口；3) Token 是否正确；4) 网络是否可达。可在服务器管理页面查看连接状态和错误信息。",
       "q2": "WebSocket、HTTP、Pull 连接模式怎么选？",
-      "a2": "WebSocket 适合大多数场景，实时性好。HTTP 适合网络不稳定的环境。Pull 模式由 Agent 主动拉取，适合 Agent 在 NAT 后面的场景。Auto 模式会自动选择最佳方式。"
+      "a2": "WebSocket 适合大多数场景，实时性好。HTTP 适合网络不稳定的环境。Pull 模式由 Agent 主动拉取，适合 Agent 在 NAT 后面的场景。Auto 模式会自动选择最佳方式。",
+      "description": "远程服务器添加、Token、状态、连接相关问答。"
     },
     "protocolInbound": {
       "heading": "协议与入站",
@@ -274,14 +332,16 @@
       "q2": "REALITY 和 TLS 有什么区别？",
       "a2": "TLS 需要域名和证书，REALITY 不需要。REALITY 通过伪装成目标网站的 TLS 握手来避免检测，安全性更高。但 REALITY 不支持 CDN 中转。",
       "q3": "为什么 Trojan 不支持 XTLS-Vision？",
-      "a3": "Xray-core 已移除 Trojan 的 flow（XTLS-Vision）支持。如需 Vision 流控，请使用 VLESS 协议。"
+      "a3": "Xray-core 已移除 Trojan 的 flow（XTLS-Vision）支持。如需 Vision 流控，请使用 VLESS 协议。",
+      "description": "协议选择、入站配置、证书等相关问答。"
     },
     "subClient": {
       "heading": "订阅与客户端",
       "q1": "订阅链接打不开或节点为空？",
       "a1": "检查：1) Token 是否正确；2) 用户是否绑定了套餐；3) 是否有可用节点；4) 节点是否被禁用。",
       "q2": "mihomo 中 Trojan 节点连不上？",
-      "a2": "mihomo 中 Trojan 使用 sni 字段而非 servername，系统已自动处理此差异。如仍有问题，检查证书域名是否匹配。"
+      "a2": "mihomo 中 Trojan 使用 sni 字段而非 servername，系统已自动处理此差异。如仍有问题，检查证书域名是否匹配。",
+      "description": "订阅链接、客户端兼容、格式转换相关问答。"
     }
   },
   "features": {
@@ -353,7 +413,7 @@
   },
   "generator": {
     "title": "生成订阅",
-    "description": "生成和分发代理订阅链接",
+    "description": "为用户一键生成订阅链接,自动转换为 Clash / Mihomo / Shadowrocket / Surge / Stash / Surfboard / V2Ray / SingBox / Quantumult X 等 12+ 客户端格式;支持模板叠加和自定义规则。",
     "overview": {
       "heading": "概述",
       "text": "订阅系统将节点转换为各客户端支持的格式，通过唯一链接分发给用户。支持多种主流客户端格式。"
@@ -507,7 +567,7 @@
     },
     "autoXray": {
       "heading": "自动安装 Xray",
-      "text": "添加服务器时如果勾选了「自动安装 Xray」，一键命令会在 Agent 部署完成后自动安装 Xray-core。如果服务器上已安装 Xray，则跳过。"
+      "text": "安装脚本会根据 xray_mode 参数决定是否自动安装 Xray:外置模式(xray_mode=external,默认)— 用 XTLS/Xray-install 安装独立 Xray 进程,Agent 通过 gRPC 控制;若服务器已装则跳过。内置模式(xray_mode=embedded)— 不安装独立 Xray,xray-core 已编进 Agent 二进制,由 Agent 进程直接启动。"
     },
     "configFile": {
       "heading": "生成的配置文件",
@@ -543,24 +603,59 @@
     "manageRemote": "→ 在主控端管理远程服务器",
     "demo": {
       "heading": "在线演示:添加服务器",
-      "intro": "体验主控管理后台的「添加服务器」流程:填写服务器信息 → 点「生成 Token」即可看到对应的一键安装 Agent 命令(全部 mock,不会触发任何实际请求)。",
+      "intro": "体验主控管理后台的「添加远程服务器」对话框,所有字段、单选、开关跟生产一致;点「生成 Token」立即给一个 mock 配对令牌和对应的一键安装命令(完全本地,不发任何请求)。",
       "openBtn": "打开演示",
-      "dialogTitle": "添加服务器(演示)",
-      "dialogDescForm": "填写服务器基本信息,模拟主控生成配对 Token。",
-      "dialogDescResult": "Token 已生成。把下方命令复制到该服务器上执行即可完成 Agent 部署。",
+      "dialogTitle": "添加远程服务器",
+      "dialogDesc": "添加一个远程 MMWX 服务器进行管理。输入名称后生成 Token,然后在远程服务器上执行安装命令。",
       "fieldName": "服务器名称",
-      "fieldIp": "IP 地址",
-      "fieldDomain": "域名(可选)",
-      "fieldXrayMode": "Xray 模式",
-      "fieldStealSelf": "自动启用偷自己(steal_self)",
-      "xrayExternalHint": "external:走 XTLS/Xray-install 装独立 xray;一键脚本默认。",
-      "xrayEmbeddedHint": "embedded:Agent 内嵌 xray-core,不需要独立 xray 二进制。",
+      "namePlaceholder": "例如:美国节点1",
+      "fieldServerAddr": "服务器地址",
+      "fieldAgentPort": "Agent 端口",
+      "fieldAgentAuth": "Agent 认证 Token (可选)",
+      "autoGen": "自动生成",
+      "fieldTrafficLimit": "流量限制 (GB)",
+      "unlimitedHint": "留空表示不限制",
+      "fieldUsedTraffic": "已用流量 (GB)",
+      "calibrationHint": "用于校准",
+      "fieldResetDay": "重置日期 (每月)",
+      "xrayModeLabel": "Xray 模式",
+      "xrayExternal": "外置 Xray",
+      "xrayEmbedded": "内联 Xray",
+      "xrayExternalHint": "使用独立安装的 Xray 进程,Agent 通过 gRPC 与其通信。",
+      "xrayEmbeddedHint": "内联 Xray:Agent 内嵌 xray-core,共进程,不需要独立 xray 二进制(PRO 功能)。",
+      "statsModeLabel": "流量统计规则",
+      "statsBoth": "上行 + 下行",
+      "statsUpload": "仅上行",
+      "statsDownload": "仅下行",
+      "statsHint": "控制该服务器节点流量的统计方向。用户流量按套餐配置的单向/双向规则单独计算,不受此设置影响。",
+      "stealLabel": "我要偷自己",
+      "tokenGenerated": "Token 已生成",
       "tokenLabel": "配对 Token",
       "installCmdLabel": "一键安装命令",
-      "runOnServerHint": "把上面这条命令复制到目标服务器上 root 执行,几十秒后服务器卡片状态会变成「已连接」。",
-      "copyBtn": "复制",
+      "runOnServerHint": "把上面这条命令复制到目标服务器上以 root 身份执行,几十秒后服务器卡片状态会变成「已连接」。",
       "generateBtn": "生成 Token",
-      "regenBtn": "重新填写"
+      "regenBtn": "重新生成",
+      "copyBtn": "复制",
+      "cancelBtn": "取消",
+      "frontServiceLabel": "前置选择",
+      "frontServiceNginxDisabled": "nginx(暂不支持)",
+      "deployModeLabel": "部署模式",
+      "deployTunnel": "Tunnel 模式",
+      "deployFallback": "回落模式",
+      "deployTunnelHint": "Xray 监听 443 端口,通过 tunnel 转发到 Nginx",
+      "deployFallbackHint": "Nginx 监听 443 端口,无效流量回落到 Xray",
+      "use443Label": "使用 443 端口部署",
+      "domainLabel": "域名",
+      "domainHint": "Agent 连接后将自动下发 Nginx + Xray 443 端口配置和证书。建议为每个地区增加一个偷自己的服务器。",
+      "siteTypeLabel": "网站类型",
+      "siteStatic": "静态页面",
+      "siteReverse": "反向代理",
+      "siteStaticPath": "静态页面路径",
+      "siteStaticPlaceholder": "例如:/var/www/html",
+      "siteReverseTarget": "反向代理目标",
+      "siteReversePlaceholder": "例如:http://127.0.0.1:8080",
+      "frontServiceHintExternal": "开启\"我要偷自己\"后,安装 mmw-agent 完成后会自动安装 Xray + Nginx。",
+      "frontServiceHintEmbedded": "开启\"我要偷自己\"后,安装 mmw-agent 完成后会自动安装 Nginx。Xray 已由 Agent 内置启动,无需额外安装。"
     }
   },
   "installDirect": {
@@ -784,7 +879,7 @@
   },
   "nodes": {
     "title": "节点管理",
-    "description": "管理和同步代理节点",
+    "description": "管理所有代理节点 — 支持三种来源(Xray 入站自动同步 / 远程服务器同步 / 外部订阅导入),节点启停 / 重命名 / 排序 / 分组,以及隧道转发与可视化在线状态指示器。",
     "overview": "概述",
     "overviewText": "节点是入站配置在订阅系统中的映射。每个入站创建后，系统会自动生成对应的节点，用于订阅分发。",
     "sourceHeading": "节点来源",
@@ -1352,7 +1447,7 @@
   },
   "subscribeFiles": {
     "title": "订阅文件",
-    "description": "外部订阅导入与管理",
+    "description": "导入第三方订阅作为外部节点来源:支持 Clash / V2Ray / Shadowsocks / Trojan / Hysteria 等格式,按定时策略自动更新,节点可与自家节点合并到同一个套餐订阅中。",
     "overview": {
       "heading": "概述",
       "text": "订阅文件功能允许从外部订阅链接导入节点，与本地 Xray 入站生成的节点合并，统一通过订阅系统分发。"
@@ -1431,7 +1526,7 @@
   },
   "templates": {
     "title": "模板管理",
-    "description": "订阅输出模板配置",
+    "description": "管理订阅输出使用的 Clash/Mihomo YAML 模板:自定义 proxy-groups(分流策略组)、rules(规则集),可绑定到套餐或单个订阅文件;支持基础模板与 V3 模板两套引擎。",
     "overview": {
       "heading": "概述",
       "text": "模板定义了订阅输出的整体结构，包括代理组、规则集、DNS 配置等。不同客户端格式使用各自的模板。"
@@ -1707,6 +1802,10 @@
   "upgradeFromMmw": {
     "title": "从妙妙屋迁移到妙妙屋X",
     "description": "把已有妙妙屋(mmw)数据完整迁移到妙妙屋X，客户端订阅 URL / xray 凭据 / nginx / 证书全部保留，只换主控",
+    "demo": {
+      "heading": "完整迁移向导(演示)",
+      "intro": "下面是真实主控 /migrate-from-mmw 页面的本地 mock 复刻 — 5 个步骤、所有交互、表单、扫描结果都可点,但全部数据是写死的,不会发任何网络请求。先在文档里走一遍熟悉流程,再去主控真正操作。"
+    },
     "whoNeeds": {
       "heading": "谁需要看这篇",
       "intro": "已经在用妙妙屋(mmw)跑订阅 + 节点管理，想升级到妙妙屋X(mmwx)继续用，但不想：",

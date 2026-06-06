@@ -95,8 +95,13 @@
     "tools": "小工具",
     "tool-mmwx-tgbot": "Telegram 机器人",
     "tool-cloudflare-turnstile": "Cloudflare Turnstile",
-    "help": "帮助",
     "faq": "常见问题",
-    "changelog": "更新日志"
+    "changelog": "更新日志",
+    "faq-carpool": "拼车教程",
+    "faq-install-deploy": "安装与部署",
+    "faq-common-ops": "常见操作",
+    "faq-server-management": "服务器管理",
+    "faq-protocol-inbound": "协议与入站",
+    "faq-sub-client": "订阅与客户端"
   }
 }

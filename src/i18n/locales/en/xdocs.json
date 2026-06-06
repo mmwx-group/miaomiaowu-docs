@@ -236,7 +236,62 @@
   },
   "faq": {
     "title": "FAQ",
-    "description": "Frequently Asked Questions",
+    "description": "Frequently asked questions grouped by topic.",
+    "carpool": {
+      "heading": "Carpool guide",
+      "metering": {
+        "heading": "Traffic metering",
+        "text": "MiaomiaowuX does NOT use a port-based metering scheme (the way TrafficDog does). Instead, it uses Xray's native inbound/outbound + user accounting. The same port on the same server can be shared by many users; each user's traffic is tracked by their client.email identity. No need to allocate a separate port per user."
+      },
+      "stepsHeading": "4 steps to carpool",
+      "step1": {
+        "heading": "1. Server Management — add a server",
+        "text": "Add a server in Server Management with name, IP, domain. The master generates a pairing token; deploy the Agent on the target machine. See the Install Agent doc for full flow.",
+        "alt": "Server Management page screenshot",
+        "caption": "Server Management — cards show status / live speed / traffic / Xray actions"
+      },
+      "step2": {
+        "heading": "2. Node Management — add nodes",
+        "text": "Nodes can be auto-synced from server inbounds (recommended) or added manually. A single server can host multiple protocols (VLESS / Trojan / Shadowsocks / Hysteria2 / AnyTLS, etc.); all of them can carpool the same set of users.",
+        "alt": "Node Management page screenshot",
+        "caption": "Node Management — inbound nodes grouped by server, batch edit / toggle / sync"
+      },
+      "step3": {
+        "heading": "3. Package Management — create package, pick nodes",
+        "text": "In Package Management, create a package with quota / cycle / metering mode (one-way / two-way), and tick the nodes this package can access on the right (unticked = all). A package is a permission group — carpool members share the same package.",
+        "alt": "Create package dialog screenshot",
+        "caption": "Create package dialog — params on the left, associated nodes on the right"
+      },
+      "step4": {
+        "heading": "4. User Management — add users, bind package",
+        "text": "Add users in User Management, then click Manage Package on a user's row to bind the package from step 3 with an expiration date. Repeat for each carpool member.",
+        "alt": "User Management page screenshot",
+        "caption": "User Management — list of all users and their package status",
+        "bindAlt": "Manage package dialog screenshot",
+        "bindCaption": "Manage package dialog — pick package + expiration + reset cycle"
+      },
+      "tips": "Tip: each user's credentials (uuid, password, etc.) are unique and are injected into the node config by MiaomiaowuX when the user fetches their subscription. So sharing a single node with multiple users requires zero manual work — finish the 4 steps above, and every user's subscription gets their own credential automatically; traffic is metered per username.",
+      "toolsHeading": "Tools",
+      "tgbot": {
+        "heading": "TG Bot & Mini App",
+        "text": "With mmwX-tgbot connected to Telegram, carpool members can check account / traffic / subscription right inside Telegram, and admins can issue redeem codes and bind users from there. The Mini App provides a login-free mobile dashboard, lighter than the web console.",
+        "linkPre": "Full deployment + setup guide:",
+        "linkLabel": "Telegram Bot",
+        "adminAlt": "TG Bot admin view screenshot",
+        "adminCaption": "Admin view: redeem codes / user binding / traffic summary (mobile)",
+        "userAlt": "TG Bot user view screenshot",
+        "userCaption": "Regular user view: account / traffic / subscription (mobile)"
+      },
+      "mcp": {
+        "heading": "OpenClaw & Hermes (MCP)",
+        "text": "MiaomiaowuX has a built-in MCP (Model Context Protocol) server. Any MCP-compatible AI Agent — OpenClaw, Hermes Agent, Claude Code, Cursor, etc. — can connect and let you operate nodes / subscriptions / traffic / servers / users / packages in natural language. For example, tell the agent \"create a 100GB package for alice and bind it\" and steps 3 & 4 finish automatically.",
+        "linkPre": "Setup + tool list + security tips:",
+        "linkLabel": "AI Agent (MCP)",
+        "alt": "API Token area screenshot",
+        "caption": "System Settings → API Token: paste this token into the mcp_servers config of OpenClaw / Hermes"
+      },
+      "description": "Carpool from zero in 4 steps, plus extra tools (TG Bot / Mini App / MCP)."
+    },
     "installDeploy": {
       "heading": "Installation & Deployment",
       "q1": "What's the difference between MiaoMiaoWu X and MiaoMiaoWu?",
@@ -244,7 +299,8 @@
       "q2": "What system requirements are needed?",
       "a2": "Master: Linux x86_64, 1 CPU core and 512MB RAM minimum. Agent: Linux x86_64, requires Xray-core. Supports both Docker and binary deployment.",
       "q3": "Can the master and Agent run on the same machine?",
-      "a3": "Yes, but they need different ports. The master uses port 12889 by default, and the Agent needs a different port."
+      "a3": "Yes, but they need different ports. The master uses port 12889 by default, and the Agent needs a different port.",
+      "description": "Common questions about installing, deploying the Agent, and upgrading."
     },
     "commonOps": {
       "heading": "Common Operations",
@@ -258,14 +314,16 @@
       "a3p3": "2) Create a user and bind: In \"User Management\", create a new user and bind the package. The system automatically generates a subscription link for the user - they can use any client to pull this link and see the nodes in the package.",
       "a3p4": "When quota is exceeded, nodes are automatically removed from subscription or speed is limited based on your package configuration.",
       "q4": "I migrated from MiaoMiaoWu (mmw), why can't I see the original features?",
-      "a4": "You need to enable the \"MiaoMiaoWu Features Toggle\" in \"System Settings\". Once enabled, MiaoMiaoWu-related menus (subscription probe, subscription generation, etc.) will appear in the top bar, coexisting with MiaoMiaoWu X features like server management, packages, and templates."
+      "a4": "You need to enable the \"MiaoMiaoWu Features Toggle\" in \"System Settings\". Once enabled, MiaoMiaoWu-related menus (subscription probe, subscription generation, etc.) will appear in the top bar, coexisting with MiaoMiaoWu X features like server management, packages, and templates.",
+      "description": "Everyday operations — subscriptions, nodes, quotas, etc."
     },
     "serverManagement": {
       "heading": "Server Management",
       "q1": "What to do if the remote server can't connect?",
       "a1": "Check the following: 1) Is the Agent running? 2) Is the firewall allowing the Agent port? 3) Is the Token correct? 4) Is the network reachable? Check connection status and error messages on the server management page.",
       "q2": "How to choose between WebSocket, HTTP, and Pull connection modes?",
-      "a2": "WebSocket suits most scenarios with good real-time performance. HTTP suits unstable network environments. Pull mode has the Agent actively pull instructions, suitable for Agents behind NAT. Auto mode automatically selects the best method."
+      "a2": "WebSocket suits most scenarios with good real-time performance. HTTP suits unstable network environments. Pull mode has the Agent actively pull instructions, suitable for Agents behind NAT. Auto mode automatically selects the best method.",
+      "description": "Remote server: adding, tokens, status, connectivity."
     },
     "protocolInbound": {
       "heading": "Protocols & Inbounds",
@@ -274,14 +332,16 @@
       "q2": "What's the difference between REALITY and TLS?",
       "a2": "TLS requires a domain and certificate, REALITY does not. REALITY disguises itself as the target website's TLS handshake to avoid detection, offering higher security. However, REALITY does not support CDN relay.",
       "q3": "Why doesn't Trojan support XTLS-Vision?",
-      "a3": "Xray-core has removed flow (XTLS-Vision) support for Trojan. For Vision flow control, please use the VLESS protocol."
+      "a3": "Xray-core has removed flow (XTLS-Vision) support for Trojan. For Vision flow control, please use the VLESS protocol.",
+      "description": "Protocol choice, inbound config, certificates."
     },
     "subClient": {
       "heading": "Subscriptions & Clients",
       "q1": "Subscription link won't open or nodes are empty?",
       "a1": "Check: 1) Is the Token correct? 2) Is the user bound to a package? 3) Are there available nodes? 4) Are nodes disabled?",
       "q2": "Trojan nodes won't connect in mihomo?",
-      "a2": "In mihomo, Trojan uses the sni field instead of servername. The system handles this automatically. If issues persist, check if the certificate domain matches."
+      "a2": "In mihomo, Trojan uses the sni field instead of servername. The system handles this automatically. If issues persist, check if the certificate domain matches.",
+      "description": "Subscription URL, client compatibility, format conversion."
     }
   },
   "features": {
@@ -353,7 +413,7 @@
   },
   "generator": {
     "title": "Generate Subscription",
-    "description": "Generate and distribute proxy subscription links",
+    "description": "One-click subscription link generation; automatic conversion to 12+ client formats (Clash / Mihomo / Shadowrocket / Surge / Stash / Surfboard / V2Ray / SingBox / Quantumult X, etc.); supports template overlay and custom rules.",
     "overview": {
       "heading": "Overview",
       "text": "The subscription system converts nodes into formats supported by various clients and distributes them to users through unique links. Supports multiple mainstream client formats."
@@ -507,7 +567,7 @@
     },
     "autoXray": {
       "heading": "Automatic Xray Installation",
-      "text": "If \"Auto Install Xray\" is checked when adding a server, the one-click command will automatically install Xray-core after Agent deployment. If Xray is already installed on the server, it will be skipped."
+      "text": "The installer decides whether to install Xray based on the xray_mode flag. External mode (xray_mode=external, default) installs standalone Xray via XTLS/Xray-install (skipped if already present); the Agent controls it over gRPC. Embedded mode (xray_mode=embedded) does NOT install standalone Xray — xray-core is baked into the Agent binary and started by the Agent process."
     },
     "configFile": {
       "heading": "Generated Configuration File",
@@ -543,24 +603,59 @@
     "manageRemote": "-> Manage remote servers from the master",
     "demo": {
       "heading": "Try it: add a server",
-      "intro": "Walk through the Add Server flow in the master console: fill in the server info, click Generate Token, and the corresponding one-click Agent install command appears. All mocked — nothing is actually sent.",
+      "intro": "Walk through the master's Add Remote Server dialog — every field, radio and toggle matches production. Click Generate Token to get a mock pairing token and the matching one-click install command (fully local, no network calls).",
       "openBtn": "Open demo",
-      "dialogTitle": "Add Server (demo)",
-      "dialogDescForm": "Fill in basic info; the master will generate a pairing token.",
-      "dialogDescResult": "Token generated. Copy the command below and run it on the target server to install the Agent.",
+      "dialogTitle": "Add Remote Server",
+      "dialogDesc": "Add a remote MMWX server to manage. Enter a name, generate a Token, then run the install command on the remote machine.",
       "fieldName": "Server name",
-      "fieldIp": "IP address",
-      "fieldDomain": "Domain (optional)",
-      "fieldXrayMode": "Xray mode",
-      "fieldStealSelf": "Auto-enable steal_self",
-      "xrayExternalHint": "external: installs standalone xray via XTLS/Xray-install. Default for the one-click flow.",
-      "xrayEmbeddedHint": "embedded: Agent embeds xray-core; no standalone xray binary needed.",
+      "namePlaceholder": "e.g. us-node-1",
+      "fieldServerAddr": "Server address",
+      "fieldAgentPort": "Agent port",
+      "fieldAgentAuth": "Agent auth Token (optional)",
+      "autoGen": "auto-generated",
+      "fieldTrafficLimit": "Traffic limit (GB)",
+      "unlimitedHint": "leave blank for unlimited",
+      "fieldUsedTraffic": "Used traffic (GB)",
+      "calibrationHint": "for calibration",
+      "fieldResetDay": "Reset day (of month)",
+      "xrayModeLabel": "Xray mode",
+      "xrayExternal": "External Xray",
+      "xrayEmbedded": "Embedded Xray",
+      "xrayExternalHint": "Uses an independently installed Xray process; Agent talks to it over gRPC.",
+      "xrayEmbeddedHint": "Embedded Xray: Agent embeds xray-core in-process; no standalone xray binary required (PRO).",
+      "statsModeLabel": "Traffic accounting",
+      "statsBoth": "Upload + download",
+      "statsUpload": "Upload only",
+      "statsDownload": "Download only",
+      "statsHint": "Controls how this server's node traffic is counted. Per-user traffic still follows the one-way / two-way rule configured on the package — this setting does not affect it.",
+      "stealLabel": "Enable steal-self",
+      "tokenGenerated": "Token generated",
       "tokenLabel": "Pairing token",
       "installCmdLabel": "One-click install command",
       "runOnServerHint": "Copy the command and run it as root on the target server. Within seconds the server card turns Connected.",
-      "copyBtn": "Copy",
       "generateBtn": "Generate Token",
-      "regenBtn": "Start over"
+      "regenBtn": "Regenerate",
+      "copyBtn": "Copy",
+      "cancelBtn": "Cancel",
+      "frontServiceLabel": "Front service",
+      "frontServiceNginxDisabled": "nginx (not yet supported)",
+      "deployModeLabel": "Deploy mode",
+      "deployTunnel": "Tunnel mode",
+      "deployFallback": "Fallback mode",
+      "deployTunnelHint": "Xray listens on 443 and forwards to Nginx via tunnel.",
+      "deployFallbackHint": "Nginx listens on 443; non-matching traffic falls back to Xray.",
+      "use443Label": "Use port 443",
+      "domainLabel": "Domain",
+      "domainHint": "Once the Agent connects, the master will push Nginx + Xray port-443 config and certificate to it. We recommend one steal-self server per region.",
+      "siteTypeLabel": "Site type",
+      "siteStatic": "Static page",
+      "siteReverse": "Reverse proxy",
+      "siteStaticPath": "Static page path",
+      "siteStaticPlaceholder": "e.g. /var/www/html",
+      "siteReverseTarget": "Reverse proxy target",
+      "siteReversePlaceholder": "e.g. http://127.0.0.1:8080",
+      "frontServiceHintExternal": "With steal-self enabled, the installer auto-installs Xray + Nginx after mmw-agent is in place.",
+      "frontServiceHintEmbedded": "With steal-self enabled, the installer auto-installs Nginx after mmw-agent is in place. Xray is embedded into the Agent and started by it — no separate xray install needed."
     }
   },
   "installDirect": {
@@ -784,7 +879,7 @@
   },
   "nodes": {
     "title": "Node Management",
-    "description": "Manage and sync proxy nodes",
+    "description": "Manage all proxy nodes — three sources (Xray inbounds auto-sync / remote servers / external subscriptions), enable/disable, rename, sort, group, plus tunnel forwarding and visual online-status indicators.",
     "overview": "Overview",
     "overviewText": "Nodes are the subscription system's representation of inbound configurations. After each inbound is created, the system automatically generates corresponding nodes for subscription distribution.",
     "sourceHeading": "Node Sources",
@@ -1352,7 +1447,7 @@
   },
   "subscribeFiles": {
     "title": "Subscription Files",
-    "description": "External subscription import and management",
+    "description": "Import third-party subscriptions as external node sources: supports Clash / V2Ray / Shadowsocks / Trojan / Hysteria, auto-updates on schedule, merges those nodes alongside your own into the same package subscription.",
     "overview": {
       "heading": "Overview",
       "text": "The subscription files feature allows importing nodes from external subscription links, merging them with locally generated Xray inbound nodes, and distributing them uniformly through the subscription system."
@@ -1431,7 +1526,7 @@
   },
   "templates": {
     "title": "Template Management",
-    "description": "Subscription output template configuration",
+    "description": "Manage the Clash/Mihomo YAML templates used to render subscriptions: customize proxy-groups (routing strategies) and rules; bind a template to a package or to a single subscription file; both the basic engine and the V3 engine are supported.",
     "overview": {
       "heading": "Overview",
       "text": "Templates define the overall structure of subscription output, including proxy groups, rule sets, DNS configuration, etc. Different client formats use their own templates."
@@ -1707,6 +1802,10 @@
   "upgradeFromMmw": {
     "title": "Migrate from MiaoMiaoWu to MiaoMiaoWu X",
     "description": "Fully migrate existing MiaoMiaoWu (mmw) data to MiaoMiaoWu X, preserving client subscription URLs / xray credentials / nginx / certificates, only replacing the master",
+    "demo": {
+      "heading": "Full migration wizard (demo)",
+      "intro": "Below is a local mock of the real master /migrate-from-mmw page — all 5 steps, every interaction, form, and scan result is clickable, but everything is mocked and no network call is made. Walk through it here to get familiar before doing it on the real master."
+    },
     "whoNeeds": {
       "heading": "Who Needs This",
       "intro": "Already using MiaoMiaoWu (mmw) for subscription + node management, wanting to upgrade to MiaoMiaoWu X (mmwx) but don't want to:",

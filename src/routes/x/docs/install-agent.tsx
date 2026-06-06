@@ -2,6 +2,7 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { XDocLayout } from '@/components/docs/x-doc-layout'
 import { Card, CardContent } from '@/components/ui/card'
+import { AddServerDemo } from '@/components/docs/add-server-demo'
 
 export const Route = createFileRoute('/x/docs/install-agent')({
   component: InstallAgentPage,
@@ -19,6 +20,36 @@ function InstallAgentPage() {
         </p>
       </section>
 
+      {/* Xray 模式选择 — embedded(内联,主控直接控制 xray 不需要额外二进制)/ external(外置,走 systemd 装的 xray) */}
+      <section className='mb-10'>
+        <h2 className='text-2xl font-bold mb-4'>{t('installAgent.xrayMode.heading')}</h2>
+        <p className='text-muted-foreground mb-4'>{t('installAgent.xrayMode.text')}</p>
+        <div className='overflow-x-auto'>
+          <table className='w-full text-sm'>
+            <thead>
+              <tr className='border-b'>
+                <th className='text-left py-2 px-3'>{t('installAgent.xrayMode.modeCol')}</th>
+                <th className='text-left py-2 px-3'>{t('installAgent.xrayMode.valueCol')}</th>
+                <th className='text-left py-2 px-3'>{t('installAgent.xrayMode.descCol')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className='border-b'>
+                <td className='py-2 px-3'>{t('installAgent.xrayMode.embeddedName')}</td>
+                <td className='py-2 px-3 font-mono text-xs'>embedded</td>
+                <td className='py-2 px-3'>{t('installAgent.xrayMode.embeddedDesc')}</td>
+              </tr>
+              <tr>
+                <td className='py-2 px-3'>{t('installAgent.xrayMode.externalName')}</td>
+                <td className='py-2 px-3 font-mono text-xs'>external</td>
+                <td className='py-2 px-3'>{t('installAgent.xrayMode.externalDesc')}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p className='text-xs text-muted-foreground mt-3'>{t('installAgent.xrayMode.note')}</p>
+      </section>
+
       <section className='mb-10'>
         <h2 className='text-2xl font-bold mb-4'>{t('installAgent.oneClick.heading')}</h2>
         <div className='space-y-4'>
@@ -34,6 +65,9 @@ function InstallAgentPage() {
             </CardContent>
           </Card>
 
+          {/* Mock 添加服务器演示:填表单 → 生成 token → 出一键命令 */}
+          <AddServerDemo />
+
           <Card>
             <CardContent className='pt-6'>
               <h3 className='font-semibold mb-3'>{t('installAgent.oneClick.step2.heading')}</h3>
@@ -41,11 +75,35 @@ function InstallAgentPage() {
                 {t('installAgent.oneClick.step2.text')}
               </p>
               <div className='bg-muted rounded-lg p-4 font-mono text-sm overflow-x-auto'>
-                <pre>{`curl -fsSL https://your-domain.com/api/remote/install.sh?token=SERVER_TOKEN | bash`}</pre>
+                <pre>{`# 外置 Xray 模式(默认,会自动安装独立 xray)
+curl -fsSL https://your-domain.com/api/remote/install.sh?token=SERVER_TOKEN | bash
+
+# 内联 Xray 模式(无需独立 xray,Agent 自身嵌入 xray-core)
+curl -fsSL "https://your-domain.com/api/remote/install.sh?token=SERVER_TOKEN&xray_mode=embedded" | bash`}</pre>
               </div>
               <p className='text-xs text-muted-foreground mt-3'>
                 {t('installAgent.oneClick.step2.note')}
               </p>
+              <div className='mt-4'>
+                <h4 className='text-sm font-semibold mb-2'>{t('installAgent.oneClick.step2.paramsHeading')}</h4>
+                <div className='overflow-x-auto'>
+                  <table className='w-full text-xs'>
+                    <thead>
+                      <tr className='border-b'>
+                        <th className='text-left py-1.5 px-2 font-medium'>{t('installAgent.oneClick.step2.paramCol')}</th>
+                        <th className='text-left py-1.5 px-2 font-medium'>{t('installAgent.oneClick.step2.defaultCol')}</th>
+                        <th className='text-left py-1.5 px-2 font-medium'>{t('installAgent.oneClick.step2.paramDescCol')}</th>
+                      </tr>
+                    </thead>
+                    <tbody className='text-muted-foreground'>
+                      <tr className='border-b'><td className='py-1.5 px-2 font-mono'>token</td><td className='py-1.5 px-2'>—</td><td className='py-1.5 px-2'>{t('installAgent.oneClick.step2.paramToken')}</td></tr>
+                      <tr className='border-b'><td className='py-1.5 px-2 font-mono'>xray_mode</td><td className='py-1.5 px-2 font-mono'>external</td><td className='py-1.5 px-2'>{t('installAgent.oneClick.step2.paramXrayMode')}</td></tr>
+                      <tr className='border-b'><td className='py-1.5 px-2 font-mono'>steal_self</td><td className='py-1.5 px-2 font-mono'>0</td><td className='py-1.5 px-2'>{t('installAgent.oneClick.step2.paramStealSelf')}</td></tr>
+                      <tr><td className='py-1.5 px-2 font-mono'>listen_port</td><td className='py-1.5 px-2 font-mono'>23889</td><td className='py-1.5 px-2'>{t('installAgent.oneClick.step2.paramListenPort')}</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </CardContent>
           </Card>
 
@@ -81,8 +139,9 @@ function InstallAgentPage() {
         <Card>
           <CardContent className='pt-6'>
             <div className='bg-muted rounded-lg p-4 font-mono text-sm overflow-x-auto'>
-              <pre>{`# 脚本自动执行的 Xray 安装命令
-bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install`}</pre>
+              <pre>{`# 仅 xray_mode=external(默认)时脚本会自动执行下面这条
+bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
+# xray_mode=embedded 时跳过这一步:Agent 自身嵌入 xray-core,不需要 /usr/local/bin/xray`}</pre>
             </div>
           </CardContent>
         </Card>
@@ -92,13 +151,21 @@ bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release
         <h2 className='text-2xl font-bold mb-4'>{t('installAgent.configFile.heading')}</h2>
         <Card>
           <CardContent className='pt-6'>
-            <h3 className='font-semibold mb-2'>/etc/mmwx/config.yaml</h3>
+            <h3 className='font-semibold mb-2'>/etc/mmw-agent/config.yaml</h3>
             <div className='bg-muted rounded-lg p-4 font-mono text-sm overflow-x-auto'>
-              <pre>{`mode: remote
-master_server: https://your-domain.com
-remote_token: SERVER_TOKEN
-connection_mode: websocket`}</pre>
+              <pre>{`# MMWX Remote Server Configuration
+# Generated by install script
+
+mode: remote
+master_url: https://your-domain.com
+token: SERVER_TOKEN
+connection_mode: websocket    # websocket | http | pull | auto
+xray_mode: external           # external | embedded
+steal_mode:                   # 留空 / tunnel(自动偷自己时填 tunnel)
+master_public_key: <BASE64_PUBLIC_KEY>
+listen_port: "23889"`}</pre>
             </div>
+            <p className='text-xs text-muted-foreground mt-3'>{t('installAgent.configFile.note')}</p>
           </CardContent>
         </Card>
       </section>
@@ -107,22 +174,23 @@ connection_mode: websocket`}</pre>
         <h2 className='text-2xl font-bold mb-4'>{t('installAgent.systemdService.heading')}</h2>
         <Card>
           <CardContent className='pt-6'>
-            <h3 className='font-semibold mb-2'>/etc/systemd/system/mmwx.service</h3>
+            <h3 className='font-semibold mb-2'>/etc/systemd/system/mmw-agent.service</h3>
             <div className='bg-muted rounded-lg p-4 font-mono text-sm overflow-x-auto'>
               <pre>{`[Unit]
-Description=MMWX Remote Server
+Description=MMW Agent Remote Server
 After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/mmwx -c /etc/mmwx/config.yaml
+ExecStart=/usr/local/bin/mmw-agent -c /etc/mmw-agent/config.yaml
 Restart=always
 RestartSec=5
-WorkingDirectory=/var/lib/mmwx
+WorkingDirectory=/var/lib/mmw-agent
 
 [Install]
 WantedBy=multi-user.target`}</pre>
             </div>
+            <p className='text-xs text-muted-foreground mt-3'>{t('installAgent.systemdService.note')}</p>
           </CardContent>
         </Card>
       </section>
@@ -151,16 +219,23 @@ WantedBy=multi-user.target`}</pre>
           <CardContent className='pt-6'>
             <div className='bg-muted rounded-lg p-4 font-mono text-sm overflow-x-auto'>
               <pre>{`# 查看服务状态
-systemctl status mmwx
+systemctl status mmw-agent
 
 # 查看实时日志
-journalctl -u mmwx -f
+journalctl -u mmw-agent -f
 
 # 重启服务
-systemctl restart mmwx
+systemctl restart mmw-agent
 
 # 停止服务
-systemctl stop mmwx`}</pre>
+systemctl stop mmw-agent
+
+# Alpine (OpenRC):
+#   rc-service mmw-agent {status|start|stop|restart}
+#   tail -f /var/log/mmw-agent.log
+# LXC / 无 init 系统兜底:
+#   pgrep -af mmw-agent
+#   tail -f /var/log/mmw-agent.log`}</pre>
             </div>
           </CardContent>
         </Card>
@@ -179,8 +254,8 @@ systemctl stop mmwx`}</pre>
           <table className='w-full text-sm'>
             <thead><tr className='border-b'><th className='text-left py-3 px-4'>{t('installAgent.supportedArch.archCol')}</th><th className='text-left py-3 px-4'>uname -m</th><th className='text-left py-3 px-4'>{t('installAgent.supportedArch.downloadCol')}</th></tr></thead>
             <tbody>
-              <tr className='border-b'><td className='py-3 px-4'>x86_64</td><td className='py-3 px-4 font-mono text-xs'>x86_64</td><td className='py-3 px-4 font-mono text-xs'>mmwx-linux-amd64</td></tr>
-              <tr><td className='py-3 px-4'>ARM64</td><td className='py-3 px-4 font-mono text-xs'>aarch64 / arm64</td><td className='py-3 px-4 font-mono text-xs'>mmwx-linux-arm64</td></tr>
+              <tr className='border-b'><td className='py-3 px-4'>x86_64</td><td className='py-3 px-4 font-mono text-xs'>x86_64</td><td className='py-3 px-4 font-mono text-xs'>mmw-agent-linux-amd64</td></tr>
+              <tr><td className='py-3 px-4'>ARM64</td><td className='py-3 px-4 font-mono text-xs'>aarch64 / arm64</td><td className='py-3 px-4 font-mono text-xs'>mmw-agent-linux-arm64</td></tr>
             </tbody>
           </table>
         </div>

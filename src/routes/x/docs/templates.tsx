@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { XDocLayout } from '@/components/docs/x-doc-layout'
+import { Screenshot } from '@/components/docs/screenshot'
 import { Card, CardContent } from '@/components/ui/card'
 
 export const Route = createFileRoute('/x/docs/templates')({
@@ -12,6 +13,11 @@ function TemplatesPage() {
 
   return (
     <XDocLayout title={t('templates.title')} description={t('templates.description')}>
+      <Screenshot
+        src='/images/screenshots/doc-templates-page.webp'
+        alt={t('templates.screenshot.alt')}
+        caption={t('templates.screenshot.caption')}
+      />
       <section className='mb-10'>
         <h2 className='text-2xl font-bold mb-4'>{t('templates.overview.heading')}</h2>
         <p className='text-muted-foreground'>{t('templates.overview.text')}</p>

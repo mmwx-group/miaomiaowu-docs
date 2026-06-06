@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { XDocLayout } from '@/components/docs/x-doc-layout'
 import { Card, CardContent } from '@/components/ui/card'
 import { StepIndicator } from '@/components/docs/step-indicator'
+import { Screenshot } from '@/components/docs/screenshot'
 import { AlertTriangle, Info } from 'lucide-react'
 
 export const Route = createFileRoute('/x/docs/tutorial')({
@@ -15,12 +16,13 @@ function TutorialPage() {
   const steps = [
     t('tutorial.steps.prepare'), t('tutorial.steps.dns'), t('tutorial.steps.installMaster'), t('tutorial.steps.init'),
     'HTTPS', t('tutorial.steps.addServer'), t('tutorial.steps.installAgent'), t('tutorial.steps.addNode'),
+    t('tutorial.steps.createPackage'), t('tutorial.steps.bindPackage'), t('tutorial.steps.trafficInfo'), t('tutorial.steps.tools'),
   ]
 
   return (
     <XDocLayout title={t('tutorial.title')} description={t('tutorial.description')}>
       <div className='mb-8 overflow-x-auto pb-4'>
-        <StepIndicator currentStep={0} totalSteps={8} labels={steps} />
+        <StepIndicator currentStep={0} totalSteps={12} labels={steps} />
       </div>
 
       {/* Step 1 */}
@@ -118,6 +120,11 @@ function TutorialPage() {
               <pre>http://mmwx.example.com:12889</pre>
             </div>
             <p className='text-sm text-muted-foreground'>{t('tutorial.step4.registerText')}</p>
+            <Screenshot
+              src='/images/screenshots/tutorial-step4-setup-wizard.webp'
+              alt={t('tutorial.step4.screenshotAlt')}
+              caption={t('tutorial.step4.screenshotCaption')}
+            />
           </CardContent>
         </Card>
       </section>
@@ -145,6 +152,16 @@ function TutorialPage() {
             <CardContent className='pt-6'>
               <h3 className='font-medium mb-3'>{t('tutorial.step5.applyCert.heading')}</h3>
               <p className='text-sm text-muted-foreground mb-4'>{t('tutorial.step5.applyCert.text')}</p>
+              <Screenshot
+                src='/images/screenshots/tutorial-step5-certificates-list.webp'
+                alt={t('tutorial.step5.applyCert.listAlt')}
+                caption={t('tutorial.step5.applyCert.listCaption')}
+              />
+              <Screenshot
+                src='/images/screenshots/tutorial-step5-apply-cert-dialog.webp'
+                alt={t('tutorial.step5.applyCert.dialogAlt')}
+                caption={t('tutorial.step5.applyCert.dialogCaption')}
+              />
               <div className='overflow-x-auto'>
                 <table className='w-full text-sm'>
                   <thead>
@@ -236,6 +253,11 @@ function TutorialPage() {
                 <p className='text-sm text-amber-700 dark:text-amber-400'>{t('tutorial.step6.stealSelfWarning')}</p>
               </div>
             </div>
+            <Screenshot
+              src='/images/screenshots/tutorial-step6-servers-list.webp'
+              alt={t('tutorial.step6.screenshotAlt')}
+              caption={t('tutorial.step6.screenshotCaption')}
+            />
           </CardContent>
         </Card>
       </section>
@@ -288,6 +310,129 @@ function TutorialPage() {
               </table>
             </div>
             <p className='text-sm text-muted-foreground mt-4'>{t('tutorial.step8.saveNote')}</p>
+            <Screenshot
+              src='/images/screenshots/tutorial-step8-nodes-list.webp'
+              alt={t('tutorial.step8.screenshotAlt')}
+              caption={t('tutorial.step8.screenshotCaption')}
+            />
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* Step 9: 创建套餐 */}
+      <section id='step-9' className='mb-10'>
+        <h2 className='text-2xl font-bold mb-4 flex items-center gap-3'>
+          <div className='size-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold'>9</div>
+          {t('tutorial.step9.heading')}
+        </h2>
+        <Card>
+          <CardContent className='pt-6'>
+            <p className='text-sm text-muted-foreground mb-4'>{t('tutorial.step9.text')}</p>
+            <Screenshot
+              src='/images/screenshots/tutorial-step9-packages-list.webp'
+              alt={t('tutorial.step9.listAlt')}
+              caption={t('tutorial.step9.listCaption')}
+            />
+            <Screenshot
+              src='/images/screenshots/tutorial-step9-package-create-dialog.webp'
+              alt={t('tutorial.step9.dialogAlt')}
+              caption={t('tutorial.step9.dialogCaption')}
+            />
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* Step 10: 绑定套餐 */}
+      <section id='step-10' className='mb-10'>
+        <h2 className='text-2xl font-bold mb-4 flex items-center gap-3'>
+          <div className='size-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold'>10</div>
+          {t('tutorial.step10.heading')}
+        </h2>
+        <Card>
+          <CardContent className='pt-6'>
+            <p className='text-sm text-muted-foreground mb-4'>{t('tutorial.step10.text')}</p>
+            <Screenshot
+              src='/images/screenshots/tutorial-step10-users-list.webp'
+              alt={t('tutorial.step10.listAlt')}
+              caption={t('tutorial.step10.listCaption')}
+            />
+            <Screenshot
+              src='/images/screenshots/tutorial-step10-bind-package-dialog.webp'
+              alt={t('tutorial.step10.dialogAlt')}
+              caption={t('tutorial.step10.dialogCaption')}
+            />
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* Step 11: 流量信息 */}
+      <section id='step-11' className='mb-10'>
+        <h2 className='text-2xl font-bold mb-4 flex items-center gap-3'>
+          <div className='size-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold'>11</div>
+          {t('tutorial.step11.heading')}
+        </h2>
+        <Card>
+          <CardContent className='pt-6'>
+            <p className='text-sm text-muted-foreground mb-4'>{t('tutorial.step11.text')}</p>
+            <h3 className='font-medium mb-2'>{t('tutorial.step11.userView.heading')}</h3>
+            <p className='text-sm text-muted-foreground mb-3'>{t('tutorial.step11.userView.text')}</p>
+            <Screenshot
+              src='/images/screenshots/tutorial-step11-user-view.webp'
+              alt={t('tutorial.step11.userView.alt')}
+              caption={t('tutorial.step11.userView.caption')}
+            />
+            <h3 className='font-medium mb-2 mt-6'>{t('tutorial.step11.nodeView.heading')}</h3>
+            <p className='text-sm text-muted-foreground mb-3'>{t('tutorial.step11.nodeView.text')}</p>
+            <Screenshot
+              src='/images/screenshots/tutorial-step11-node-view.webp'
+              alt={t('tutorial.step11.nodeView.alt')}
+              caption={t('tutorial.step11.nodeView.caption')}
+            />
+            <h3 className='font-medium mb-2 mt-6'>{t('tutorial.step11.serverView.heading')}</h3>
+            <p className='text-sm text-muted-foreground mb-3'>{t('tutorial.step11.serverView.text')}</p>
+            <Screenshot
+              src='/images/screenshots/tutorial-step11-server-view.webp'
+              alt={t('tutorial.step11.serverView.alt')}
+              caption={t('tutorial.step11.serverView.caption')}
+            />
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* Step 12: 小工具 (TG Bot & MiniApp) */}
+      <section id='step-12' className='mb-10'>
+        <h2 className='text-2xl font-bold mb-4 flex items-center gap-3'>
+          <div className='size-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold'>12</div>
+          {t('tutorial.step12.heading')}
+        </h2>
+        <Card>
+          <CardContent className='pt-6'>
+            <p className='text-sm text-muted-foreground mb-4'>{t('tutorial.step12.text')}</p>
+            <p className='text-sm text-muted-foreground mb-4'>
+              {t('tutorial.step12.docLinkPre')}{' '}
+              <Link to='/x/docs/tool-mmwx-tgbot' className='text-primary hover:underline'>
+                {t('tutorial.step12.docLink')}
+              </Link>
+              {t('tutorial.step12.docLinkPost')}
+            </p>
+            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4'>
+              <div>
+                <h3 className='font-medium mb-2 text-sm'>{t('tutorial.step12.adminView.heading')}</h3>
+                <Screenshot
+                  src='/images/screenshots/tutorial-step12-miniapp-admin.webp'
+                  alt={t('tutorial.step12.adminView.alt')}
+                  caption={t('tutorial.step12.adminView.caption')}
+                />
+              </div>
+              <div>
+                <h3 className='font-medium mb-2 text-sm'>{t('tutorial.step12.userView.heading')}</h3>
+                <Screenshot
+                  src='/images/screenshots/tutorial-step12-miniapp-user.webp'
+                  alt={t('tutorial.step12.userView.alt')}
+                  caption={t('tutorial.step12.userView.caption')}
+                />
+              </div>
+            </div>
           </CardContent>
         </Card>
       </section>

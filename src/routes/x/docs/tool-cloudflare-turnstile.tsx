@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { XDocLayout } from '@/components/docs/x-doc-layout'
 import { Card, CardContent } from '@/components/ui/card'
+import { Screenshot } from '@/components/docs/screenshot'
 
 export const Route = createFileRoute('/x/docs/tool-cloudflare-turnstile')({
   component: ToolCloudflareTurnstilePage,
@@ -64,13 +65,28 @@ function ToolCloudflareTurnstilePage() {
         <div className='space-y-3'>
           <Card><CardContent className='pt-5'><h3 className='font-semibold mb-2'>1. {t('toolCloudflareTurnstile.step2.s1Heading')}</h3><p className='text-sm text-muted-foreground'>{t('toolCloudflareTurnstile.step2.s1Text')}</p></CardContent></Card>
           <Card><CardContent className='pt-5'><h3 className='font-semibold mb-2'>2. {t('toolCloudflareTurnstile.step2.s2Heading')}</h3><p className='text-sm text-muted-foreground'>{t('toolCloudflareTurnstile.step2.s2Text')}</p></CardContent></Card>
+          <Screenshot
+            src='/images/screenshots/system-settings-turnstile-empty.webp'
+            alt={t('toolCloudflareTurnstile.screenshots.turnstileEmptyAlt')}
+            caption={t('toolCloudflareTurnstile.screenshots.turnstileEmpty')}
+          />
           <Card><CardContent className='pt-5'><h3 className='font-semibold mb-2'>3. {t('toolCloudflareTurnstile.step2.s3Heading')}</h3><p className='text-sm text-muted-foreground'>{t('toolCloudflareTurnstile.step2.s3Text')}</p></CardContent></Card>
+          <Screenshot
+            src='/images/screenshots/system-settings-turnstile-filled.webp'
+            alt={t('toolCloudflareTurnstile.screenshots.turnstileFilledAlt')}
+            caption={t('toolCloudflareTurnstile.screenshots.turnstileFilled')}
+          />
         </div>
       </section>
 
       {/* 第 3 步:验证生效 */}
       <section className='mb-10'>
         <h2 className='text-2xl font-bold mb-4'>{t('toolCloudflareTurnstile.step3.heading')}</h2>
+        <Screenshot
+          src='/images/screenshots/login-page-with-widget.webp'
+          alt={t('toolCloudflareTurnstile.screenshots.loginWidgetAlt')}
+          caption={t('toolCloudflareTurnstile.screenshots.loginWidget')}
+        />
         <Card>
           <CardContent className='pt-6'>
             <ul className='text-sm text-muted-foreground space-y-2 list-disc list-inside'>

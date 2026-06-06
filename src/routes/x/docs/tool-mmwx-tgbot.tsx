@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { XDocLayout } from '@/components/docs/x-doc-layout'
 import { Card, CardContent } from '@/components/ui/card'
+import { Screenshot } from '@/components/docs/screenshot'
 
 export const Route = createFileRoute('/x/docs/tool-mmwx-tgbot')({
   component: ToolMmwxTgbotPage,
@@ -96,6 +97,11 @@ function ToolMmwxTgbotPage() {
         <h2 className='text-2xl font-bold mb-4'>{t('toolMmwxTgbot.prereq.heading')}</h2>
         <div className='space-y-3'>
           <Card><CardContent className='pt-5'><h3 className='font-semibold mb-2'>1. {t('toolMmwxTgbot.prereq.s1Heading')}</h3><p className='text-sm text-muted-foreground'>{t('toolMmwxTgbot.prereq.s1Text')}</p></CardContent></Card>
+          <Screenshot
+            src='/images/screenshots/system-settings-api-token.webp'
+            alt={t('toolMmwxTgbot.screenshots.apiTokenAlt')}
+            caption={t('toolMmwxTgbot.screenshots.apiToken')}
+          />
           <Card><CardContent className='pt-5'><h3 className='font-semibold mb-2'>2. {t('toolMmwxTgbot.prereq.s2Heading')}</h3><p className='text-sm text-muted-foreground'>{t('toolMmwxTgbot.prereq.s2Text')}</p></CardContent></Card>
           <Card><CardContent className='pt-5'><h3 className='font-semibold mb-2'>3. {t('toolMmwxTgbot.prereq.s3Heading')}</h3><p className='text-sm text-muted-foreground'>{t('toolMmwxTgbot.prereq.s3Text')}</p></CardContent></Card>
           <Card><CardContent className='pt-5'><h3 className='font-semibold mb-2'>4. {t('toolMmwxTgbot.prereq.s4Heading')}</h3><p className='text-sm text-muted-foreground'>{t('toolMmwxTgbot.prereq.s4Text')}</p></CardContent></Card>

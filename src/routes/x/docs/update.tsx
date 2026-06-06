@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { XDocLayout } from '@/components/docs/x-doc-layout'
+import { Screenshot } from '@/components/docs/screenshot'
 import { Card, CardContent } from '@/components/ui/card'
 
 export const Route = createFileRoute('/x/docs/update')({
@@ -12,6 +13,11 @@ function UpdatePage() {
 
   return (
     <XDocLayout title={t('update.title')} description={t('update.description')}>
+      <Screenshot
+        src='/images/screenshots/doc-update-dialog.webp'
+        alt={t('update.screenshot.alt')}
+        caption={t('update.screenshot.caption')}
+      />
       <section className='mb-10'>
         <h2 className='text-2xl font-bold mb-4'>{t('update.docker.heading')}</h2>
         <Card>

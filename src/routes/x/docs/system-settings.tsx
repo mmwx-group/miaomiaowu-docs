@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { XDocLayout } from '@/components/docs/x-doc-layout'
+import { Screenshot } from '@/components/docs/screenshot'
 import { Card, CardContent } from '@/components/ui/card'
 import { AlertTriangle, Info } from 'lucide-react'
 
@@ -13,6 +14,11 @@ function SystemSettingsPage() {
 
   return (
     <XDocLayout title={t('systemSettings.title')} description={t('systemSettings.description')}>
+      <Screenshot
+        src='/images/screenshots/doc-system-settings-overview.webp'
+        alt={t('systemSettings.screenshot.alt')}
+        caption={t('systemSettings.screenshot.caption')}
+      />
 
       <section className='mb-10'>
         <h2 className='text-2xl font-bold mb-4'>{t('systemSettings.overview')}</h2>

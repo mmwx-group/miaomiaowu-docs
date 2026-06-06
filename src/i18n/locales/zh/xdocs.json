@@ -137,6 +137,10 @@
     },
     "configExample": {
       "heading": "配置示例"
+    },
+    "screenshot": {
+      "alt": "自定义规则页面截图",
+      "caption": "自定义规则管理页面 — 创建 / 编辑 / 启停分流规则集"
     }
   },
   "embeddedXray": {
@@ -373,6 +377,10 @@
       "step3": "3. 根据 format 参数选择对应的格式转换器",
       "step4": "4. 应用订阅模板（如有配置）",
       "step5": "5. 输出最终订阅内容"
+    },
+    "screenshot": {
+      "alt": "生成订阅页面截图",
+      "caption": "生成订阅 — 选节点 / 客户端格式 / 规则,一键生成订阅链接"
     }
   },
   "index": {
@@ -443,6 +451,18 @@
       "heading": "概述",
       "text": "远程服务器的 Agent 部署无需手动下载或配置。在主控端添加服务器后，系统会自动生成一键安装命令，在远程服务器上执行即可完成全部部署。"
     },
+    "xrayMode": {
+      "heading": "Xray 模式选择",
+      "text": "妙妙屋X Agent 现在支持两种 Xray 运行模式,通过 install.sh 的 xray_mode 参数选择。一旦确定建议不要轻易切换(切换前请先停掉所有节点)。",
+      "modeCol": "模式",
+      "valueCol": "值",
+      "descCol": "说明",
+      "embeddedName": "内联 Xray",
+      "embeddedDesc": "Agent 自身内嵌 xray-core,与 Agent 共进退,不需要 /usr/local/bin/xray 独立二进制;升级 Agent 即升级 Xray。资源占用更小,适合配置稳定且不需要手工干预 xray 的场景。",
+      "externalName": "外置 Xray",
+      "externalDesc": "走标准 XTLS/Xray-install 脚本安装独立 xray,Agent 通过 gRPC 控制;Xray 可独立升级、配置文件按官方布局,排障熟悉。一键脚本默认就是这种。",
+      "note": "提示:Hysteria2 / AnyTLS 等较新协议两种模式都支持;内联模式启动失败时,Agent 日志会输出 [EmbeddedXray] 前缀,可据此排障。"
+    },
     "oneClick": {
       "heading": "一键安装（推荐）",
       "step1": {
@@ -455,7 +475,15 @@
       "step2": {
         "heading": "步骤 2：复制一键安装命令",
         "text": "在服务器详情中找到「一键安装命令」，点击复制按钮。命令格式如下：",
-        "note": "每台服务器的 Token 唯一，命令中已自动包含该服务器的认证信息和主控端地址。"
+        "note": "每台服务器的 Token 唯一，命令中已自动包含该服务器的认证信息和主控端地址。",
+        "paramsHeading": "安装脚本参数",
+        "paramCol": "参数",
+        "defaultCol": "默认值",
+        "paramDescCol": "说明",
+        "paramToken": "主控生成的服务器配对令牌(必填)",
+        "paramXrayMode": "embedded(内联)或 external(外置,默认)",
+        "paramStealSelf": "设为 1 自动安装 Nginx 并启用偷自己模式",
+        "paramListenPort": "Agent 监听端口起始值;被占用会顺延 +1 直到第 20 次失败"
       },
       "step3": {
         "heading": "步骤 3：在远程服务器上执行",
@@ -466,7 +494,7 @@
         "op1": "停止旧服务",
         "desc1": "如有已运行的 mmwx 服务，先停止",
         "op2": "创建配置",
-        "desc2": "生成 /etc/mmwx/config.yaml",
+        "desc2": "生成 /etc/mmw-agent/config.yaml",
         "op3": "创建 systemd 服务",
         "desc3": "注册为系统服务，开机自启",
         "op4": "下载二进制",
@@ -482,14 +510,16 @@
       "text": "添加服务器时如果勾选了「自动安装 Xray」，一键命令会在 Agent 部署完成后自动安装 Xray-core。如果服务器上已安装 Xray，则跳过。"
     },
     "configFile": {
-      "heading": "生成的配置文件"
+      "heading": "生成的配置文件",
+      "note": "所有字段由 install.sh 根据 URL 参数自动生成;手工修改后 systemctl restart mmw-agent 即可生效。"
     },
     "systemdService": {
-      "heading": "生成的 systemd 服务"
+      "heading": "生成的 systemd 服务",
+      "note": "安装脚本会自动按 init 系统选择:systemd / OpenRC(Alpine) / nohup+rc.local(LXC 兜底)。"
     },
     "connectionMode": {
       "heading": "连接模式",
-      "text": "一键安装默认使用 WebSocket 连接模式。如需更改，可编辑 /etc/mmwx/config.yaml 中的 connection_mode 字段。",
+      "text": "一键安装默认使用 WebSocket 连接模式。如需更改，可编辑 /etc/mmw-agent/config.yaml 中的 connection_mode 字段。",
       "modeCol": "模式",
       "valueCol": "值",
       "descCol": "说明",
@@ -510,7 +540,28 @@
       "archCol": "架构",
       "downloadCol": "下载文件"
     },
-    "manageRemote": "→ 在主控端管理远程服务器"
+    "manageRemote": "→ 在主控端管理远程服务器",
+    "demo": {
+      "heading": "在线演示:添加服务器",
+      "intro": "体验主控管理后台的「添加服务器」流程:填写服务器信息 → 点「生成 Token」即可看到对应的一键安装 Agent 命令(全部 mock,不会触发任何实际请求)。",
+      "openBtn": "打开演示",
+      "dialogTitle": "添加服务器(演示)",
+      "dialogDescForm": "填写服务器基本信息,模拟主控生成配对 Token。",
+      "dialogDescResult": "Token 已生成。把下方命令复制到该服务器上执行即可完成 Agent 部署。",
+      "fieldName": "服务器名称",
+      "fieldIp": "IP 地址",
+      "fieldDomain": "域名(可选)",
+      "fieldXrayMode": "Xray 模式",
+      "fieldStealSelf": "自动启用偷自己(steal_self)",
+      "xrayExternalHint": "external:走 XTLS/Xray-install 装独立 xray;一键脚本默认。",
+      "xrayEmbeddedHint": "embedded:Agent 内嵌 xray-core,不需要独立 xray 二进制。",
+      "tokenLabel": "配对 Token",
+      "installCmdLabel": "一键安装命令",
+      "runOnServerHint": "把上面这条命令复制到目标服务器上 root 执行,几十秒后服务器卡片状态会变成「已连接」。",
+      "copyBtn": "复制",
+      "generateBtn": "生成 Token",
+      "regenBtn": "重新填写"
+    }
   },
   "installDirect": {
     "title": "直接安装",
@@ -776,7 +827,11 @@
     "note1": "由入站自动生成的节点，修改入站后会自动更新",
     "note2": "手动修改节点名称不会被自动同步覆盖",
     "note3": "禁用的节点不会出现在任何订阅输出中",
-    "note4": "节点解析为 IP 后可一键「恢复域名」,恢复的是解析前的原始域名(不影响节点所属服务器)"
+    "note4": "节点解析为 IP 后可一键「恢复域名」,恢复的是解析前的原始域名(不影响节点所属服务器)",
+    "screenshot": {
+      "alt": "节点管理页面截图",
+      "caption": "节点管理 — 按服务器分组列出所有入站节点,可批量编辑 / 启停 / 同步"
+    }
   },
   "packages": {
     "title": "套餐管理",
@@ -842,7 +897,7 @@
     "title": "协议矩阵",
     "description": "妙妙屋X 支持的所有协议×传输×安全组合",
     "fullMatrixHeading": "完整矩阵",
-    "fullMatrixText": "以下是经过测试验证的所有可用组合（17 种），均已通过 mihomo 连通性测试。",
+    "fullMatrixText": "以下是经过测试验证的所有可用组合（19 种），均已通过 mihomo 连通性测试。",
     "protocolCol": "协议",
     "transportCol": "传输",
     "securityCol": "安全层",
@@ -1044,7 +1099,11 @@
     "shareOwnerText": "在服务器管理里为该服务器生成一个分享令牌（可带前缀），交给对方。对方的操作会经你的主控代理转发到该服务器。",
     "shareConsumerHeading": "接收方",
     "shareConsumerText": "在「添加服务器」里选择「接入分享的服务器」，填入对方给的分享令牌即可。接入后该服务器会作为一台联邦（federated）服务器出现在你的列表里，状态随拥有方上报刷新；入站 / 节点 / Tunnel 管理等均可用。",
-    "shareSecurityNote": "主控与 Agent、以及主控之间的联邦通信均走加密通道（密钥协商 + 会话缓存），令牌轮换不影响在线管理。"
+    "shareSecurityNote": "主控与 Agent、以及主控之间的联邦通信均走加密通道（密钥协商 + 会话缓存），令牌轮换不影响在线管理。",
+    "screenshot": {
+      "alt": "服务管理页面截图",
+      "caption": "服务管理 — 服务器以卡片形式展示,含状态 / 实时网速 / 流量 / Xray 信息 / 一键操作"
+    }
   },
   "routedOutbound": {
     "title": "路由出站",
@@ -1331,6 +1390,10 @@
       "item1": "- 导入的节点与本地入站节点合并输出",
       "item2": "- 可对导入节点进行启用/禁用、重命名操作",
       "item3": "- 订阅 URL 变更后需手动触发一次更新"
+    },
+    "screenshot": {
+      "alt": "订阅文件管理页面截图",
+      "caption": "订阅文件管理 — 列出所有订阅模板,可绑定 V3 模板、选择节点、设置短链"
     }
   },
   "systemRequirements": {
@@ -1397,6 +1460,10 @@
       "step2": "2. 系统启动时自动加载代理组配置",
       "step3": "3. 订阅生成时，节点自动填充到对应的代理组中",
       "step4": "4. 用户订阅即可获得完整的分流配置"
+    },
+    "screenshot": {
+      "alt": "模板管理页面截图",
+      "caption": "模板管理 — 列出 V3 模板,可绑定到订阅文件或套餐"
     }
   },
   "tutorial": {
@@ -1409,7 +1476,11 @@
       "init": "初始化",
       "addServer": "添加服务器",
       "installAgent": "安装 Agent",
-      "addNode": "添加节点"
+      "addNode": "添加节点",
+      "createPackage": "创建套餐",
+      "bindPackage": "绑定套餐",
+      "trafficInfo": "流量信息",
+      "tools": "小工具"
     },
     "step1": {
       "heading": "安装前准备",
@@ -1440,7 +1511,9 @@
     "step4": {
       "heading": "初始化",
       "text": "浏览器访问主控面板：",
-      "registerText": "输入用户名、密码完成注册，域名填写第 2 步中添加的主控域名（如 mmwx.example.com）。"
+      "registerText": "输入用户名、密码完成注册，域名填写第 2 步中添加的主控域名（如 mmwx.example.com）。",
+      "screenshotAlt": "初始化向导截图",
+      "screenshotCaption": "首次启动的初始化向导，创建管理员账号"
     },
     "step5": {
       "heading": "开启 HTTPS",
@@ -1475,7 +1548,11 @@
         "autoDeploy": "自动部署",
         "disabled": "关闭",
         "autoDeployNote": "开启后续期自动重新部署",
-        "submitText": "填写完成后点击「申请」，等待申请成功。"
+        "submitText": "填写完成后点击「申请」，等待申请成功。",
+        "listAlt": "证书管理页面截图",
+        "listCaption": "证书管理页面，列出已申请的证书",
+        "dialogAlt": "申请证书对话框截图",
+        "dialogCaption": "申请证书对话框，填写域名、邮箱、DNS 提供商等"
       },
       "deployCert": {
         "heading": "5.3 部署证书",
@@ -1520,7 +1597,9 @@
       "reverseProxyValue": "反向代理地址",
       "port443Warning": "使用 443 端口部署时，请确保服务器的 443 端口没有被其他程序占用。",
       "addWebsiteInfo": "无需担心无法部署其他服务，点击「Agent 管理」→「添加网站」即可复用 443 端口部署其他服务。",
-      "stealSelfWarning": "开启「我要偷自己」时，必须提前准备好一个域名并解析到该服务器，用于填写下方的「域名」字段。该域名将作为 REALITY 偷自己的目标网站。"
+      "stealSelfWarning": "开启「我要偷自己」时，必须提前准备好一个域名并解析到该服务器，用于填写下方的「域名」字段。该域名将作为 REALITY 偷自己的目标网站。",
+      "screenshotAlt": "服务管理页面截图",
+      "screenshotCaption": "服务管理页面，已添加的服务器以卡片形式展示"
     },
     "step7": {
       "heading": "安装 Agent",
@@ -1546,7 +1625,64 @@
       "realityDomainNote": "也可自行填写其他域名",
       "selectUser": "选择用户",
       "selectUserValue": "选择已存在的用户",
-      "saveNote": "点击保存后，节点会出现在节点管理列表中，用户即可通过订阅链接使用。"
+      "saveNote": "点击保存后，节点会出现在节点管理列表中，用户即可通过订阅链接使用。",
+      "screenshotAlt": "节点管理页面截图",
+      "screenshotCaption": "节点管理页面，列出所有入站及其状态"
+    },
+    "step9": {
+      "heading": "创建套餐",
+      "text": "进入「套餐管理」页面，点击「创建套餐模板」可设置流量额度、计量周期、计量方式（单向/双向）、限速、设备数限制，并在右侧勾选套餐包含的节点和设置节点倍率。",
+      "listAlt": "套餐管理页面截图",
+      "listCaption": "套餐管理页面，已创建的套餐以卡片形式展示",
+      "dialogAlt": "创建套餐对话框截图",
+      "dialogCaption": "创建套餐模板对话框，左侧为套餐参数、右侧为关联节点选择"
+    },
+    "step10": {
+      "heading": "绑定套餐",
+      "text": "进入「用户管理」页面，在目标用户行的操作菜单里点「管理套餐」，选择已创建的套餐并设置到期时间，用户保存后即获得套餐内节点的访问权限。",
+      "listAlt": "用户管理页面截图",
+      "listCaption": "用户管理页面，列出所有用户及其套餐状态",
+      "dialogAlt": "管理套餐对话框截图",
+      "dialogCaption": "管理套餐对话框，选择套餐 + 到期时间 + 流量重置周期"
+    },
+    "step11": {
+      "heading": "流量信息",
+      "text": "点击「流量信息」页面，可以从用户、节点、服务器三个维度查看流量使用情况。",
+      "userView": {
+        "heading": "用户视图",
+        "text": "查看所有用户的已用流量信息；点击用户名展开，展示该用户在每个节点下的已用流量。",
+        "alt": "用户视图截图",
+        "caption": "按用户周期流量排序，点击用户名展开节点维度细分"
+      },
+      "nodeView": {
+        "heading": "节点视图",
+        "text": "查看每个节点的已用流量信息；点击节点名称展开，展示该节点下每个用户的已用流量。",
+        "alt": "节点视图截图",
+        "caption": "按节点周期流量排序，点击节点名称展开用户维度细分"
+      },
+      "serverView": {
+        "heading": "服务器视图",
+        "text": "查看每台服务器当前的实时网速、已用流量、剩余流量和使用率。",
+        "alt": "服务器视图截图",
+        "caption": "服务器维度的网速 / 已用 / 总量 / 剩余 / 使用率概览"
+      }
+    },
+    "step12": {
+      "heading": "小工具（TG Bot & MiniApp）",
+      "text": "可以接入 mmwX-tgbot，在 Telegram 机器人内管理用户与套餐绑定。机器人提供命令交互、每日通知和免登录 Mini App 面板。",
+      "docLinkPre": "完整部署 + 配置教程见 ",
+      "docLink": "Telegram 机器人",
+      "docLinkPost": "。",
+      "adminView": {
+        "heading": "管理员视图（Mini App）",
+        "alt": "TG MiniApp 管理员视图截图",
+        "caption": "管理员视图：含账号 / 流量 / 订阅 / 兑换码（手机分辨率）"
+      },
+      "userView": {
+        "heading": "用户视图（Mini App）",
+        "alt": "TG MiniApp 用户视图截图",
+        "caption": "普通用户视图：仅含本人账号 / 流量 / 订阅"
+      }
     }
   },
   "update": {
@@ -1562,6 +1698,10 @@
     "agent": {
       "heading": "Agent 更新",
       "text": "Agent 更新方式与主控端相同，下载新版本替换后重启即可。Agent 与主控端版本建议保持一致。"
+    },
+    "screenshot": {
+      "alt": "检查更新对话框截图",
+      "caption": "检查更新对话框 — 显示当前版本与最新 GitHub Release,可一键升级"
     }
   },
   "upgradeFromMmw": {
@@ -2077,7 +2217,11 @@
     "agentEnvTrafficInterval": "流量上报间隔（如 1m、30s）",
     "agentEnvSpeedInterval": "网速上报间隔（如 3s、5s）",
     "agentEnvRestartMethod": "Xray 重启方式",
-    "agentEnvRestartCommand": "自定义 Xray 重启命令"
+    "agentEnvRestartCommand": "自定义 Xray 重启命令",
+    "screenshot": {
+      "alt": "系统设置完整页面截图",
+      "caption": "系统设置完整页面 — 按 Card 划分各功能区(订阅同步 / 系统设置 / 安全阈值 / Turnstile / 定时配置 / 主控地址 / API Token / 许可证)"
+    }
   },
   "comparison": {
     "title": "与妙妙屋的区别",
@@ -2180,7 +2324,7 @@
           "item4": "如需在服务器新增节点，只能手动登录服务器配置后再导入妙妙屋"
         },
         "mmwx": {
-          "item1": "通过页面创建各种协议节点（VLESS/VMess/Trojan/SS/Hysteria2），17 种协议组合一键配置",
+          "item1": "通过页面创建各种协议节点（VLESS/VMess/Trojan/SS/Hysteria2），19 种协议组合一键配置",
           "item2": "偷自己：复用已有入站配置，快速创建新节点",
           "item3": "路由出站：支持中转节点复用，实现流量分流和多层转发",
           "item4": "端口转发 Tunnel（dokodemo-door）：在已有服务器创建出站，指定节点为出站目标",
@@ -2381,6 +2525,10 @@
       "heading": "延伸阅读",
       "releases": "GitHub Releases(各平台二进制下载)",
       "tgWebapps": "Telegram Mini Apps 官方文档"
+    },
+    "screenshots": {
+      "apiToken": "妙妙屋X 管理后台 → 系统设置 → API Token 区域",
+      "apiTokenAlt": "妙妙屋X 系统设置 API Token 卡片截图"
     }
   },
   "toolCloudflareTurnstile": {
@@ -2444,6 +2592,14 @@
       "heading": "延伸阅读",
       "cfDocs": "Cloudflare Turnstile 官方文档",
       "cfDashboard": "Cloudflare Dashboard · Turnstile"
+    },
+    "screenshots": {
+      "turnstileEmpty": "系统设置「Cloudflare 人机验证」区域,两个 key 未填的初始状态",
+      "turnstileEmptyAlt": "Turnstile 卡片未填 Key 截图",
+      "turnstileFilled": "填入 Site Key 后明文显示;Secret Key 保存后回显屏蔽 mask",
+      "turnstileFilledAlt": "Turnstile 卡片已配置截图",
+      "loginWidget": "妙妙屋X 登录页,表单底部出现 Cloudflare Turnstile widget(此处用 CF 测试 key 演示,自动判定通过显示「成功」)",
+      "loginWidgetAlt": "登录页 Turnstile widget 截图"
     }
   }
 }

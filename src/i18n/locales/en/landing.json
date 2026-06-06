@@ -153,17 +153,44 @@
     "coreCapabilities": "Core Capabilities",
     "coreCapabilitiesDesc": "Building on MiaoMiaoWu with complete remote server management and Xray configuration capabilities",
     "features": {
-      "remoteServer": { "title": "Remote Server Management", "desc": "Master-Agent architecture with WebSocket/HTTP/Pull modes for managing remote servers. Auto-reconnect, token rotation, and status monitoring." },
-      "xrayInbound": { "title": "Xray Inbound Management", "desc": "Visual inbound wizard supporting VLESS/VMess/Trojan/SS/Hysteria2/AnyTLS, 19 protocol combinations with one-click configuration" },
-      "reality": { "title": "REALITY Support", "desc": "No domain or certificate needed, auto-generates X25519 key pairs, strongest anti-detection capability" },
-      "certificates": { "title": "Certificate Management", "desc": "ACME auto-apply and renew TLS certificates, supports Cloudflare/Alibaba Cloud/Tencent Cloud DNS providers" },
-      "trafficMonitor": { "title": "Traffic Monitoring", "desc": "Real-time Xray traffic data collection, per-user/node statistics, visual chart display" },
-      "userPackage": { "title": "Users & Packages", "desc": "Multi-user management, package quota control, subscription token distribution, monthly traffic reset" },
-      "multiFormat": { "title": "Multi-Format Subscriptions", "desc": "Supports Clash/Surge/Loon/QX/Shadowrocket/SingBox and 12+ client formats" },
-      "autoSync": { "title": "Auto Node Sync", "desc": "Inbound changes automatically trigger node sync, event-bus driven, zero manual operation" }
+      "remoteServer": {
+        "title": "Remote Server Management",
+        "desc": "Master-Agent architecture with WebSocket/HTTP/Pull modes for managing remote servers. Auto-reconnect, token rotation, and status monitoring."
+      },
+      "xrayInbound": {
+        "title": "Xray Inbound Management",
+        "desc": "Visual inbound wizard supporting VLESS/VMess/Trojan/SS/Hysteria2/AnyTLS, 19 protocol combinations with one-click configuration"
+      },
+      "reality": {
+        "title": "REALITY Support",
+        "desc": "No domain or certificate needed, auto-generates X25519 key pairs, strongest anti-detection capability"
+      },
+      "certificates": {
+        "title": "Certificate Management",
+        "desc": "ACME auto-apply and renew TLS certificates, supports Cloudflare/Alibaba Cloud/Tencent Cloud DNS providers"
+      },
+      "trafficMonitor": {
+        "title": "Traffic Monitoring",
+        "desc": "Real-time Xray traffic data collection, per-user/node statistics, visual chart display"
+      },
+      "userPackage": {
+        "title": "Users & Packages",
+        "desc": "Multi-user management, package quota control, subscription token distribution, monthly traffic reset"
+      },
+      "multiFormat": {
+        "title": "Multi-Format Subscriptions",
+        "desc": "Supports Clash/Surge/Loon/QX/Shadowrocket/SingBox and 12+ client formats"
+      },
+      "autoSync": {
+        "title": "Auto Node Sync",
+        "desc": "Inbound changes automatically trigger node sync, event-bus driven, zero manual operation"
+      }
     },
     "comparisonTitle": "Comparison with MiaoMiaoWu",
-    "comparisonHeaders": { "feature": "Feature", "mmw": "MiaoMiaoWu" },
+    "comparisonHeaders": {
+      "feature": "Feature",
+      "mmw": "MiaoMiaoWu"
+    },
     "comparisonRows": {
       "subscriptionMgmt": "Subscription Management",
       "multiClient": "Multi-Client Formats (12+)",
@@ -177,11 +204,78 @@
     "quickNav": "Quick Navigation",
     "quickNavDesc": "Start exploring MiaoMiaoWu X from here",
     "quickLinks": {
-      "quickStart": { "title": "Quick Start", "desc": "Deploy MiaoMiaoWu X in 5 minutes" },
-      "install": { "title": "Installation", "desc": "Docker / Binary install" },
-      "protocols": { "title": "Protocol Reference", "desc": "19 protocol combinations (now including AnyTLS)" },
-      "fullDocs": { "title": "Full Documentation", "desc": "View all documentation" }
+      "quickStart": {
+        "title": "Quick Start",
+        "desc": "Deploy MiaoMiaoWu X in 5 minutes"
+      },
+      "install": {
+        "title": "Installation",
+        "desc": "Docker / Binary install"
+      },
+      "protocols": {
+        "title": "Protocol Reference",
+        "desc": "19 protocol combinations (now including AnyTLS)"
+      },
+      "fullDocs": {
+        "title": "Full Documentation",
+        "desc": "View all documentation"
+      }
     },
-    "footerDesc": "MiaoMiaoWu X — Multi-Server Xray Management & Subscription Platform"
+    "footerDesc": "MiaoMiaoWu X — Multi-Server Xray Management & Subscription Platform",
+    "trafficDemo": {
+      "live": "Live demo",
+      "heading": "Traffic insights at a glance",
+      "description": "The admin home page shows the whole picture: live speed dial, drill from users into per-node usage and vice versa, plus a server quota overview at the bottom. The widget below uses mock data.",
+      "totalQuota": "Total quota",
+      "totalUsed": "Used",
+      "realtimeSpeed": "Live speed",
+      "serverCount": "Servers",
+      "userView": "User view",
+      "userViewDesc": "Sorted by cycle usage; click a user to see per-node breakdown",
+      "nodeView": "Node view",
+      "nodeViewDesc": "Sorted by cycle usage; click a node to see per-user breakdown",
+      "serverView": "Server overview",
+      "serverViewDesc": "Each server's live speed / used / total / remaining / usage rate",
+      "cols": {
+        "server": "Server",
+        "speed": "Speed",
+        "used": "Used",
+        "total": "Total",
+        "remaining": "Remaining",
+        "usage": "Usage"
+      },
+      "drillUser": "{{name}}'s traffic across nodes",
+      "drillUserDesc": "Per-node breakdown for this user (descending)",
+      "drillNode": "Users on {{name}}",
+      "drillNodeDesc": "Per-user breakdown on this node (descending)"
+    },
+    "screenshotsWall": {
+      "heading": "Feature screenshots",
+      "description": "From node management to the Telegram Mini App — every piece of UI gets the same polish.",
+      "nodes": {
+        "title": "Node Management",
+        "desc": "Inbound nodes grouped by server; batch edit / toggle / sync"
+      },
+      "servers": {
+        "title": "Server Management",
+        "desc": "Servers as cards with status / live speed / traffic / Xray actions"
+      },
+      "createPackage": {
+        "title": "Create Package",
+        "desc": "Parameters on the left + node selection on the right; supports per-node multipliers and reset cycles"
+      },
+      "miniappAdmin": {
+        "title": "TG Bot admin view",
+        "desc": "Redeem codes & user management (mobile)"
+      },
+      "miniappUser": {
+        "title": "TG Bot user view",
+        "desc": "Account / traffic / subscription (mobile)"
+      },
+      "miniapp": {
+        "title": "TG Bot Mini App",
+        "desc": "Admin view (left) & user view (right), full phone resolution"
+      }
+    }
   }
 }

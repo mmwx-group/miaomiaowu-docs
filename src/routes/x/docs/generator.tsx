@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { XDocLayout } from '@/components/docs/x-doc-layout'
+import { Screenshot } from '@/components/docs/screenshot'
 import { Card, CardContent } from '@/components/ui/card'
 
 export const Route = createFileRoute('/x/docs/generator')({
@@ -12,6 +13,11 @@ function GeneratorPage() {
 
   return (
     <XDocLayout title={t('generator.title')} description={t('generator.description')}>
+      <Screenshot
+        src='/images/screenshots/doc-generator-page.webp'
+        alt={t('generator.screenshot.alt')}
+        caption={t('generator.screenshot.caption')}
+      />
       <section className='mb-10'>
         <h2 className='text-2xl font-bold mb-4'>{t('generator.overview.heading')}</h2>
         <p className='text-muted-foreground'>{t('generator.overview.text')}</p>

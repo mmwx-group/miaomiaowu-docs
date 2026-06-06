@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { XDocLayout } from '@/components/docs/x-doc-layout'
+import { Screenshot } from '@/components/docs/screenshot'
 import { Card, CardContent } from '@/components/ui/card'
 
 export const Route = createFileRoute('/x/docs/remote-servers')({
@@ -12,6 +13,11 @@ function RemoteServersPage() {
 
   return (
     <XDocLayout title={t('remoteServers.title')} description={t('remoteServers.description')}>
+      <Screenshot
+        src='/images/screenshots/doc-xray-servers-page.webp'
+        alt={t('remoteServers.screenshot.alt')}
+        caption={t('remoteServers.screenshot.caption')}
+      />
       <section className='mb-10'>
         <h2 className='text-2xl font-bold mb-4'>{t('remoteServers.overview')}</h2>
         <p className='text-muted-foreground mb-4'>{t('remoteServers.overviewText')}</p>

@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ThemeSwitch } from '@/components/theme-switch'
 import { LanguageSwitch } from '@/components/language-switch'
 import { AnimatedX } from '@/components/animated-x'
+import { TrafficDemo } from '@/components/landing/traffic-demo'
 import { useTranslation } from 'react-i18next'
 import {
   Server,
@@ -58,6 +59,45 @@ const quickLinkDefs = [
   { key: 'fullDocs', href: '/x/docs', icon: BookOpen },
 ]
 
+function ScreenshotCard({ src, srcs, title, desc, srcAlts }: {
+  src?: string
+  srcs?: string[]      // 多张并排(MiniApp 管理员 + 用户视图一卡显示)
+  title: string
+  desc: string
+  srcAlts?: string[]
+}) {
+  return (
+    <div className="pixel-card overflow-hidden group flex flex-col">
+      <div className="bg-muted/40 border-b">
+        {srcs && srcs.length > 0 ? (
+          <div className={`grid gap-1 p-2`} style={{ gridTemplateColumns: `repeat(${srcs.length}, minmax(0, 1fr))` }}>
+            {srcs.map((s, i) => (
+              <img
+                key={s}
+                src={s}
+                alt={srcAlts?.[i] ?? title}
+                loading="lazy"
+                className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.01]"
+              />
+            ))}
+          </div>
+        ) : (
+          <img
+            src={src}
+            alt={title}
+            loading="lazy"
+            className="w-full h-auto transition-transform duration-500 group-hover:scale-[1.02]"
+          />
+        )}
+      </div>
+      <div className="p-4">
+        <h3 className="font-semibold text-base mb-1">{title}</h3>
+        <p className="text-sm text-muted-foreground">{desc}</p>
+      </div>
+    </div>
+  )
+}
+
 function XHomePage() {
   const { t } = useTranslation('landing')
 
@@ -85,7 +125,7 @@ function XHomePage() {
               <span className="hidden sm:inline">{t('xHome.navHome')}</span>
             </Link>
             <Link
-              to="/x/docs"
+              to="/x/docs/tutorial"
               className="pixel-button inline-flex items-center gap-2 px-3 py-2 h-9 text-sm font-semibold uppercase tracking-widest bg-background/75 text-foreground border-[color:rgba(137,110,96,0.45)] hover:bg-accent/35 hover:text-accent-foreground transition-all"
             >
               <BookOpen className="size-4" />
@@ -159,7 +199,7 @@ function XHomePage() {
 
           <div className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">
             <div className="pixel-card p-4 text-center">
-              <div className="text-2xl sm:text-3xl font-bold text-primary">17</div>
+              <div className="text-2xl sm:text-3xl font-bold text-primary">19</div>
               <div className="text-sm text-muted-foreground">{t('xHome.stats.protocolCombos')}</div>
             </div>
             <div className="pixel-card p-4 text-center">
@@ -180,6 +220,52 @@ function XHomePage() {
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
           <ChevronDown className="size-6 text-primary" />
           <ChevronDown className="size-6 text-primary/60 -mt-4" />
+        </div>
+      </section>
+
+      {/* 实时演示:流量信息 mock(网速跳动 + 用户/节点/服务器三维度 + 下钻 Dialog) */}
+      <TrafficDemo />
+
+      {/* 功能截图墙:展示几个核心功能的实际 UI 截图 */}
+      <section className="py-16 sm:py-20 px-4 sm:px-6 bg-muted/30">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="pixel-text text-3xl sm:text-4xl font-bold text-primary mb-3">
+              {t('xHome.screenshotsWall.heading')}
+            </h2>
+            <p className="text-base text-muted-foreground max-w-2xl mx-auto">
+              {t('xHome.screenshotsWall.description')}
+            </p>
+          </div>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
+            <ScreenshotCard
+              src="/images/screenshots/tutorial-step8-nodes-list.webp"
+              title={t('xHome.screenshotsWall.nodes.title')}
+              desc={t('xHome.screenshotsWall.nodes.desc')}
+            />
+            <ScreenshotCard
+              src="/images/screenshots/doc-xray-servers-page.webp"
+              title={t('xHome.screenshotsWall.servers.title')}
+              desc={t('xHome.screenshotsWall.servers.desc')}
+            />
+            <ScreenshotCard
+              src="/images/screenshots/tutorial-step9-package-create-dialog.webp"
+              title={t('xHome.screenshotsWall.createPackage.title')}
+              desc={t('xHome.screenshotsWall.createPackage.desc')}
+            />
+            <ScreenshotCard
+              srcs={[
+                '/images/screenshots/tutorial-step12-miniapp-admin.webp',
+                '/images/screenshots/tutorial-step12-miniapp-user.webp',
+              ]}
+              srcAlts={[
+                t('xHome.screenshotsWall.miniappAdmin.title'),
+                t('xHome.screenshotsWall.miniappUser.title'),
+              ]}
+              title={t('xHome.screenshotsWall.miniapp.title')}
+              desc={t('xHome.screenshotsWall.miniapp.desc')}
+            />
+          </div>
         </div>
       </section>
 

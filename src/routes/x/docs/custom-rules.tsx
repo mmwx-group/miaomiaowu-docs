@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { XDocLayout } from '@/components/docs/x-doc-layout'
+import { Screenshot } from '@/components/docs/screenshot'
 import { Card, CardContent } from '@/components/ui/card'
 
 export const Route = createFileRoute('/x/docs/custom-rules')({
@@ -12,6 +13,11 @@ function CustomRulesPage() {
 
   return (
     <XDocLayout title={t('customRules.title')} description={t('customRules.description')}>
+      <Screenshot
+        src='/images/screenshots/doc-custom-rules-page.webp'
+        alt={t('customRules.screenshot.alt')}
+        caption={t('customRules.screenshot.caption')}
+      />
       <section className='mb-10'>
         <h2 className='text-2xl font-bold mb-4'>{t('customRules.overview.heading')}</h2>
         <p className='text-muted-foreground'>{t('customRules.overview.text')}</p>

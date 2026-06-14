@@ -2,6 +2,8 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { XDocLayout } from '@/components/docs/x-doc-layout'
 import { Card, CardContent } from '@/components/ui/card'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { AlertTriangle } from 'lucide-react'
 import { AddServerDemo } from '@/components/docs/add-server-demo'
 
 export const Route = createFileRoute('/x/docs/install-agent')({
@@ -126,6 +128,86 @@ curl -fsSL "https://your-domain.com/api/remote/install.sh?token=SERVER_TOKEN&xra
                   </tbody>
                 </table>
               </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* Docker 部署 — 与一键脚本并行的部署方式;镜像内置 embedded xray + nginx,host 网络模式必须 */}
+      <section className='mb-10'>
+        <h2 className='text-2xl font-bold mb-4'>{t('installAgent.docker.heading')}</h2>
+        <p className='text-muted-foreground mb-4'>{t('installAgent.docker.intro')}</p>
+
+        <Alert variant='destructive' className='mb-6 border-amber-400 bg-amber-50 text-amber-900 dark:border-amber-700 dark:bg-amber-950 dark:text-amber-100 [&>svg]:text-amber-600 dark:[&>svg]:text-amber-400'>
+          <AlertTriangle className='h-5 w-5' />
+          <AlertTitle className='text-base font-bold'>{t('installAgent.docker.hostAlertTitle')}</AlertTitle>
+          <AlertDescription className='mt-2 space-y-2'>
+            <p>{t('installAgent.docker.hostAlertText1')}</p>
+            <p>{t('installAgent.docker.hostAlertText2')}</p>
+          </AlertDescription>
+        </Alert>
+
+        <div className='space-y-4'>
+          <Card>
+            <CardContent className='pt-6'>
+              <h3 className='font-semibold mb-3'>{t('installAgent.docker.runHeading')}</h3>
+              <p className='text-sm text-muted-foreground mb-3'>{t('installAgent.docker.runText')}</p>
+              <div className='bg-muted rounded-lg p-4 font-mono text-sm overflow-x-auto'>
+                <pre>{`# host 网络必须 --network host(强制约束,容器内 entrypoint 会检测;bridge 模式直接退出报错)
+docker run -d \\
+  --name mmw-agent \\
+  --network host \\
+  --restart unless-stopped \\
+  -e MMWX_LISTEN_PORT=12888 \\
+  -e MMWX_MASTER_URL=https://master.example.com \\
+  -e MMWX_MASTER_TOKEN=<主控添加服务器时生成的 token> \\
+  -v $(pwd)/config:/etc/mmw-agent \\
+  -v $(pwd)/xray-config:/usr/local/etc/xray \\
+  -v $(pwd)/nginx-cert:/etc/nginx/cert \\
+  -v $(pwd)/nginx-servers:/etc/nginx/servers \\
+  ghcr.io/iluobei/mmw-agent:latest`}</pre>
+              </div>
+              <p className='text-xs text-muted-foreground mt-3'>{t('installAgent.docker.runNote')}</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className='pt-6'>
+              <h3 className='font-semibold mb-3'>{t('installAgent.docker.composeHeading')}</h3>
+              <p className='text-sm text-muted-foreground mb-3'>{t('installAgent.docker.composeText')}</p>
+              <div className='bg-muted rounded-lg p-4 font-mono text-sm overflow-x-auto'>
+                <pre>{`version: '3.8'
+services:
+  mmw-agent:
+    image: ghcr.io/iluobei/mmw-agent:latest
+    container_name: mmw-agent
+    restart: unless-stopped
+    network_mode: host                  # 必须 host,bridge 模式 entrypoint 会拒启
+    environment:
+      - MMWX_LISTEN_PORT=12888
+      - MMWX_MASTER_URL=https://master.example.com
+      - MMWX_MASTER_TOKEN=<主控添加服务器时生成的 token>
+    volumes:
+      - ./config:/etc/mmw-agent
+      - ./xray-config:/usr/local/etc/xray
+      - ./nginx-cert:/etc/nginx/cert
+      - ./nginx-servers:/etc/nginx/servers`}</pre>
+              </div>
+              <p className='text-xs text-muted-foreground mt-3'>
+                {t('installAgent.docker.composeStartTip')} <code className='bg-muted px-1.5 py-0.5 rounded text-xs'>docker compose up -d</code>
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className='pt-6'>
+              <h3 className='font-semibold mb-3'>{t('installAgent.docker.constraintsHeading')}</h3>
+              <ul className='space-y-2 text-sm text-muted-foreground'>
+                <li>- <strong>{t('installAgent.docker.constraint1Label')}:</strong> {t('installAgent.docker.constraint1Text')}</li>
+                <li>- <strong>{t('installAgent.docker.constraint2Label')}:</strong> {t('installAgent.docker.constraint2Text')}</li>
+                <li>- <strong>{t('installAgent.docker.constraint3Label')}:</strong> {t('installAgent.docker.constraint3Text')}</li>
+                <li>- <strong>{t('installAgent.docker.constraint4Label')}:</strong> {t('installAgent.docker.constraint4Text')} <code className='bg-muted px-1.5 py-0.5 rounded text-xs'>-e MMWX_REQUIRE_HOST_NETWORK=0</code></li>
+              </ul>
             </CardContent>
           </Card>
         </div>

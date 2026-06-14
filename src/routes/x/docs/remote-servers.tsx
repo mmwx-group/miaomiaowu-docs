@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { XDocLayout } from '@/components/docs/x-doc-layout'
 import { Screenshot } from '@/components/docs/screenshot'
@@ -36,6 +36,16 @@ function RemoteServersPage() {
               <li>{t('remoteServers.addStep6')}</li>
               <li>{t('remoteServers.addStep7')}</li>
             </ol>
+          </CardContent>
+        </Card>
+        <Card className='mt-4 border-blue-200 dark:border-blue-900'>
+          <CardContent className='pt-6'>
+            <p className='text-sm'>
+              <strong>{t('remoteServers.deployMethodsLabel')}:</strong> {t('remoteServers.deployMethodsText')}{' '}
+              <Link to='/x/docs/install-agent' className='text-primary hover:underline font-medium'>
+                {t('remoteServers.deployMethodsLink')}
+              </Link>。
+            </p>
           </CardContent>
         </Card>
       </section>

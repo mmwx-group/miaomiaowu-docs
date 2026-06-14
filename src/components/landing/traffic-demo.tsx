@@ -18,6 +18,13 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
+// 伪随机 — 用 seed 算 [0, 1) 的确定值,替代 Math.random()
+// (react-hooks/purity 要求 render 阶段纯函数,Math.random 不行;此函数同 seed 同输出 → 纯)
+function pseudoRandom(seed: number): number {
+  const x = Math.sin(seed * 9999) * 10000
+  return x - Math.floor(x)
+}
+
 // ───────── mock 数据 ─────────
 const MOCK_USERS = ['jimlee', 'alice', 'bob', 'charlie', 'diana']
 const MOCK_NODES = [
@@ -111,14 +118,19 @@ export function TrafficDemo() {
     []
   )
   // 服务器实时网速:每 tick 在 baseSpeed ± 40% 内跳
+  // 注:landing demo 数据,用 tick 当 seed 做伪随机(替代 Math.random),保持 render 纯函数
+  // (React 19 react-hooks/purity 规则禁止 useMemo 内直接调 Math.random)
   const serverSpeed = useMemo(() => {
-    void tick
-    return MOCK_SERVERS.map((s) => ({
-      ...s,
-      up: Math.round(s.baseUp * (0.6 + Math.random() * 0.8)),
-      down: Math.round(s.baseDown * (0.6 + Math.random() * 0.8)),
-      used: SERVER_USED_BASE[s.name] + tick * 1024 * 1024 * 5, // 累加每秒 ~5MB
-    }))
+    return MOCK_SERVERS.map((s, idx) => {
+      const seedUp = pseudoRandom(tick * 31 + idx * 7)
+      const seedDown = pseudoRandom(tick * 31 + idx * 7 + 1)
+      return {
+        ...s,
+        up: Math.round(s.baseUp * (0.6 + seedUp * 0.8)),
+        down: Math.round(s.baseDown * (0.6 + seedDown * 0.8)),
+        used: SERVER_USED_BASE[s.name] + tick * 1024 * 1024 * 5, // 累加每秒 ~5MB
+      }
+    })
   }, [tick])
 
   return (

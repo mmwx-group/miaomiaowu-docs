@@ -644,6 +644,28 @@
         "desc6": "Check service status and output result"
       }
     },
+    "docker": {
+      "heading": "Docker Deployment",
+      "intro": "Besides the one-click bare-metal + systemd script, you can also pull the Docker image directly. The image ships with embedded xray-core + nginx + all dependencies — pull and run, no in-container installation needed.",
+      "hostAlertTitle": "Must run with host network mode",
+      "hostAlertText1": "Xray inbound ports are added dynamically by the master UI — bridge mode would force you to update -p mappings every time a new port appears; the agent's own listening port for the master's reverse connection also needs the host network stack.",
+      "hostAlertText2": "The container entrypoint checks the default gateway IP on startup — if it matches the Docker bridge default range (172.17.x.x / 172.18.x.x) the container exits with an error. Always use --network host or network_mode: host.",
+      "runHeading": "docker run",
+      "runText": "Good for manual / one-off testing. The token comes from the master \"Add Server\" form — same token as the one-click script generates.",
+      "runNote": "All 4 volumes (config / xray-config / nginx-cert / nginx-servers) are optional (the container has its own dirs). Mapping them out mainly helps with debugging or preserving state across image upgrades.",
+      "composeHeading": "Docker Compose",
+      "composeText": "Recommended for production — docker compose pull / up -d makes future upgrades smoother.",
+      "composeStartTip": "Start with:",
+      "constraintsHeading": "Hard constraints / FAQ",
+      "constraint1Label": "Host network",
+      "constraint1Text": "Required. Bridge mode is rejected by the entrypoint — bypassing is not recommended.",
+      "constraint2Label": "Xray mode",
+      "constraint2Text": "The image has no external xray binary, only embedded mode is supported. Select \"embedded\" when adding the server in the master UI (requires PRO license; the agent itself does not verify signatures).",
+      "constraint3Label": "Nginx",
+      "constraint3Text": "Pre-installed via apt + symlinks compatible with hardcoded paths. The master's \"install nginx\" request returns \"already installed\" immediately, no install action triggered.",
+      "constraint4Label": "Bypass host check (debug)",
+      "constraint4Text": "Not recommended. May hit port conflicts. Debug only:"
+    },
     "autoXray": {
       "heading": "Automatic Xray Installation",
       "text": "The installer decides whether to install Xray based on the xray_mode flag. External mode (xray_mode=external, default) installs standalone Xray via XTLS/Xray-install (skipped if already present); the Agent controls it over gRPC. Embedded mode (xray_mode=embedded) does NOT install standalone Xray — xray-core is baked into the Agent binary and started by the Agent process."
@@ -1393,6 +1415,9 @@
     "addStep5": "5. Select steal mode (tunnel/steal, affects node port generation)",
     "addStep6": "6. System automatically generates Server Token and Agent Token",
     "addStep7": "7. Use Token to deploy Agent on the remote server",
+    "deployMethodsLabel": "Two deployment options",
+    "deployMethodsText": "One-click script (bare metal + systemd) or Docker image (embedded xray + nginx built-in, host network required). Full commands and constraints in",
+    "deployMethodsLink": "Install Agent docs",
     "connectionModeHeading": "Connection Modes",
     "wsRecommended": "WebSocket (Recommended)",
     "wsDesc": "Agent actively connects to master, maintaining a persistent connection. Real-time bidirectional communication, supports scan result push.",

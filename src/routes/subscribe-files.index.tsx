@@ -2671,7 +2671,7 @@ function SubscribeFilesPage() {
                                             ? headerObj['Authorization'][0]
                                             : headerObj['Authorization']
                                         }
-                                      } catch {}
+                                      } catch { /* JSON 解析失败保持原文,不阻塞流程 */ }
                                     }
                                     setProxyProviderForm({
                                       name: config.name,
@@ -2727,7 +2727,7 @@ function SubscribeFilesPage() {
                                             ? headerObj['Authorization'][0]
                                             : headerObj['Authorization']
                                         }
-                                      } catch {}
+                                      } catch { /* JSON 解析失败保持原文,不阻塞流程 */ }
                                     }
                                     // 生成 YAML
                                     const isClientMode = config.process_mode === 'client'
@@ -2774,7 +2774,7 @@ function SubscribeFilesPage() {
                                       if (config.override) {
                                         try {
                                           yamlConfig.override = JSON.parse(config.override)
-                                        } catch {}
+                                        } catch { /* JSON 解析失败保持原文,不阻塞流程 */ }
                                       }
                                     }
                                     const yamlObj: Record<string, any> = {}
@@ -2893,7 +2893,7 @@ function SubscribeFilesPage() {
                                         ? headerObj['Authorization'][0]
                                         : headerObj['Authorization']
                                     }
-                                  } catch {}
+                                  } catch { /* JSON 解析失败保持原文,不阻塞流程 */ }
                                 }
                                 setProxyProviderForm({
                                   name: config.name,

@@ -546,23 +546,28 @@ export function EditNodesDialog({
     }
   }
 
-  // 包装删除节点函数
+  // 包装删除节点函数 — useCallback 第一个参数必须是 inline 函数(react-hooks/use-memo 规则),
+  // 所以把 withScrollPreservation 放到 inline arrow 内部调,而不是在 useCallback 外面预先包好。
   const wrappedRemoveNodeFromGroup = React.useCallback(
-    withScrollPreservation((groupName: string, nodeIndex: number) => {
-      if (onRemoveNodeFromGroup) {
-        onRemoveNodeFromGroup(groupName, nodeIndex)
-      }
-    }),
+    (groupName: string, nodeIndex: number) => {
+      withScrollPreservation((g: string, i: number) => {
+        if (onRemoveNodeFromGroup) {
+          onRemoveNodeFromGroup(g, i)
+        }
+      })(groupName, nodeIndex)
+    },
     [onRemoveNodeFromGroup]
   )
 
-  // 包装删除代理组函数
+  // 包装删除代理组函数 — 同上
   const wrappedRemoveGroup = React.useCallback(
-    withScrollPreservation((groupName: string) => {
-      if (onRemoveGroup) {
-        onRemoveGroup(groupName)
-      }
-    }),
+    (groupName: string) => {
+      withScrollPreservation((g: string) => {
+        if (onRemoveGroup) {
+          onRemoveGroup(g)
+        }
+      })(groupName)
+    },
     [onRemoveGroup]
   )
 

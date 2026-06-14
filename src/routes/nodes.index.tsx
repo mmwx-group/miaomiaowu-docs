@@ -1690,7 +1690,10 @@ function NodesPage() {
       setNodeOrder(newOrderIds)
       updateNodeOrderMutation.mutate(newOrderIds)
     }
-  }, [displayNodes, selectedNodeIds, updateNodeOrderMutation])
+    // updateNodeOrderMutation 是 useMutation 返回对象,非 stable,放 deps 会触发 @tanstack/query/no-unstable-deps;
+    // useMutation 的 mutate 函数本身在 mutation 整个生命周期内引用稳定,直接调即可
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [displayNodes, selectedNodeIds])
 
   // 拖拽取消处理
   const handleDragCancel = useCallback(() => {

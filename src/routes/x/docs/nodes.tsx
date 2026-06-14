@@ -61,10 +61,10 @@ function NodesPage() {
           <table className='w-full text-sm'>
             <thead><tr className='border-b'><th className='text-left py-3 px-4'>{t('nodes.operationCol')}</th><th className='text-left py-3 px-4'>{t('nodes.descCol')}</th></tr></thead>
             <tbody>
-              <tr className='border-b'><td className='py-3 px-4'>{t('nodes.opEnableDisable')}</td><td className='py-3 px-4'>{t('nodes.opEnableDisableDesc')}</td></tr>
               <tr className='border-b'><td className='py-3 px-4'>{t('nodes.opRename')}</td><td className='py-3 px-4'>{t('nodes.opRenameDesc')}</td></tr>
               <tr className='border-b'><td className='py-3 px-4'>{t('nodes.opSort')}</td><td className='py-3 px-4'>{t('nodes.opSortDesc')}</td></tr>
-              <tr><td className='py-3 px-4'>{t('nodes.opGroup')}</td><td className='py-3 px-4'>{t('nodes.opGroupDesc')}</td></tr>
+              <tr className='border-b'><td className='py-3 px-4'>{t('nodes.opGroup')}</td><td className='py-3 px-4'>{t('nodes.opGroupDesc')}</td></tr>
+              <tr><td className='py-3 px-4'>{t('nodes.opTags')} <span className='text-xs text-amber-600'>v0.2.3+</span></td><td className='py-3 px-4'>{t('nodes.opTagsDesc')}</td></tr>
             </tbody>
           </table>
         </div>
@@ -99,6 +99,7 @@ function NodesPage() {
           <li>- {t('nodes.note2')}</li>
           <li>- {t('nodes.note3')}</li>
           <li>- {t('nodes.note4')}</li>
+          <li>- {t('nodes.note5')}</li>
         </ul>
       </section>
     </XDocLayout>

@@ -760,6 +760,18 @@
     "quickDeploy": {
       "heading": "快速部署"
     },
+    "builtinNginx": {
+      "heading": "内置 nginx(开启 HTTPS 必读)",
+      "alertTitle": "镜像内置 nginx,无需额外部署",
+      "alertText": "妙妙屋X 镜像已经预装 nginx 并由代码托管。在前端点「部署到 HTTPS」时,容器内部 nginx 会自动起来,无需自己装、配、起 nginx。",
+      "text1": "因为 nginx 跑在容器**内部**,要让外网访问到 HTTPS 入口,必须把容器的 443 端口映射到宿主机。基础示例只映射了 12889,外网访问 https://your-domain 会直接失败。",
+      "text2": "推荐的端口映射:",
+      "port80": "ACME HTTP-01 证书校验。申请 / 续期证书时必须;不开 HTTPS 也可以省略。",
+      "port443": "内置 nginx HTTPS 入口。前端「部署到 HTTPS」后由它承接外网 TLS 流量。",
+      "port12889": "主控 HTTP 面板端口。开了 HTTPS 后流量会被 nginx 反代到 12889,但映射出去仍然方便 bridge 网络调试。",
+      "text3": "如果你的服务器同时还有别的应用占着 80 / 443,与本容器有冲突 — 此时建议改用 host 网络模式启动(--network=host),或把那些应用迁出。"
+    },
+    "composeNote": "默认所有端口都映射出去,生产环境如果不开 HTTPS,可以删掉 80 / 443 这两行只保留 12889。",
     "dataPersistence": {
       "heading": "数据持久化",
       "text": "数据库文件存储在 data/traffic.db，请确保挂载 ./data 目录以持久化数据。"
@@ -1077,14 +1089,14 @@
     "syncTrigger4": "远程服务器入站变更",
     "operationsHeading": "节点操作",
     "operationCol": "操作",
-    "opEnableDisable": "启用/禁用",
-    "opEnableDisableDesc": "控制节点是否出现在订阅中",
     "opRename": "重命名",
     "opRenameDesc": "自定义节点在订阅中的显示名称",
     "opSort": "排序",
     "opSortDesc": "调整节点在订阅中的顺序",
     "opGroup": "分组",
     "opGroupDesc": "将节点分配到不同的代理组",
+    "opTags": "多标签",
+    "opTagsDesc": "v0.2.3 起支持节点多标签：编辑对话框可添加 / 删除多个标签，前端筛选按任一命中,套餐 selected_tags 也按任一命中匹配；老节点会自动 backfill 为原单标签的数组",
     "tunnelHeading": "Tunnel(任意门转发)管理",
     "tunnelText": "Tunnel(dokodemo-door)入站用于把一台服务器的某端口流量转发到另一节点。Tunnel 本身不进节点列表,统一在节点管理顶部的「Tunnel 管理」入口里查看与删除(跨所有远程 / 分享服务器聚合)。",
     "tunnelForwardHeading": "转发已有节点(推荐)",
@@ -1097,6 +1109,7 @@
     "note2": "手动修改节点名称不会被自动同步覆盖",
     "note3": "禁用的节点不会出现在任何订阅输出中",
     "note4": "节点解析为 IP 后可一键「恢复域名」,恢复的是解析前的原始域名(不影响节点所属服务器)",
+    "note5": "新建节点默认使用所属服务器名作为标签,便于按服务器分类筛选;已有的「手动输入」等历史标签保持不动",
     "screenshot": {
       "alt": "节点管理页面截图",
       "caption": "节点管理 — 按服务器分组列出所有入站节点,可批量编辑 / 启停 / 同步"
@@ -2315,6 +2328,9 @@
   "xrayInbounds": {
     "title": "Xray 入站管理",
     "description": "使用入站向导创建和管理 Xray 入站配置",
+    "scopeAlertTitle": "本页只管 Xray 入站,不是节点管理页",
+    "scopeAlertText": "添加/启用/禁用/删除/重命名节点等节点操作请前往",
+    "scopeAlertLink": "节点管理",
     "wizardHeading": "入站向导",
     "wizardText": "入站向导提供可视化的配置流程，按步骤选择协议、传输、安全层和参数，自动生成完整的 Xray 入站配置。",
     "wizardStep1": "1. 选择协议：VLESS / VMess / Trojan / Shadowsocks / Hysteria2",
@@ -2349,6 +2365,7 @@
     "blackholeDesc": "阻断出站，丢弃所有流量",
     "proxyDesc": "代理出站，流量通过另一个代理服务器转发",
     "tunnelDesc": "隧道出站",
+    "warpDesc": "Cloudflare WARP 出口（WireGuard 协议），点击「添加出站 → Cloudflare WARP」一键安装，每台 agent 独立账号、流量隔离",
     "routingHeading": "路由规则",
     "routingText": "路由规则决定入站流量如何分配到不同的出站。可以基于域名、IP、协议等条件进行分流。",
     "routing1": "支持域名匹配（domain, full, regexp）",
@@ -2357,7 +2374,17 @@
     "routing4": "支持端口匹配",
     "routing5": "支持入站 tag 匹配",
     "operationsHeading": "操作",
-    "operationsText": "在服务器详情页的「出站」和「路由」标签页中管理。支持添加、编辑、删除出站和路由规则。修改后需要重启 Xray 服务生效。"
+    "operationsText": "在服务器详情页的「出站」和「路由」标签页中管理。支持添加、编辑、删除出站和路由规则。修改后需要重启 Xray 服务生效。",
+    "warpHeading": "Cloudflare WARP 出站",
+    "warpIntro": "v0.2.3 起内置 Cloudflare WARP 一键接入。每台 agent 各自向 Cloudflare 注册独立账号（不依赖 wgcf 二进制），生成 warp-v4 / warp-v6 两个 WireGuard 出站，可在路由里任意分流到 WARP。",
+    "warpStep1": "1. 在出站标签页点击「添加出站」→「Cloudflare WARP」，弹出 WARP 面板。",
+    "warpStep2": "2. 点「安装 WARP」，agent 向 Cloudflare 注册并写入 warp.json，自动加入 warp-v4 + warp-v6 两个出站；服务列表对应卡片显示橙色 W 徽标。",
+    "warpStep3": "3. 如需 WARP+：粘贴 license key 后点「升级 WARP+」即可；点「刷新配置」可重新拉取并重注 outbound（同 tag 幂等替换，不会重复）。",
+    "warpAntiChinaHeading": "快捷路由 — 防止送中",
+    "warpAntiChinaText": "路由面板的「快捷规则」下拉里，已安装 WARP 的服务器会多出「防止送中」一项：一键给 geosite:google + geosite:meta 全部走 warp-v4，避免 Google / Meta 流量被路到大陆节点。",
+    "warpNotesHeading": "注意事项",
+    "warpNote1": "默认 MTU 1420（WireGuard 标准），noKernelTun=false 强制走 userspace gVisor TUN，不依赖宿主机 tun 模块和 CAP_NET_ADMIN。",
+    "warpNote2": "卸载会同时调 Cloudflare 注销账号 + 删除本机 warp.json + 移除 xray 中的 warp-v4 / warp-v6 出站。"
   },
   "xrayRouting": {
     "title": "Xray 路由管理",

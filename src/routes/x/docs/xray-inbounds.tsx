@@ -2,6 +2,8 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { XDocLayout } from '@/components/docs/x-doc-layout'
 import { Card, CardContent } from '@/components/ui/card'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { AlertTriangle } from 'lucide-react'
 
 export const Route = createFileRoute('/x/docs/xray-inbounds')({
   component: XrayInboundsPage,
@@ -12,6 +14,14 @@ function XrayInboundsPage() {
 
   return (
     <XDocLayout title={t('xrayInbounds.title')} description={t('xrayInbounds.description')}>
+      <Alert variant='destructive' className='mb-8 border-amber-400 bg-amber-50 text-amber-900 dark:border-amber-700 dark:bg-amber-950 dark:text-amber-100 [&>svg]:text-amber-600 dark:[&>svg]:text-amber-400'>
+        <AlertTriangle className='h-5 w-5' />
+        <AlertTitle className='text-base font-bold'>{t('xrayInbounds.scopeAlertTitle')}</AlertTitle>
+        <AlertDescription className='mt-2'>
+          {t('xrayInbounds.scopeAlertText')} <Link to='/x/docs/nodes' className='underline font-medium'>{t('xrayInbounds.scopeAlertLink')}</Link>。
+        </AlertDescription>
+      </Alert>
+
       <section className='mb-10'>
         <h2 className='text-2xl font-bold mb-4'>{t('xrayInbounds.wizardHeading')}</h2>
         <p className='text-muted-foreground mb-4'>{t('xrayInbounds.wizardText')}</p>

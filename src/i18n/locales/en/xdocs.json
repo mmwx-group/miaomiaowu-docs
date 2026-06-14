@@ -760,6 +760,18 @@
     "quickDeploy": {
       "heading": "Quick Deployment"
     },
+    "builtinNginx": {
+      "heading": "Built-in nginx (read this before enabling HTTPS)",
+      "alertTitle": "nginx is pre-installed in the image — no extra setup",
+      "alertText": "The MiaoMiaoWu X image already ships nginx, fully managed by the application. Clicking \"Deploy HTTPS\" in the web UI brings nginx up inside the container — you don't install, configure, or start nginx yourself.",
+      "text1": "Because nginx runs INSIDE the container, you must map the container's 443 port to the host for external HTTPS access. The basic example only maps 12889 — without 443, https://your-domain will not reach the container.",
+      "text2": "Recommended port mappings:",
+      "port80": "ACME HTTP-01 challenge. Required for issuing / renewing certificates. Can be omitted if you don't enable HTTPS.",
+      "port443": "Built-in nginx HTTPS entry. After \"Deploy HTTPS\" in the UI, this is where external TLS traffic terminates.",
+      "port12889": "Master HTTP panel port. Once HTTPS is on, nginx reverse-proxies to 12889, but exposing it externally still helps for bridge-mode debugging.",
+      "text3": "If something else on your host already holds 80 / 443, this container will conflict — switch to host networking (--network=host) or move the other apps off those ports."
+    },
+    "composeNote": "By default all ports are mapped. In production without HTTPS, you may drop the 80 / 443 lines and keep only 12889.",
     "dataPersistence": {
       "heading": "Data Persistence",
       "text": "The database file is stored in data/traffic.db. Make sure to mount the ./data directory for data persistence."
@@ -1077,14 +1089,14 @@
     "syncTrigger4": "Remote server inbound changes",
     "operationsHeading": "Node Operations",
     "operationCol": "Operation",
-    "opEnableDisable": "Enable/Disable",
-    "opEnableDisableDesc": "Control whether the node appears in subscriptions",
     "opRename": "Rename",
     "opRenameDesc": "Customize the node's display name in subscriptions",
     "opSort": "Sort",
     "opSortDesc": "Adjust the node's order in subscriptions",
     "opGroup": "Group",
     "opGroupDesc": "Assign nodes to different proxy groups",
+    "opTags": "Multi-Tag",
+    "opTagsDesc": "Since v0.2.3 nodes support multiple tags: the edit dialog lets you add / remove tags freely; frontend filters and package selected_tags match if any tag hits. Existing single-tag nodes are auto-backfilled to a single-element array.",
     "tunnelHeading": "Tunnel (Dokodemo-door) Management",
     "tunnelText": "Tunnel (dokodemo-door) inbounds forward traffic from one server's port to another node. Tunnels don't appear in the node list themselves - they're managed from the \"Tunnel Management\" entry at the top of node management (aggregated across all remote/shared servers).",
     "tunnelForwardHeading": "Forward Existing Node (Recommended)",
@@ -1097,6 +1109,7 @@
     "note2": "Manually renamed nodes will not be overwritten by auto sync",
     "note3": "Disabled nodes will not appear in any subscription output",
     "note4": "After a node resolves to IP, you can one-click \"Restore Domain\" to restore the original domain before resolution (does not affect the node's server)",
+    "note5": "New nodes default to their owning server's name as the tag, making it easy to filter by server. Legacy tags like \"manual entry\" are left untouched.",
     "screenshot": {
       "alt": "Node Management page screenshot",
       "caption": "Node Management — inbound nodes grouped by server, supports batch edit / toggle / sync"
@@ -2315,6 +2328,9 @@
   "xrayInbounds": {
     "title": "Xray Inbound Management",
     "description": "Create and manage Xray inbound configurations using the inbound wizard",
+    "scopeAlertTitle": "This page only manages Xray inbounds — it's NOT the node management page",
+    "scopeAlertText": "Node operations (add / enable / disable / delete / rename) belong to",
+    "scopeAlertLink": "Node Management",
     "wizardHeading": "Inbound Wizard",
     "wizardText": "The inbound wizard provides a visual configuration flow, guiding you through protocol, transport, security layer, and parameter selection to automatically generate complete Xray inbound configurations.",
     "wizardStep1": "1. Select protocol: VLESS / VMess / Trojan / Shadowsocks / Hysteria2",
@@ -2349,6 +2365,7 @@
     "blackholeDesc": "Block outbound, drops all traffic",
     "proxyDesc": "Proxy outbound, traffic forwarded through another proxy server",
     "tunnelDesc": "Tunnel outbound",
+    "warpDesc": "Cloudflare WARP egress (WireGuard). One-click install from \"Add Outbound → Cloudflare WARP\"; each agent gets its own WARP account for traffic isolation",
     "routingHeading": "Routing Rules",
     "routingText": "Routing rules determine how inbound traffic is distributed to different outbounds. Can route based on domain, IP, protocol, and other conditions.",
     "routing1": "Supports domain matching (domain, full, regexp)",
@@ -2357,7 +2374,17 @@
     "routing4": "Supports port matching",
     "routing5": "Supports inbound tag matching",
     "operationsHeading": "Operations",
-    "operationsText": "Managed in the Outbound and Routing tabs on the server details page. Supports adding, editing, and deleting outbounds and routing rules. Xray service restart required after changes."
+    "operationsText": "Managed in the Outbound and Routing tabs on the server details page. Supports adding, editing, and deleting outbounds and routing rules. Xray service restart required after changes.",
+    "warpHeading": "Cloudflare WARP Outbound",
+    "warpIntro": "Since v0.2.3, miaomiaowuX ships one-click Cloudflare WARP integration. Each agent registers its own WARP account directly via the Cloudflare API (no wgcf binary required) and generates two WireGuard outbounds, warp-v4 and warp-v6, ready to be targeted from routing rules.",
+    "warpStep1": "1. Under the Outbound tab click \"Add Outbound\" → \"Cloudflare WARP\" to open the WARP panel.",
+    "warpStep2": "2. Click \"Install WARP\". The agent registers with Cloudflare, writes warp.json, and adds the warp-v4 + warp-v6 outbounds; the server card shows an orange W badge.",
+    "warpStep3": "3. To upgrade to WARP+, paste the license key and click \"Upgrade WARP+\". \"Refresh Config\" re-pulls and re-injects the outbounds idempotently (same tag, no duplicates).",
+    "warpAntiChinaHeading": "Quick Routing — Anti-CN-Routing",
+    "warpAntiChinaText": "On servers with WARP installed, the routing panel's \"Quick rules\" dropdown gains an \"Anti-CN-Routing\" entry: one click routes geosite:google + geosite:meta through warp-v4, preventing Google/Meta traffic from being routed via Chinese exits.",
+    "warpNotesHeading": "Notes",
+    "warpNote1": "Default MTU is 1420 (WireGuard standard). noKernelTun=false forces userspace gVisor TUN, so it works without host tun module / CAP_NET_ADMIN.",
+    "warpNote2": "Uninstall removes the Cloudflare account, deletes warp.json on the host, and drops warp-v4 / warp-v6 from xray in one shot."
   },
   "xrayRouting": {
     "title": "Xray Routing Management",

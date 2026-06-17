@@ -1901,35 +1901,76 @@
   },
   "templates": {
     "title": "Template Management",
-    "description": "Manage the Clash/Mihomo YAML templates used to render subscriptions: customize proxy-groups (routing strategies) and rules; bind a template to a package or to a single subscription file; both the basic engine and the V3 engine are supported.",
-    "overview": {
-      "heading": "Overview",
-      "text": "Templates define the overall structure of subscription output, including proxy groups, rule sets, DNS configuration, etc. Different client formats use their own templates."
-    },
-    "structure": {
-      "heading": "Template Structure",
-      "text": "A complete Clash/mihomo template typically includes:",
-      "proxyGroups": "Proxy group definitions (auto-select, manual select, load balance, etc.)",
-      "rules": "Routing rules (domain, IP, GeoIP, etc.)",
-      "dns": "DNS configuration",
-      "general": "General settings (ports, mode, etc.)"
-    },
-    "proxyGroups": {
-      "heading": "Proxy Group Configuration",
-      "text": "Proxy groups are loaded from remote URLs, supporting online editing and preview.",
-      "typeCol": "Group Type",
-      "descCol": "Description",
-      "select": "Manual node selection",
-      "urlTest": "Auto-select lowest latency node",
-      "fallback": "Auto-switch by priority",
-      "loadBalance": "Load balancing"
-    },
-    "usage": {
-      "heading": "Usage",
-      "step1": "1. Configure proxy group URL in system settings",
-      "step2": "2. System auto-loads proxy group config on startup",
-      "step3": "3. During subscription generation, nodes auto-fill into corresponding proxy groups",
-      "step4": "4. Users get complete routing config via subscription"
+    "description": "Manage the Clash/Mihomo YAML templates used for subscription output: customize proxy-groups and rules; bind to a package or individual subscription file. Built on the V3 template system with mihomo-style include-all / filter syntax — new nodes are automatically synced into subscriptions.",
+    "fullExampleNote": "The complete template below is taken from MiaoMiaoWu X's built-in rule_templates/redirhost__v3.yaml and works as a starting point for your own templates.",
+    "attrExamples": {
+      "heading": "Proxy Group Attributes — with examples for each",
+      "desc": "All available proxy group attributes. Each attribute's expandable panel below contains a real YAML snippet pulled from the production redirhost__v3.yaml template — copy-paste them directly.",
+      "viewExample": "View example code",
+      "name": {
+        "name": "name",
+        "desc": "Proxy group name. This is what the client UI displays. You can include emoji directly in the name (👌 🚀 ♻️ etc.)."
+      },
+      "type": {
+        "name": "type",
+        "desc": "Proxy group type. select (manual choice), url-test (auto-select fastest), fallback (priority-based switching), load-balance, relay (chained via dialer-proxy-group)."
+      },
+      "proxies": {
+        "name": "proxies",
+        "desc": "List of proxies in the group. Can be other proxy group names, node names, DIRECT/REJECT system outbounds, or placeholders __PROXY_NODES__ / __PROXY_PROVIDERS__ (expanded into all nodes / proxy providers at subscription generation)."
+      },
+      "includeAll": {
+        "name": "include-all",
+        "desc": "Pull in all outbound proxies + all proxy providers (equivalent to enabling both include-all-proxies and include-all-providers). Most commonly used — the core of V3 template's 'auto-sync new nodes'."
+      },
+      "includeAllProxies": {
+        "name": "include-all-proxies",
+        "desc": "Only pull in nodes from the node table, not external proxy-providers. Use when you only want your own provider's nodes."
+      },
+      "includeAllProviders": {
+        "name": "include-all-providers",
+        "desc": "Only pull in external proxy-providers, not nodes from the node table. Use in mixed subscription scenarios."
+      },
+      "includeType": {
+        "name": "include-type",
+        "desc": "Filter by protocol type, separated by |. Common values: vless / vmess / trojan / ss / hysteria / hysteria2 / tuic. Case-insensitive."
+      },
+      "excludeType": {
+        "name": "exclude-type",
+        "desc": "Exclude nodes by protocol. Same syntax as include-type but for exclusion. Can be combined with include-* for multi-layer filtering."
+      },
+      "filter": {
+        "name": "filter",
+        "desc": "Regex filter matching node names — matched nodes are pulled into this group. Use | for multiple keywords. e.g. filter: 'HK|Hong Kong' pulls any node matching either."
+      },
+      "excludeFilter": {
+        "name": "exclude-filter",
+        "desc": "Regex to exclude node names. Common use: filter out 'test', 'TEST', 'DEAD' keywords. Stackable with filter — filter pulls in first, exclude-filter pushes out."
+      },
+      "url": {
+        "name": "url",
+        "desc": "Latency test URL for url-test / fallback / load-balance types. Default: https://cp.cloudflare.com/generate_204 (empty response, fast)."
+      },
+      "interval": {
+        "name": "interval",
+        "desc": "Test interval (seconds), used by url-test / fallback / load-balance. Default 300 (5 min). Smaller = more responsive to node state changes but more bandwidth."
+      },
+      "tolerance": {
+        "name": "tolerance",
+        "desc": "url-test tolerance (ms), default 50. Prevents frequent switching between nodes with similar latency — switches only when the current node is slower than (fastest + tolerance)."
+      },
+      "dialerProxyGroup": {
+        "name": "dialer-proxy-group",
+        "desc": "Relay proxy group name. Once set, traffic from this group's nodes goes through the relay group's selected node first — chained routing: client → relay node → this group's node → target. The visual editor has a chain link icon on each group for quick setup."
+      },
+      "hidden": {
+        "name": "hidden",
+        "desc": "Default false. Set to true to hide this proxy group from the client UI (not in selection list), but rules can still reference it. Common for internal bridge groups."
+      },
+      "icon": {
+        "name": "icon",
+        "desc": "Proxy group icon. Can be an image URL, or just embed an emoji in the name field. Clients render based on the icon field."
+      }
     },
     "screenshot": {
       "alt": "Templates page screenshot",

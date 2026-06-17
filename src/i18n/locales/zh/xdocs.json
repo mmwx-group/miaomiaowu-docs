@@ -1901,35 +1901,76 @@
   },
   "templates": {
     "title": "模板管理",
-    "description": "管理订阅输出使用的 Clash/Mihomo YAML 模板:自定义 proxy-groups(分流策略组)、rules(规则集),可绑定到套餐或单个订阅文件;支持基础模板与 V3 模板两套引擎。",
-    "overview": {
-      "heading": "概述",
-      "text": "模板定义了订阅输出的整体结构，包括代理组、规则集、DNS 配置等。不同客户端格式使用各自的模板。"
-    },
-    "structure": {
-      "heading": "模板结构",
-      "text": "一个完整的 Clash/mihomo 模板通常包含：",
-      "proxyGroups": "代理组定义（自动选择、手动选择、负载均衡等）",
-      "rules": "分流规则（域名、IP、GeoIP 等）",
-      "dns": "DNS 配置",
-      "general": "通用设置（端口、模式等）"
-    },
-    "proxyGroups": {
-      "heading": "代理组配置",
-      "text": "代理组从远程 URL 加载，支持在线编辑和预览。",
-      "typeCol": "组类型",
-      "descCol": "说明",
-      "select": "手动选择节点",
-      "urlTest": "自动选择延迟最低的节点",
-      "fallback": "按优先级自动切换",
-      "loadBalance": "负载均衡"
-    },
-    "usage": {
-      "heading": "使用方式",
-      "step1": "1. 在系统设置中配置代理组 URL",
-      "step2": "2. 系统启动时自动加载代理组配置",
-      "step3": "3. 订阅生成时，节点自动填充到对应的代理组中",
-      "step4": "4. 用户订阅即可获得完整的分流配置"
+    "description": "管理订阅输出使用的 Clash/Mihomo YAML 模板:自定义 proxy-groups(分流策略组)、rules(规则集),可绑定到套餐或单个订阅文件;基于 V3 模板系统,支持 include-all / filter 等高级语法,新增节点自动同步到订阅。",
+    "fullExampleNote": "下方完整模板取自妙妙屋X 内置 rule_templates/redirhost__v3.yaml,可作为你自己模板的起点。",
+    "attrExamples": {
+      "heading": "代理组配置属性 — 每条都附实例",
+      "desc": "代理组的所有可用配置属性。每个属性下方的折叠面板里都是从生产模板 redirhost__v3.yaml 抽出来的真实 YAML 片段,可以直接复制粘贴使用。",
+      "viewExample": "查看示例代码",
+      "name": {
+        "name": "name",
+        "desc": "代理组名称。客户端 UI 上显示的就是这个,emoji 直接写在 name 里就行(👌 🚀 ♻️ 等)。"
+      },
+      "type": {
+        "name": "type",
+        "desc": "代理组类型。select(手动选)、url-test(自动选最快)、fallback(主备切换)、load-balance(负载均衡)、relay(链式代理,通过 dialer-proxy-group 实现)。"
+      },
+      "proxies": {
+        "name": "proxies",
+        "desc": "代理组里包含的代理列表。可以是其他代理组名、节点名,或 DIRECT/REJECT 系统出站,或占位符 __PROXY_NODES__ / __PROXY_PROVIDERS__(生成订阅时自动展开成所有节点/代理集合)。"
+      },
+      "includeAll": {
+        "name": "include-all",
+        "desc": "引入所有出站代理 + 所有代理集合(等同于同时开启 include-all-proxies 和 include-all-providers)。最常用,V3 模板「新增节点自动同步」的核心。"
+      },
+      "includeAllProxies": {
+        "name": "include-all-proxies",
+        "desc": "只引入节点表里的节点,不引入外部 proxy-providers。适合只想要自己机场节点的场景。"
+      },
+      "includeAllProviders": {
+        "name": "include-all-providers",
+        "desc": "只引入外部 proxy-providers(代理集合),不引入节点表里的节点。适合混合订阅场景。"
+      },
+      "includeType": {
+        "name": "include-type",
+        "desc": "按协议类型引入节点,用 | 分隔多个类型。常见值:vless / vmess / trojan / ss / hysteria / hysteria2 / tuic 等。不区分大小写。"
+      },
+      "excludeType": {
+        "name": "exclude-type",
+        "desc": "按协议类型排除节点。同 include-type 的语法,但用于排除。可与 include-* 同时用,形成多层筛选。"
+      },
+      "filter": {
+        "name": "filter",
+        "desc": "正则表达式筛选节点名,匹配的节点会被引入本组。多个关键词用 | 分隔。例如 filter: 'HK|香港|Hong Kong' 把含三种关键词任一的节点拉进来。"
+      },
+      "excludeFilter": {
+        "name": "exclude-filter",
+        "desc": "正则表达式排除节点名,匹配的节点不会进本组。常用于排除「测试」「TEST」「故障」「失效」等关键词。可与 filter 同时用 — filter 先筛入,exclude-filter 再筛出。"
+      },
+      "url": {
+        "name": "url",
+        "desc": "测速 URL,url-test / fallback / load-balance 类型用。默认值 https://cp.cloudflare.com/generate_204(无返回内容,速度快)。"
+      },
+      "interval": {
+        "name": "interval",
+        "desc": "测速间隔(秒)。url-test / fallback / load-balance 类型用,默认 300(5 分钟)。值越小测速越频繁、越能感知节点状态变化,但消耗更多带宽。"
+      },
+      "tolerance": {
+        "name": "tolerance",
+        "desc": "url-test 类型的容差(毫秒),默认 50。当前节点延迟低于「最快节点延迟 + 容差」时不切换,避免在两个延迟接近的节点间频繁切换。"
+      },
+      "dialerProxyGroup": {
+        "name": "dialer-proxy-group",
+        "desc": "中转代理组名。设置后,本组节点的流量会先经该中转组选中的节点转发,实现链式代理:客户端 → 中转节点 → 本组节点 → 目标。可视化编辑里通过组右侧的链接图标快速配置。"
+      },
+      "hidden": {
+        "name": "hidden",
+        "desc": "默认 false。设为 true 时该代理组在客户端 UI 隐藏(不出现在选择列表),但 rules 里依然可以引用。常用于内部桥接组等用户不需手动切换的场景。"
+      },
+      "icon": {
+        "name": "icon",
+        "desc": "代理组图标。可以是图片 URL,也可以直接把 emoji 写在 name 里(👌 🚀)。客户端会按 icon 字段渲染。"
+      }
     },
     "screenshot": {
       "alt": "模板管理页面截图",

@@ -24,6 +24,7 @@ import {
   Upload,
   FileText,
   Zap,
+  Lightbulb,
 } from 'lucide-react'
 
 export const Route = createFileRoute('/docs/templatesV3')({
@@ -124,6 +125,72 @@ const proxyGroupExampleResult = `- name: 🚀 手动选择
     - 🇳🇱 荷兰节点
     - 🇹🇷 土耳其节点
     - 🌐 其他地区`
+
+// 场景 1:自动同步全部节点
+const scenario1Code = `proxy-groups:
+  - name: 🚀 全部节点
+    type: select
+    include-all: true   # 引入所有出站节点 + 代理集合
+    proxies:
+      - __PROXY_NODES__   # 占位符,生成时自动展开
+`
+
+// 场景 2:按地区分组(手动写 filter)
+const scenario2Code = `proxy-groups:
+  - name: 🇭🇰 香港节点
+    type: url-test
+    include-all: true
+    filter: 'HK|香港|Hong Kong'   # 匹配名字含 HK / 香港 等的节点
+    url: https://cp.cloudflare.com/generate_204
+    interval: 300
+  - name: 🇯🇵 日本节点
+    type: url-test
+    include-all: true
+    filter: 'JP|日本|Japan'
+    url: https://cp.cloudflare.com/generate_204
+    interval: 300
+`
+
+// 场景 3:排除测试 / 失效节点
+const scenario3Code = `proxy-groups:
+  - name: 🚀 可用节点
+    type: select
+    include-all: true
+    exclude-filter: '测试|TEST|故障|失效|DEAD'   # 这些关键词都跳过
+    proxies:
+      - __PROXY_NODES__
+`
+
+// 场景 4:按协议类型筛选
+const scenario4Code = `proxy-groups:
+  - name: 🚀 VLESS-Only
+    type: select
+    include-all: true
+    include-type: 'vless|vmess'   # 只引入这两种协议(| 分隔)
+    proxies:
+      - __PROXY_NODES__
+
+  - name: 🚀 不要 SS
+    type: select
+    include-all: true
+    exclude-type: 'ss|hysteria'   # 排除这两种协议
+    proxies:
+      - __PROXY_NODES__
+`
+
+// 场景 5:中转代理(链式)
+const scenario5Code = `proxy-groups:
+  - name: 🚇 中转入口
+    type: select
+    include-all: true
+    filter: 'JP|日本'   # 中转选日本节点
+
+  - name: 🏠 香港落地
+    type: select
+    include-all: true
+    filter: 'HK|香港'
+    dialer-proxy: 🚇 中转入口   # 关键:本组节点的流量先经中转入口
+`
 
 function CollapsibleCode({ title, code, language }: { title: string; code: string; language: string }) {
   const [isExpanded, setIsExpanded] = useState(false)
@@ -727,6 +794,67 @@ proxy-groups:
                   <li>• {t('templatesV3.subBinding.autoUpdate3')}</li>
                 </ul>
               </div>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* 常见使用场景 */}
+      <section className='mb-8'>
+        <h2 className='text-xl font-bold mb-4 flex items-center gap-2'>
+          <Lightbulb className='size-5 text-primary' />
+          {t('templatesV3.commonScenarios.heading')}
+        </h2>
+        <Card>
+          <CardContent className='pt-6'>
+            <p className='text-muted-foreground mb-6'>
+              {t('templatesV3.commonScenarios.desc')}
+            </p>
+            <div className='space-y-6'>
+              {[
+                { titleKey: 's1Title', goalKey: 's1Goal', configKey: 's1Config', effectKey: 's1Effect', code: scenario1Code },
+                { titleKey: 's2Title', goalKey: 's2Goal', configKey: 's2Config', effectKey: 's2Effect', code: scenario2Code },
+                { titleKey: 's3Title', goalKey: 's3Goal', configKey: 's3Config', effectKey: 's3Effect', code: scenario3Code },
+                { titleKey: 's4Title', goalKey: 's4Goal', configKey: 's4Config', effectKey: 's4Effect', code: scenario4Code },
+                { titleKey: 's5Title', goalKey: 's5Goal', configKey: 's5Config', effectKey: 's5Effect', code: scenario5Code },
+              ].map((s) => (
+                <div key={s.titleKey} className='border-l-4 border-primary/40 pl-4 py-1'>
+                  <h4 className='font-semibold text-sm mb-3'>{t(`templatesV3.commonScenarios.${s.titleKey}`)}</h4>
+                  <div className='space-y-2 mb-3'>
+                    <div className='text-xs'>
+                      <span className='font-semibold text-primary'>{t('templatesV3.commonScenarios.scenarioGoal')}:</span>{' '}
+                      <span className='text-muted-foreground'>{t(`templatesV3.commonScenarios.${s.goalKey}`)}</span>
+                    </div>
+                    <div className='text-xs'>
+                      <span className='font-semibold text-primary'>{t('templatesV3.commonScenarios.scenarioConfig')}:</span>{' '}
+                      <span className='text-muted-foreground'>{t(`templatesV3.commonScenarios.${s.configKey}`)}</span>
+                    </div>
+                    <div className='text-xs'>
+                      <span className='font-semibold text-primary'>{t('templatesV3.commonScenarios.scenarioEffect')}:</span>{' '}
+                      <span className='text-muted-foreground'>{t(`templatesV3.commonScenarios.${s.effectKey}`)}</span>
+                    </div>
+                  </div>
+                  <CollapsibleCode
+                    title={t(`templatesV3.commonScenarios.scenarioConfig`)}
+                    code={s.code}
+                    language='yaml'
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* 组合搭配 tips */}
+            <div className='mt-6 bg-primary/5 rounded-lg p-4 border border-primary/20'>
+              <h4 className='font-semibold text-sm mb-2 flex items-center gap-2'>
+                <Sparkles className='size-4 text-primary' />
+                {t('templatesV3.commonScenarios.tipsTitle')}
+              </h4>
+              <ul className='text-xs text-muted-foreground space-y-1.5'>
+                <li>• {t('templatesV3.commonScenarios.tip1')}</li>
+                <li>• {t('templatesV3.commonScenarios.tip2')}</li>
+                <li>• {t('templatesV3.commonScenarios.tip3')}</li>
+                <li>• {t('templatesV3.commonScenarios.tip4')}</li>
+              </ul>
             </div>
           </CardContent>
         </Card>

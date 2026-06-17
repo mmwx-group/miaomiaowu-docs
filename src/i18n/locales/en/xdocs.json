@@ -590,6 +590,11 @@
       "heading": "Overview",
       "text": "Agent deployment on remote servers requires no manual download or configuration. After adding a server on the master, the system automatically generates a one-click install command that can be run on the remote server to complete the entire deployment."
     },
+    "tokenWarning": {
+      "title": "Important: each server must use a unique agent_token",
+      "body1": "Do NOT copy one agent config (same token) to multiple servers and run them in parallel. Each token maps to a single server record on the master; reusing it across machines triggers a reconnect storm — the two agents keep evicting each other and the master is forced to handle several database writes per second.",
+      "body2": "The damage is not contained to the conflicting server: the write storm saturates the master's SQLite write queue, causing heartbeat updates from unrelated servers to time out. Those servers get incorrectly marked offline and degraded to HTTP/Pull mode. The master now auto-locks the token to the first-connecting IP for 60s and rejects same-token auth from other IPs — see \"agent_token reuse detected\" warnings in the logs. Fix: add and use a unique token per server."
+    },
     "xrayMode": {
       "heading": "Xray mode",
       "text": "MiaomiaowuX Agent now supports two Xray runtime modes; pick one via the xray_mode parameter of install.sh. Try not to switch back and forth — stop all nodes before switching.",
@@ -1435,6 +1440,16 @@
     "statusConnected": "Agent connected, manageable",
     "statusDisconnected": "Agent disconnected",
     "statusPending": "Waiting for Agent's first connection",
+    "trafficSourceHeading": "Server Traffic Data Source",
+    "trafficSourceText": "The \"used traffic\" and quota limits in the server management list support two data sources. Switch via the \"Server Traffic Source\" option in the create/edit server dialog. \"System NIC traffic\" is the recommended default:",
+    "trafficSourceSystemName": "System NIC Traffic (default, recommended)",
+    "trafficSourceSystemDesc": "Agent reads physical NIC RX + TX accumulation from /proc/net/dev — includes ALL traffic on the machine: Xray forwarding + SSH + apt update + monitoring/log uploads + tunnel overhead, etc. Matches the NIC billing meter shown on VPS provider panels. Excludes virtual NICs (WARP / Tailscale / Docker / wireguard).",
+    "trafficSourceXrayName": "Xray Protocol Traffic",
+    "trafficSourceXrayDesc": "Aggregates inbound + outbound across all nodes on this server (SUM(uplink + downlink)). Only counts traffic that goes through Xray. Matches the Node View metric. Suitable for transit-only / pure-forwarding boxes — system traffic is negligible, and the number more closely reflects \"actual user consumption\".",
+    "trafficSourceSwitchLabel": "Switching = automatic history migration, continuous display value",
+    "trafficSourceSwitchNote": "Xray → System: the master automatically copies the Xray cumulative + daily-snapshot history to the system dimension. The displayed \"used traffic\" stays the same the instant you switch. After that, system mode accumulates from real NIC counters and diverges naturally from Xray. Reverse (System → Xray) needs no migration — Xray daily snapshots are always captured regardless of source.",
+    "trafficSourceStatsModeNote": "The \"Stats Mode\" option (Upload / Download / Both) applies to both data sources — each can be filtered to one direction or summed.",
+    "trafficSourceUnaffected": "Node View, User View, and package traffic limit enforcement always use the Xray dimension (system NIC counters can't be split per tag or per user). This option does not affect them.",
     "batchUpgradeHeading": "Batch Agent Upgrade",
     "batchUpgradeText": "After the master releases a new version, you can batch upgrade Agents across multiple servers in remote server management without SSH-ing into each one. The upgrade progress is displayed via streaming logs.",
     "shareHeading": "Share Server with Other MiaoMiaoWu X",

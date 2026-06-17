@@ -590,6 +590,11 @@
       "heading": "概述",
       "text": "远程服务器的 Agent 部署无需手动下载或配置。在主控端添加服务器后，系统会自动生成一键安装命令，在远程服务器上执行即可完成全部部署。"
     },
+    "tokenWarning": {
+      "title": "重要约束：每台服务器必须使用独立的 agent_token",
+      "body1": "不要把同一份 agent 配置（同 token）复制到多台服务器同时使用。每个 token 在主控侧绑定唯一服务器记录，多台机器复用会触发抢占式重连风暴：两台 agent 反复互相踢掉对方，主控每秒被迫处理数次数据库写入。",
+      "body2": "后果不只影响这台冲突服务器：写入风暴会打满主控的 SQLite 写队列，让无关服务器的心跳上报失败，最终被误判离线并整体降级到 HTTP/Pull 模式。主控会自动锁定先连上的 IP 60 秒，期间拒绝其它 IP 的同 token 连接 — 看到日志中的 \"agent_token reuse detected\" 警告说明命中此问题，请为每台服务器单独添加并使用独立 token。"
+    },
     "xrayMode": {
       "heading": "Xray 模式选择",
       "text": "妙妙屋X Agent 现在支持两种 Xray 运行模式,通过 install.sh 的 xray_mode 参数选择。一旦确定建议不要轻易切换(切换前请先停掉所有节点)。",
@@ -1435,6 +1440,16 @@
     "statusConnected": "Agent 已连接，可正常管理",
     "statusDisconnected": "Agent 断开连接",
     "statusPending": "等待 Agent 首次连接",
+    "trafficSourceHeading": "服务器流量统计维度",
+    "trafficSourceText": "服务管理列表里的「已用流量」与流量配额限额支持两种数据源,在创建或编辑服务器对话框的「服务器流量数据源」选项里切换,默认推荐「系统网卡流量」:",
+    "trafficSourceSystemName": "系统网卡流量(默认推荐)",
+    "trafficSourceSystemDesc": "由 Agent 从 /proc/net/dev 读取物理网卡 RX + TX 累计,包含所有走该机器的流量 — Xray 转发 + SSH + apt update + 监控/日志上报 + tunnel overhead 等全部计入,跟 VPS 服务商面板的网卡计费口径完全一致。不含 WARP / Tailscale / Docker / wireguard 等虚拟网卡。",
+    "trafficSourceXrayName": "Xray 协议流量",
+    "trafficSourceXrayDesc": "聚合该服务器所有节点的 inbound + outbound 流量(SUM(uplink + downlink)),只统计走 Xray 协议的数据,跟节点视图口径一致。中转 / 转发为主的小机适合此模式 — 系统其它流量基本可以忽略,数字更接近\"用户实际消耗\"。",
+    "trafficSourceSwitchLabel": "切换数据源 = 自动迁移历史,显示数值连续",
+    "trafficSourceSwitchNote": "切换 Xray → 系统时,主控会自动把切换瞬间的 Xray 总累计 + 每日历史 baseline 完整复制到 system 维度;切换瞬间显示的「已用流量」跟切换前 Xray 视角等同,之后系统模式按真实网卡累加,跟 Xray 数据自然分离。反向(系统 → Xray)无需迁移 — Xray 每日快照一直在拍,直接生效。",
+    "trafficSourceStatsModeNote": "「流量统计规则」选项(上行 / 下行 / 双向)对两种数据源同样适用 — 两者各自的 RX / TX 都能单选或合计。",
+    "trafficSourceUnaffected": "节点视图、用户视图、套餐流量阈值断流逻辑永远走 Xray 维度(系统网卡无法拆分到 tag 或 user),不受此选项影响。",
     "batchUpgradeHeading": "批量升级 Agent",
     "batchUpgradeText": "主控发布新版本后，可在远程服务器管理里对多台服务器批量升级 Agent，无需逐台 SSH 重新执行安装命令。升级过程以流式日志展示进度。",
     "shareHeading": "分享服务器给其他妙妙屋X",

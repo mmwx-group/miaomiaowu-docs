@@ -2196,6 +2196,44 @@
       "autoUpdate2": "删除节点时，会自动从绑定模板的订阅中移除该节点",
       "autoUpdate3": "修改模板后，绑定该模板的订阅会自动重新生成"
     },
+    "commonScenarios": {
+      "heading": "常见使用场景",
+      "desc": "下面是几个典型配置示例，直接复制到模板里使用，也可以组合搭配。每个场景都附带配置片段和效果说明。",
+      "scenarioGoal": "目标",
+      "scenarioConfig": "配置",
+      "scenarioEffect": "效果",
+
+      "s1Title": "场景一：新增节点自动同步到订阅（最常用）",
+      "s1Goal": "管理员每次添加新节点后，所有绑定该模板的订阅自动包含新节点，无需手动编辑订阅文件。这是 V3 模板最核心的能力。",
+      "s1Config": "在代理组里声明 include-all（引入所有出站代理 + 代理集合）或 include-all-proxies（只引入节点）。妙妙屋在生成订阅时会自动把符合规则的节点注入 proxies。",
+      "s1Effect": "节点表里每加一个新节点，立刻被自动同步到所有绑定该模板的订阅。删除节点同理：从订阅里自动移除。整个过程不需要手动重新生成订阅。",
+
+      "s2Title": "场景二：按地区分组（自动识别香港/日本/美国等）",
+      "s2Goal": "希望订阅里自动出现「香港节点」「日本节点」「美国节点」等地区分组，新增节点自动归类到对应地区。",
+      "s2Config": "在「编辑模板」对话框开启 区域代理组 开关，妙妙屋会根据节点名称里的地区关键词（HK / 香港 / Hong Kong 等）自动识别和分组。也可以手动写 filter：每组代理组声明 filter: 'HK|香港|Hong'。",
+      "s2Effect": "新增名字含「香港」的节点 → 自动加入「香港节点」分组。「其他地区」分组会自动收集没匹配到任何地区的节点（兜底）。没匹配到节点的地区分组会自动从订阅移除，不需要手动删除空分组。",
+
+      "s3Title": "场景三：排除测试节点 / 失效节点",
+      "s3Goal": "某些节点名字里带「测试」「TEST」「故障」等标识，希望订阅里自动排除掉，避免用户连错。",
+      "s3Config": "在代理组里声明 exclude-filter，按正则排除关键词。filter 和 exclude-filter 可同时使用：filter 先筛入，exclude-filter 再筛出。",
+      "s3Effect": "节点名含「测试」「TEST」「故障」「失效」「DEAD」中任一关键词 → 不会出现在该代理组里。新增节点也会按这条规则自动判断。",
+
+      "s4Title": "场景四：按协议类型筛选（只要 VLESS / 排除 Shadowsocks）",
+      "s4Goal": "想让某个代理组只包含 vless 协议节点，或者排除某些协议（如 ss）。常见于按协议性能分流。",
+      "s4Config": "include-type 按协议类型引入（用 | 分隔多个）；exclude-type 按协议排除。支持 vless / vmess / trojan / ss / hysteria / hysteria2 / tuic / wireguard / anytls 等。不区分大小写。",
+      "s4Effect": "include-type 用 vless|vmess → 该组只显示 vless 和 vmess 节点；exclude-type 用 ss|hysteria → 该组排除 ss 和 hysteria 节点。可跟 filter / exclude-filter 同时用做多重筛选。",
+
+      "s5Title": "场景五：中转代理（链式：客户端 → 中转节点 → 落地节点 → 目标）",
+      "s5Goal": "实现链式代理。比如香港落地 → 日本中转 → 目标。常用于绕过本地审查 + 享受落地节点的解锁能力。",
+      "s5Config": "在落地代理组上设置 dialer-proxy: 中转代理组名。可视化编辑里通过代理组右侧的链接图标快速配置。配好后该组节点的流量会先经过中转组选中的节点。",
+      "s5Effect": "用户选「香港落地」分组里的节点 → 实际流量路径变成 客户端 → 日本中转节点 → 香港落地节点 → 目标。链式跳数和中转层级可以无限叠加。",
+
+      "tipsTitle": "组合搭配的常用招式",
+      "tip1": "include-all + filter：所有节点先全引入，再用正则筛你想要的（比如「只看含 IPLC 字样的节点」）",
+      "tip2": "include-all + exclude-filter + exclude-type：全引入 → 排除不想要的关键词 → 再排掉某些协议",
+      "tip3": "在 YAML 顶层定义自定义变量（如 hkFilter: 'HK|香港'），多个代理组复用同一段正则，避免改一处漏一处",
+      "tip4": "url-test/fallback 类自动选择组：搭配 include-all + filter 自动从对应地区里挑最快的节点"
+    },
     "fullExample": {
       "heading": "完整模板示例",
       "title": "点击查看完整 V3 模板示例"

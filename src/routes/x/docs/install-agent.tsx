@@ -22,6 +22,16 @@ function InstallAgentPage() {
         </p>
       </section>
 
+      {/* 硬性约束 — 每台 server 必须独立 agent_token,复用会触发主控连接抢占 + SQLite 写脉冲拖累其它 server */}
+      <Alert variant='destructive' className='mb-10'>
+        <AlertTriangle className='h-5 w-5' />
+        <AlertTitle className='text-base font-bold'>{t('installAgent.tokenWarning.title')}</AlertTitle>
+        <AlertDescription className='mt-2 space-y-2'>
+          <p>{t('installAgent.tokenWarning.body1')}</p>
+          <p>{t('installAgent.tokenWarning.body2')}</p>
+        </AlertDescription>
+      </Alert>
+
       {/* Xray 模式选择 — embedded(内联,主控直接控制 xray 不需要额外二进制)/ external(外置,走 systemd 装的 xray) */}
       <section className='mb-10'>
         <h2 className='text-2xl font-bold mb-4'>{t('installAgent.xrayMode.heading')}</h2>

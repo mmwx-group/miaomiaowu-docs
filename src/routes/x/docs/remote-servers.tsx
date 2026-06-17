@@ -105,6 +105,39 @@ function RemoteServersPage() {
       </section>
 
       <section className='mb-10'>
+        <h2 className='text-2xl font-bold mb-4'>{t('remoteServers.trafficSourceHeading')}</h2>
+        <p className='text-muted-foreground mb-4'>{t('remoteServers.trafficSourceText')}</p>
+        <div className='grid gap-4 md:grid-cols-2'>
+          <Card>
+            <CardContent className='pt-6'>
+              <h3 className='font-semibold mb-2'>{t('remoteServers.trafficSourceSystemName')}</h3>
+              <p className='text-sm text-muted-foreground'>{t('remoteServers.trafficSourceSystemDesc')}</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className='pt-6'>
+              <h3 className='font-semibold mb-2'>{t('remoteServers.trafficSourceXrayName')}</h3>
+              <p className='text-sm text-muted-foreground'>{t('remoteServers.trafficSourceXrayDesc')}</p>
+            </CardContent>
+          </Card>
+        </div>
+        <div className='mt-4 space-y-2'>
+          <Card className='border-blue-200 dark:border-blue-900'>
+            <CardContent className='pt-6 text-sm'>
+              <p className='font-medium mb-1'>{t('remoteServers.trafficSourceSwitchLabel')}</p>
+              <p className='text-muted-foreground'>{t('remoteServers.trafficSourceSwitchNote')}</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className='pt-6 text-sm text-muted-foreground'>
+              <p className='mb-2'>{t('remoteServers.trafficSourceStatsModeNote')}</p>
+              <p>{t('remoteServers.trafficSourceUnaffected')}</p>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      <section className='mb-10'>
         <h2 className='text-2xl font-bold mb-4'>{t('remoteServers.batchUpgradeHeading')}</h2>
         <p className='text-muted-foreground'>{t('remoteServers.batchUpgradeText')}</p>
       </section>

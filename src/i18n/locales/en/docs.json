@@ -2196,6 +2196,44 @@
       "autoUpdate2": "When nodes are deleted, they are automatically removed from template-bound subscriptions",
       "autoUpdate3": "When the template is modified, subscriptions bound to it are automatically regenerated"
     },
+    "commonScenarios": {
+      "heading": "Common Usage Scenarios",
+      "desc": "Below are several typical configuration examples. Copy them into your template directly, or combine them. Each scenario shows the config snippet and the expected behavior.",
+      "scenarioGoal": "Goal",
+      "scenarioConfig": "How to configure",
+      "scenarioEffect": "Result",
+
+      "s1Title": "Scenario 1: Auto-sync new nodes into subscriptions (most common)",
+      "s1Goal": "When an admin adds a new node, every subscription bound to this template automatically picks it up. No manual subscription editing required. This is V3 template's core power.",
+      "s1Config": "Declare include-all on the proxy group (pulls all outbound proxies + providers), or include-all-proxies (pulls only proxies). Miaomiaowu auto-injects matching nodes into proxies on subscription generation.",
+      "s1Effect": "Every new node added to the node table is instantly synced into all subscriptions bound to this template. Same for deletion — auto-removed. No manual regen needed.",
+
+      "s2Title": "Scenario 2: Group by region (auto-recognise HK/JP/US etc.)",
+      "s2Goal": "Want subscriptions to automatically contain 'HK nodes', 'JP nodes', 'US nodes' groups, and new nodes auto-classified into their region group.",
+      "s2Config": "Enable the Region Proxy Groups switch in the Edit Template dialog — Miaomiaowu auto-detects region from node name keywords (HK / Hong Kong / 香港 etc.). Or write filter manually: filter: 'HK|香港|Hong' per group.",
+      "s2Effect": "A new node named 'HK-04' → auto-joins the 'HK nodes' group. The 'Other Regions' group catches anything not matched (fallback). Region groups with no matches auto-drop from the subscription — no need to delete empty groups manually.",
+
+      "s3Title": "Scenario 3: Exclude test / dead nodes",
+      "s3Goal": "Some nodes carry markers like 'TEST', '测试', 'DEAD' etc. Auto-exclude them from subscriptions to keep users from connecting to broken ones.",
+      "s3Config": "Declare exclude-filter on the proxy group. Use a regex to exclude keywords. filter and exclude-filter can be used together — filter pulls in, exclude-filter pushes out.",
+      "s3Effect": "Any node whose name contains 'test', 'TEST', '测试', 'DEAD', '故障' etc. won't appear in this group. New nodes get the same check automatically.",
+
+      "s4Title": "Scenario 4: Filter by protocol type (VLESS only / exclude Shadowsocks)",
+      "s4Goal": "Want a group to only contain VLESS nodes, or exclude certain protocols (like SS). Common for performance-based routing.",
+      "s4Config": "include-type to pull by protocol (separator: |); exclude-type to drop by protocol. Supports vless / vmess / trojan / ss / hysteria / hysteria2 / tuic / wireguard / anytls etc. Case-insensitive.",
+      "s4Effect": "include-type: vless|vmess → group only shows VLESS and VMess nodes; exclude-type: ss|hysteria → group drops SS and Hysteria. Stackable with filter / exclude-filter for multi-layer filtering.",
+
+      "s5Title": "Scenario 5: Chain proxy (client → relay → landing → target)",
+      "s5Goal": "Set up chained routing. e.g. HK landing → JP relay → target. Common for bypassing local censorship while keeping the landing node's unlocking capability.",
+      "s5Config": "Set dialer-proxy on the landing proxy group with the relay group name. The visual editor has a chain link icon on the right side of each group for quick setup. Once set, traffic from nodes in that group routes through the chosen relay node first.",
+      "s5Effect": "User picks a 'HK landing' group node → actual traffic path becomes client → JP relay node → HK landing node → target. Chain hops and layers are unlimited — you can stack as many as you need.",
+
+      "tipsTitle": "Common combinations",
+      "tip1": "include-all + filter: pull everything in, then regex-filter for what you want (e.g. 'only nodes with IPLC in the name')",
+      "tip2": "include-all + exclude-filter + exclude-type: pull all → drop unwanted keywords → drop certain protocols",
+      "tip3": "Declare custom variables at YAML top level (e.g. hkFilter: 'HK|香港'), reuse the same regex across multiple groups so you change it once",
+      "tip4": "url-test/fallback auto-select groups: pair with include-all + filter to auto-pick the fastest node from a region"
+    },
     "fullExample": {
       "heading": "Complete Template Example",
       "title": "Click to view complete V3 template example"
